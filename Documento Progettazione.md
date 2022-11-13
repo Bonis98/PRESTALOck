@@ -74,7 +74,7 @@
 | 3   | Se non è presente token rimanda alla pagina di registrazione con dati utente precompilati. Se esiste salva il token nel local storage che poi utilizzerà negli header per autenticarsi nelle successive risposte                                                     |                                                                                                                                                                                                                                                                                                             |                                |
 
 
-![](https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fazure%2Factive-directory%2Fdevelop%2Fmedia%2Fv2-oauth2-auth-code-flow%2Fconvergence-scenarios-native.svg&sp=1668115410Tf3d2590932c9cb949c055a089bb4c961496ca94356ab3be07c5c5ad023d260ec)
+![](https://learn.microsoft.com/en-us/azure/active-directory/develop/media/v2-oauth2-auth-code-flow/convergence-scenarios-native.svg)
 
 
 ## Creazione nuova inserzione
