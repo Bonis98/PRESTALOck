@@ -1,7 +1,7 @@
 <template>
   <div>
     <TopBar />
-    <div class="flex flew-wrap justify-around max-w-screen-lg gap-24">
+    <div class="flex flex-wrap w-11/12 m-auto mt-4 justify-around gap-24">
       <ListingCard />
       <ListingCard />
       <ListingCard />
