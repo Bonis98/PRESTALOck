@@ -107,5 +107,5 @@ dist
 .idea/
 
 # Certificates for HTTPS
-certificates/cert.pem
-certificates/cert.key
+certificates/server.cert
+certificates/server.key
