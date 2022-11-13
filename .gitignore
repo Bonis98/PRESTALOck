@@ -1,2 +1,5 @@
 # JetBrains IDE
 .idea/
+
+# MacOS finder files
+.DS_Store
