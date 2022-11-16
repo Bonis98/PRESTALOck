@@ -9,11 +9,11 @@ const router = express.Router();
 
 
 router.get('/', function (req, res){
-    res.sendFile('signup.html', { root: path.join(__dirname, '../public') })
-});
+    res.sendFile('signin.html', { root: path.join(__dirname, '../public') })
+})
 
 router.post('/', function (req, res){
-    res.send('To implement');
-});
+    res.send('To implement')
+})
 
 module.exports = router; //eof
