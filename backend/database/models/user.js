@@ -1,8 +1,5 @@
-const { Sequelize, DataTypes, Model} = require('sequelize');
-const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: 'db/sintra.sqlite'
-});
+const {DataTypes, Model} = require("sequelize");
+const {sequelize} = require("../connection");
 
 class User extends Model {}
 
@@ -40,7 +37,7 @@ User.init({
         },
     },
     province: {
-        type: DataTypes.STRING(2),
+        type: DataTypes.STRING,
         allowNull: false,
     },
     //Login token
@@ -49,33 +46,16 @@ User.init({
         allowNull: true,
         unique: true,
     },
-    tokenGoogle: {
-        type: DataTypes.STRING(2048),
-        allowNull: true,
-        unique: true,
-    },
-    tokenFacebook: {
+    lockerList: {
         type: DataTypes.STRING,
         allowNull: true,
-        unique: true,
-    },
-    locker: {
-        type: DataTypes.STRING,
-        allowNull: false,
         validate: {
-            is: /^(\d+;)+$/gm,
-        }
+            is: /^(\d+;)*$/gm,
+        },
     }
 }, {
     sequelize,
     modelName: 'User'
-})
-
-//Create tables if not exists
-User.sync().then(() => {
-    console.log('User table created successfully!');
-}).catch((error) => {
-    console.error('Unable to create table: ', error)
 })
 
 module.exports.User = User;

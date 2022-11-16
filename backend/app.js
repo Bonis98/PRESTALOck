@@ -11,6 +11,9 @@ const passport = require('passport');
 
 const signup = require('./routes/signup');
 const signin = require('./routes/signin');
+const {User} = require("./database/models/user");
+const {Product} = require("./database/models/product");
+const {UserBorrowProduct} = require("./database/models/userBorrowProduct");
 
 const app = express();
 const port = 443;
@@ -18,6 +21,23 @@ const port = 443;
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+//Create tables if not exists
+User.sync().then(() => {
+    console.log('User table created successfully!');
+}).catch((error) => {
+    console.error('Unable to create User table: ', error)
+})
+Product.sync().then(() => {
+    console.log('Product table created successfully!');
+}).catch((error) => {
+    console.error('Unable to create Product table: ', error)
+})
+UserBorrowProduct.sync().then(() => {
+    console.log('UserBorrowProduct table created successfully!');
+}).catch((error) => {
+    console.error('Unable to create UserBorrowProduct table: ', error)
+})
 
 //routes
 app.use('/api/signup', signup);
