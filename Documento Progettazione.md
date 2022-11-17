@@ -38,7 +38,7 @@
     - Restituzione di prodotto prestato:
         - Apertura del locker per deposito prodotto a fine prestito
         - Apertura del locker per ritiro dell'prodotto a fine prestito
-    - Modifica inserzione
+    - Modifica prodotto
 - **Priorità 4**:
     - Pre-hash lato frontend delle password
     - Noleggio a pagamento
@@ -63,7 +63,7 @@
         - `POST`: aggiungi nuovo oggetto (`id` non richiesto)
         - `PUT`: aggiorna oggetto (`id` richiesto)
         - `DELETE`: elimina oggetto (`id` richiesto)
-    - `categoria-oggetto` può essere: `user`, `product`, ~~`insertion` (insertion ci sarà o solo product?)~~
+    - `categoria-oggetto` può essere: `user`, `product`
    - `id` presente solo se si vuole accedere a, eliminare o modificare un elemento
 
 ### A parte il login e la registrazione, tutte le richieste necessitano di un header chiamato `token` per l'autenticazione e identificazione dell'utente
@@ -136,16 +136,16 @@ POST `/api/product`
 | 4   |                                                                                                                             | (Comprime?) e salva foto in cartella apposita (oppure come dato binario direttamente in db), aggiorna inserzione nel db inserendo il nome dell'immagine. Ritorna 200 |                                                                               |
 | 5   | Mostra la nuova inserzione                                                                                                  |                                                                                                                                                                      |                                                                               |
 
-## Modifica inserzione
+## Modifica prodotto
 PUT `/api/product/{id}`
 
-## Visualizzazione inserzione
+## Visualizzazione prodotto
 GET `/api/product/{id}`
-- Risposta: `insertion` (`id`, `idOwner`, `title`, `description`, `maxLoanDays`, `imageUrl`, `ownerProvince`, `lockersList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`)
+- Risposta: `product` (`id`, `idOwner`, `title`, `description`, `maxLoanDays`, `imageUrl`, `ownerProvince`, `lockersList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`)
 
-## Visualizzazione elenco inserzioni
+## Visualizzazione elenco prodotto
 GET `/api/products`
-- Risposta: `insertions` (array di oggetti composti da: `id`, `idOwner`, `title`, `description`, `maxLoanDays`, `imageUrl`)
+- Risposta: `products` (array di oggetti composti da: `id`, `idOwner`, `title`, `description`, `maxLoanDays`, `imageUrl`)
 
 ## Prenotazione prodotto
 POST `/api/book`
@@ -170,7 +170,7 @@ GET `/api/loan/requested`
 ## Termine prestito con conferma prodotto depositato
 GET `/api/loan/close`
 
-## Lista inserzioni per propietario
+## Lista prodotti per propietario
 GET `/api/product/by-owner/{id}`   **<--- DA CONTROLLARE NOME**
 
 ## Modifica/recupero password
