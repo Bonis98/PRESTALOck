@@ -72,14 +72,14 @@
 - **Priorità 1**:
     - Login
     - Registrazione
-    - Elenco tutte inserzioni
-    - Vista dettagli inserzione
+    - ~~Elenco tutte inserzioni~~
+    - ~~Vista dettagli inserzione~~
     - Creazione inserzione
-    - Elenco di prestiti attivi (sia oggetti dati che ricevuti)
     - Modifica inserzione (con flag `available`)
     - Pagina di richiesta prestito (selezionando locker)
     - Pagina di conferma prestito con conferma prodotto depositato
 - **Priorità 2**:
+    - Elenco di prestiti attivi (sia oggetti dati che ricevuti)
     - Vista di storico inserzioni inserite
     - Vista di storico prestiti richiesti
 - **Priorità 3**:
@@ -141,11 +141,11 @@ PUT `/api/product/{id}`
 
 ## Visualizzazione prodotto
 GET `/api/product/{id}`
-- Risposta: `product` (`id`, `idOwner`, `title`, `description`, `maxLoanDays`, `imageUrl`, `ownerProvince`, `lockersList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`)
+- Risposta: `product` (`id`, `idOwner`, `title`, `description`, `maxLoanDays`, `imageUrl`, `ownerProvince`,  `insertionDate`, `lockersList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`)
 
 ## Visualizzazione elenco prodotto
 GET `/api/products`
-- Risposta: `products` (array di oggetti composti da: `id`, `idOwner`, `title`, `description`, `maxLoanDays`, `imageUrl`)
+- Risposta: `products` (array di oggetti composti da: `id`, `idOwner`, `title`, `description`, `maxLoanDays`, `insertionDate`, `imageUrl`)
 
 ## Prenotazione prodotto
 POST `/api/book`
