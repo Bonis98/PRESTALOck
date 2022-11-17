@@ -1,5 +1,6 @@
 const fs = require('fs');
 const express = require('express');
+const session = require('express-session');
 const https = require('https');
 const http = require('http');
 const helmet = require("helmet");
@@ -11,6 +12,7 @@ const passport = require('passport');
 
 const signup = require('./routes/signup');
 const signin = require('./routes/signin');
+const selectLocker = require('./routes/select_locker');
 const {User} = require("./database/models/user");
 const {Product} = require("./database/models/product");
 const {UserBorrowProduct} = require("./database/models/userBorrowProduct");
@@ -21,6 +23,14 @@ const port = 443;
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+/*app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true
+})); // session secret
+app.use(passport.initialize());
+app.use(passport.session());*/ // persistent login sessions
 
 //Create tables if not exists
 User.sync().then(() => {
@@ -42,7 +52,9 @@ UserBorrowProduct.sync().then(() => {
 //routes
 app.use('/api/signup', signup);
 app.use('/api/signin', signin);
+app.use('/api/select_locker', selectLocker);
 app.use('/', express.static('public'));
+
 
 
 const httpsOptions = {

@@ -17,6 +17,9 @@ User.init({
     dateOfBirth: {
         type: DataTypes.DATEONLY,
         allowNull: false,
+        validate: {
+            isDate: true,
+        }
     },
     email: {
         type: DataTypes.STRING,
@@ -33,7 +36,7 @@ User.init({
         type: DataTypes.STRING(1),
         allowNull: false,
         validate: {
-            isIn: [['M', 'F', '-']],
+            isIn: [['M', 'F', '*']],
         },
     },
     province: {
