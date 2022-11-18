@@ -15,6 +15,7 @@ const signin = require('./routes/signin');
 const selectLocker = require('./routes/select_locker');
 const saveUserLockers = require("./routes/saveUserLockers");
 const user = require('./routes/user');
+const product = require('./routes/product');
 const {User} = require("./database/models/user");
 const {Product} = require("./database/models/product");
 const {UserBorrowProduct} = require("./database/models/userBorrowProduct");
@@ -57,6 +58,7 @@ app.use('/api/signin', signin);
 app.use('/api/select_locker', selectLocker);
 app.use('/api/saveUserLockers', saveUserLockers);
 app.use('/api/user', user);
+app.use('/api/product', product)
 app.use('/', express.static('public'));
 
 
