@@ -4,6 +4,7 @@ const session = require('express-session');
 const https = require('https');
 const http = require('http');
 const helmet = require("helmet");
+require('dotenv').config();
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -12,7 +13,7 @@ const passport = require('passport');
 
 const signup = require('./routes/signup');
 const signin = require('./routes/signin');
-const selectLocker = require('./routes/select_locker');
+const lockersList = require('./routes/lockersList');
 const saveUserLockers = require("./routes/saveUserLockers");
 const user = require('./routes/user');
 const product = require('./routes/product');
@@ -55,7 +56,7 @@ UserBorrowProduct.sync().then(() => {
 //routes
 app.use('/api/signup', signup);
 app.use('/api/signin', signin);
-app.use('/api/select_locker', selectLocker);
+app.use('/api/lockersList', lockersList);
 app.use('/api/saveUserLockers', saveUserLockers);
 app.use('/api/user', user);
 app.use('/api/product', product)
