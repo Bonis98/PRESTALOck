@@ -50,7 +50,14 @@ User.hasMany(Product, {
     },
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
-})
-Product.belongsTo(User);
+});
+Product.belongsTo(User, {
+    foreignKey: {
+        name: 'idOwner',
+        allowNull: false,
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+});
 
 module.exports.Product = Product;

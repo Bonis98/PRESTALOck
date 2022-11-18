@@ -37,7 +37,14 @@ User.hasMany(UserBorrowProduct, {
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT'
 })
-UserBorrowProduct.belongsTo(User)
+UserBorrowProduct.belongsTo(User, {
+    foreignKey: {
+        name: 'idUser',
+        allowNull: false,
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT'
+})
 
 Product.hasMany(UserBorrowProduct, {
     foreignKey: {
@@ -47,6 +54,13 @@ Product.hasMany(UserBorrowProduct, {
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT'
 })
-UserBorrowProduct.belongsTo(Product)
+UserBorrowProduct.belongsTo(Product, {
+    foreignKey: {
+        name: 'idProduct',
+        allowNull: false,
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT'
+})
 
 module.exports.UserBorrowProduct = UserBorrowProduct;
