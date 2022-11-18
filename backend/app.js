@@ -13,6 +13,7 @@ const passport = require('passport');
 const signup = require('./routes/signup');
 const signin = require('./routes/signin');
 const selectLocker = require('./routes/select_locker');
+const saveUserLockers = require("./routes/saveUserLockers");
 const {User} = require("./database/models/user");
 const {Product} = require("./database/models/product");
 const {UserBorrowProduct} = require("./database/models/userBorrowProduct");
@@ -53,6 +54,7 @@ UserBorrowProduct.sync().then(() => {
 app.use('/api/signup', signup);
 app.use('/api/signin', signin);
 app.use('/api/select_locker', selectLocker);
+app.use('/api/saveUserLockers', saveUserLockers);
 app.use('/', express.static('public'));
 
 
