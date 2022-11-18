@@ -23,6 +23,7 @@
     "passport-google-oauth": "^2.0.0",
     "passport-local": "^1.0.0",
     "sequelize": "^6.25.5",
+    "sequelize-cli": "^6.5.2",
     "sqlite3": "^5.1.2"
   }
 }

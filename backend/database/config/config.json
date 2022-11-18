@@ -1,0 +1,7 @@
+{
+  "development": {
+    "database": "sintra",
+    "storage": "sintra.sqlite",
+    "dialect": "sqlite"
+  }
+}
