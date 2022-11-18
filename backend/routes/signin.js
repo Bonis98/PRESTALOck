@@ -25,11 +25,11 @@ router.post('/', function (req, res){
         if (user) {
             bcrypt.compare(password, user.password).then((result) => {
                 if (result){
-                    //Set token header for authentication
+                    //Send back token header for authentication
                     res.status(200).json({token: user.token});
                 }
                 else {
-                    res.status(400).send("Nome utente o password errati");
+                    res.status(400).json({errortext: "Nome utente o password errati"});
                 }
             }, (error) => {
                 console.error(error);
@@ -37,7 +37,7 @@ router.post('/', function (req, res){
             });
         }
         else {
-            res.status(400).send("Nome utente o password errati");
+            res.status(400).json({errortext: "Nome utente o password errati"});
         }
     }, (error) => {
         console.error(error);
