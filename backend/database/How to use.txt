@@ -1,2 +1,2 @@
--Run 'sequelize db:seed:all' to populate DB with demo data
--Run 'sequelize db:seed:undo' to remove demo data
+-Run 'npx sequelize-cli db:seed:all' to populate DB with demo data
+-Run 'npx sequelize-cli db:seed:undo:all' to remove demo data
