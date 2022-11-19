@@ -8,6 +8,7 @@ router.get('/', function (req, res){
     let lockerProvinceList = [];
     let currentUserProvince;
 
+    //find user in DB to retrieve its province
     async function findInDb(){
         await User.findOne({
             where: {
@@ -15,9 +16,13 @@ router.get('/', function (req, res){
             }
         }).then(function (user){
             currentUserProvince = user.province
+        }, (error) => {
+            console.error(error);
+            res.sendStatus(500);
         })
     }
 
+    //filtering lockers list to send a new lockers list whose lockers are in the user's province
     function filterJSON (json){
         findInDb().then(() => {
             for (let i = 0; i<json.length; i++){
@@ -25,21 +30,29 @@ router.get('/', function (req, res){
                 lockerProvinceList.push(json[i]);
             }
         }
+            res.json(lockerProvinceList);
+        }, (error) => {
+            console.error(error);
+            res.sendStatus(500);
         })
     }
+
+    //retrieving complete lockers list, parsing it and sending it for filtering
     fetch('http://hack-smartlocker.sintrasviluppo.it/api/lockers', {
         method: 'get',
         headers: {
             "x-apikey": process.env.API_KEY_LOCKERS,
             "x-tenant": process.env.TENANT
         }
-    }).then(resp => resp.json()
-    ).then(json => filterJSON(json))
-
-    res.json(lockerProvinceList);
+    }).then(resp => resp.json(), (error) => {
+            console.error(error);
+            res.sendStatus(500);
+        }
+    ).then(json => filterJSON(json), (error) => {
+        console.error(error);
+        res.sendStatus(500);
+    })
 })
-router.post('/', function (req, res){
 
-})
 
 module.exports = router;
