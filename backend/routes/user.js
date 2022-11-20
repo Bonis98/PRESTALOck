@@ -3,13 +3,12 @@ const {User} = require("../database/models/user");
 const router = express.Router();
 
 router.get('/:id', function (req, res){
-    const userId = req.params.id;
     User.findOne({
         where: {
-            id: userId,
+            id: req.params.id,
         },
         attributes: {
-            exclude: ['password', 'token'],
+            exclude: ['password', 'token', 'createdAt', 'updatedAt'],
         }
     }).then(user => res.json(user), (error) => {
         console.error(error);
