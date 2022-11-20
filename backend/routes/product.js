@@ -30,6 +30,25 @@ router.post('/', function (req, res){
         res.sendStatus(500);
     })
 });
+
+router.put('/:id', function (req, res, next){
+    if (!checkParams(req)){
+        res.sendStatus(400);
+        return
+    }
+    Product.update({
+        title: req.body.title,
+        description: req.body.description,
+        maxLoanDays: req.body.maxLoanDays,
+    }, {
+        where: {
+            id: req.params.id,
+        }
+    }).then(() => res.sendStatus(200), (error) => {
+        console.error(error);
+        res.sendStatus(500);
+    })
+});
 //Check request params
 function checkParams(req){
     const body = req.body;
