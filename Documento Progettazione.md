@@ -141,7 +141,7 @@ PUT `/api/product/{id}`
 
 ## Visualizzazione prodotto
 GET `/api/product/{id}`
-- Risposta: `product` (`id`, `idOwner`, `title`, `description`, `maxLoanDays`, `imageUrl`, `ownerProvince`,  `insertionDate`, `lockersList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`)
+- Risposta: `product` (`id`, `title`, `description`, `maxLoanDays`, `imageUrl`,`availability`, `insertionDate`, `idOwner`, `ownerProvince`, `lockersList` (array di locker di oggetti json con: `id`, `nome`, `provincia`, `regione`, `address`)
 
 ## Visualizzazione elenco prodotto
 GET `/api/products`
