@@ -8,7 +8,7 @@ router.get('/:id', function (req, res){
             id: req.params.id,
         },
         attributes: {
-            exclude: ['password', 'token', 'createdAt', 'updatedAt'],
+            exclude: ['email', 'password', 'token', 'createdAt', 'updatedAt'],
         }
     }).then(user => res.json(user), (error) => {
         console.error(error);
