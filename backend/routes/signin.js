@@ -26,7 +26,11 @@ router.post('/', function (req, res){
             bcrypt.compare(password, user.password).then((result) => {
                 if (result){
                     //Send back token header for authentication
-                    res.status(200).json({token: user.token});
+                    res.status(200).json({
+                        token: user.token,
+                        name: user.name,
+                        surname: user.surname
+                    });
                 }
                 else {
                     res.status(400).json({errortext: "Nome utente o password errati"});
