@@ -4,7 +4,7 @@
       <div class="text-xl font-bold cursor-pointer"> &lt; </div>
     </NuxtLink>
     <div class="flex-grow"></div>
-    <div>nome utente</div>
+    <div> {{ name }} </div>
   </div>
 </template>
 
@@ -12,6 +12,12 @@
 export default {
   props: {
     'backRedirect': String
+  },
+
+  data () {
+    return {
+      name: localStorage.getItem('name')
+    }
   }
 }
 </script>  
