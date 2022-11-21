@@ -75,7 +75,7 @@
     - ~~Registrazione~~
     - ~~Elenco tutte inserzioni~~
     - ~~Vista dettagli inserzione~~
-    - Creazione inserzione
+    - ~~Creazione inserzione~~
     - Modifica inserzione (con flag `available`)
     - Pagina di richiesta prestito (selezionando locker)
     - Pagina di conferma prestito con conferma prodotto depositato
