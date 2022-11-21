@@ -9,7 +9,10 @@ module.exports = {
             return next();
         } else if (req.path.startsWith('/api/product') && req.method == 'GET') {
             return next();
+        } else if (!req.path.startsWith('/api/')) {
+            return next();
         }
+
         if (req.get('token')) {
             User.findOne({
                 where: {
