@@ -1,18 +1,11 @@
 const passport = require('passport');
-const controller = require('../middleware/controller');
+const controller = require('../middleware/auth');
 const express = require('express');
 const path = require("path");
 const {User} = require("../database/models/user");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 
-
-//router.all('*', controller.is_guest); //it will work when passport would have been set
-
-
-router.get('/', function (req, res){
-    res.sendFile('signin.html', { root: path.join(__dirname, '../public') })
-})
 
 router.post('/', function (req, res){
     let email = req.body.email;

@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 
 const passport = require('passport');
 
+const middleware = require('./middleware/auth')
 const signup = require('./routes/signup');
 const signin = require('./routes/signin');
 const lockersList = require('./routes/lockersList');
@@ -54,6 +55,8 @@ UserBorrowProduct.sync().then(() => {
 })
 
 //routes
+//Authentication middleware
+app.use(middleware.auth);
 app.use('/api/signup', signup);
 app.use('/api/signin', signin);
 app.use('/api/lockersList', lockersList);
