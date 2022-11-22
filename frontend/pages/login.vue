@@ -48,26 +48,42 @@ export default {
       this.loading = true
 
       if (this.email == '' || this.password == '') {
-        alert('Inserire correttamente indirizzo e password')
+        alert('Inserire correttamente email e password')
         this.loading = false
         return
       }
 
-      // chiamata simulata a backend
-      const correctCredentials = true
-      const token = 'j3urth24ur21o93r'
-      const name = 'Nome Utente'
+      try {
+        const response = await fetch('/api/signin', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: this.email,
+            password: this.password
+          })
+        })
 
-      if (!correctCredentials) {
-        alert('Credenziali non corrette')
+        if (!response.ok) {
+          if (response.status == 400) {
+            const data = await response.json()
+            throw data.errortext
+          } else {
+            throw `Si è verificato un errore. (${response.status})`
+          }
+        }
+
+        const data = await response.json()
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('name', data.name + ' ' + data.surname)
+        this.$router.push({ path: '/' })
+      } catch (ex) {
+        console.error(ex)
+        alert(ex)
         this.loading = false
         return
       }
-
-      localStorage.setItem('token', token)
-      localStorage.setItem('name', name)
-      this.loading = false
-      this.$router.push({ path: '/' })
     },
 
     signup () {
