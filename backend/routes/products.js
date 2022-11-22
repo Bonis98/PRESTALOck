@@ -10,7 +10,7 @@ router.get('/', function (req, res) {
             availability: true
         },
         attributes: {
-            exclude: ['picture', 'availabiltiy', 'createdAt', 'updatedAt']
+            exclude: ['picture', 'availability', 'createdAt', 'updatedAt']
         },
         include: {
             model: User,
