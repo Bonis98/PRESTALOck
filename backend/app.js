@@ -1,6 +1,5 @@
 const fs = require('fs');
 const express = require('express');
-const session = require('express-session');
 const https = require('https');
 const http = require('http');
 const helmet = require("helmet");
@@ -9,8 +8,6 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-const passport = require('passport');
-
 const middleware = require('./middleware/auth')
 const signup = require('./routes/signup');
 const signin = require('./routes/signin');
@@ -18,6 +15,7 @@ const lockersList = require('./routes/lockersList');
 const saveUserLockers = require("./routes/saveUserLockers");
 const user = require('./routes/user');
 const product = require('./routes/product');
+const products = require ('./routes/products');
 const {User} = require("./database/models/user");
 const {Product} = require("./database/models/product");
 const {UserBorrowProduct} = require("./database/models/userBorrowProduct");
@@ -28,14 +26,6 @@ const port = 443;
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cookieParser());
-
-/*app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true
-})); // session secret
-app.use(passport.initialize());
-app.use(passport.session());*/ // persistent login sessions
 
 //Create tables if not exists
 User.sync().then(() => {
@@ -63,6 +53,7 @@ app.use('/api/lockersList', lockersList);
 app.use('/api/saveUserLockers', saveUserLockers);
 app.use('/api/user', user);
 app.use('/api/product', product)
+app.use('/api/products', products);
 app.use('/', express.static('public'));
 
 

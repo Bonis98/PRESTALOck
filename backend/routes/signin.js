@@ -1,7 +1,4 @@
-const passport = require('passport');
-const controller = require('../middleware/auth');
 const express = require('express');
-const path = require("path");
 const {User} = require("../database/models/user");
 const bcrypt = require("bcrypt");
 const router = express.Router();
