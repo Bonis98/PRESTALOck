@@ -12,7 +12,7 @@ module.exports = {
       province: "Milano",
       gender: "M",
       token: "ceb8437df3dca8646ecdece10373e695eaf24f54",
-      lockerList: "2;3;",
+      lockerList: "6;22;",
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
@@ -24,7 +24,7 @@ module.exports = {
       province: "Milano",
       gender: "M",
       token: "ceb8437df3dca8646ecdece11673e695eaf24f54",
-      lockerList: "2;4;",
+      lockerList: "6;22;",
       createdAt: new Date(),
       updatedAt: new Date()
     }

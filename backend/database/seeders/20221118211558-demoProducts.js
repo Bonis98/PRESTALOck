@@ -3,12 +3,13 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
+    var nowDate = new Date();
     return queryInterface.bulkInsert('Products', [{
       title: "Product 1",
       description: "Very good conditions!",
       maxLoanDays: 2,
       availability: true,
-      insertionDate: new Date(),
+      insertionDate: nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate(),
       createdAt: new Date(),
       updatedAt: new Date(),
       idOwner: 1,
@@ -17,7 +18,7 @@ module.exports = {
       description: "Acceptable conditions!",
       maxLoanDays: 2,
       availability: true,
-      insertionDate: new Date(),
+      insertionDate: nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate(),
       createdAt: new Date(),
       updatedAt: new Date(),
       idOwner: 2,
@@ -26,7 +27,7 @@ module.exports = {
       description: "Good conditions!",
       maxLoanDays: 2,
       availability: false,
-      insertionDate: new Date(),
+      insertionDate: nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate(),
       createdAt: new Date(),
       updatedAt: new Date(),
       idOwner: 2,

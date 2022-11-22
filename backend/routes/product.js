@@ -2,34 +2,32 @@ const express = require('express');
 const {User} = require("../database/models/user");
 const {Product} = require("../database/models/product");
 const fetch = require("node-fetch");
+const fs = require('fs');
 const router = express.Router();
 
-router.post('/', function (req, res){
-    if (!checkParams(req)){
+router.post('/', async function (req, res) {
+    if (!checkParams(req)) {
         res.sendStatus(400);
         return
     }
-    User.findOne({
-        where: {
-            token: req.get('token'),
-        }
-    }).then((user) => {
+    try {
+        const user = await User.findOne({
+            where: {
+                token: req.get('token'),
+            }
+        });
         const productInfo = {
             idOwner: user.id,
             title: req.body.title,
             description: req.body.description,
             maxLoanDays: req.body.maxLoanDays,
         }
-        Product.create(productInfo).then((product) => {
-            res.json({id: product.id});
-        }, (error) => {
-            console.error(error);
-            res.sendStatus(500);
-        })
-    }, (error) => {
+        const product = await Product.create(productInfo)
+        res.json({id: product.id});
+    } catch (error) {
         console.error(error);
         res.sendStatus(500);
-    })
+    }
 });
 
 router.put('/:id', function (req, res, next){
@@ -41,6 +39,7 @@ router.put('/:id', function (req, res, next){
         title: req.body.title,
         description: req.body.description,
         maxLoanDays: req.body.maxLoanDays,
+        availability: req.body.availability,
     }, {
         where: {
             id: req.params.id,
@@ -51,41 +50,29 @@ router.put('/:id', function (req, res, next){
     })
 });
 
-router.get('/:id', function (req, res, next){
-    Product.findOne({
-        where: {
-            id: req.params.id,
-        },
-        include:[{
-            model: User,
-            required: true,
-            attributes: [['province', 'ownerProvince'], 'lockerList']
-        }],
-        attributes: {
-            exclude: ['createdAt', 'updatedAt'],
-        }
-    }).then((Product) => {
-        const user = Product.User.dataValues;
-        let result = {};
-        //Copy all keys except 'user' in result
-        for (let key in Product.dataValues)
-            if (key != 'User')
-                result[key] = Product[key]
-        //copy all keys in result
-        for (let key in user)
-            result[key] = user[key]
-        //Get locker list and filter it out by user's lockers
-        getLockerList(result.lockerList).then((lockerList) => {
-            result['lockerList'] = lockerList;
-            res.json(result);
-        }, (error) => {
-            console.error(error);
-            res.sendStatus(500);
+router.get('/:id', async function (req, res, next) {
+    try {
+        const product = await Product.findOne({
+            where: {
+                id: req.params.id,
+            },
+            include: [{
+                model: User,
+                required: true,
+                attributes: ['name', 'surname', 'province', 'lockerList']
+            }],
+            attributes: {
+                exclude: ['createdAt', 'updatedAt', 'picture'],
+            }
         });
-    }, (error) => {
+        const lockerList = await getLockerList(product.user.lockerList);
+        product.dataValues['lockerList'] = lockerList;
+        delete product.user.dataValues.lockerList;
+        res.json(product);
+    } catch (error) {
         console.error(error)
         res.sendStatus(500);
-    })
+    }
 });
 
 //Filter out lockers list by user's lockers

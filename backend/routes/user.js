@@ -7,9 +7,7 @@ router.get('/:id', function (req, res){
         where: {
             id: req.params.id,
         },
-        attributes: {
-            exclude: ['email', 'password', 'token', 'createdAt', 'updatedAt'],
-        }
+        attributes: ['id', 'name', 'surname', 'province',]
     }).then(user => res.json(user), (error) => {
         console.error(error);
         res.sendStatus(500);

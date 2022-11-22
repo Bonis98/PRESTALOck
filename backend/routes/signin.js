@@ -4,39 +4,35 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 
 
-router.post('/', function (req, res){
-    let email = req.body.email;
-    let password = req.body.password;
-    User.findOne({
-        where: {
-            email:email
-        }
-    }).then((user) => {
-        if (user) {
-            bcrypt.compare(password, user.password).then((result) => {
-                if (result){
+router.post('/', async function (req, res) {
+        let email = req.body.email;
+        let password = req.body.password;
+        try {
+            const user = await User.findOne({
+                where: {
+                    email: email,
+                }
+            });
+            if (user) {
+                const result = await bcrypt.compare(password, user.password)
+                if (result) {
                     //Send back token header for authentication
                     res.status(200).json({
                         token: user.token,
                         name: user.name,
                         surname: user.surname
                     });
-                }
-                else {
+                } else {
                     res.status(400).json({errortext: "Indirizzo email o password errati"});
                 }
-            }, (error) => {
-                console.error(error);
-                res.sendStatus(500);
-            });
+            } else {
+                res.status(400).json({errortext: "Indirizzo email o password errati"});
+            }
+        } catch (error) {
+            console.error(error);
+            res.sendStatus(500);
         }
-        else {
-            res.status(400).json({errortext: "Indirizzo email o password errati"});
-        }
-    }, (error) => {
-        console.error(error);
-        res.sendStatus(500);
-    });
-});
+    }
+);
 
 module.exports = router; //eof
