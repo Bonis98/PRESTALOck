@@ -69,7 +69,6 @@
 ### A parte il login e la registrazione, tutte le richieste necessitano di un header chiamato `token` per l'autenticazione e identificazione dell'utente
 
 ## Pagine del frontend
-[[../../__media/Excalidraw/Drawing 2022-11-17 22.42.10.excalidraw]]
 - **Priorità 1**:
     - ~~Login~~
     - ~~Registrazione~~
@@ -91,6 +90,9 @@
 - **Priorità 4**:
     - Pagina di modifica/recupero password
 
+
+*Esempio pagina dettagli prodotto*
+![[design files/Drawing 2022-11-17 22.42.10.excalidraw.png]]
 
 # Interazioni frontend <-> backend
 ## Registrazione nuovo utente
@@ -197,6 +199,7 @@ GET `/api/signinFacebook/callback`
 | 1   |        | ->        | GET `/api/loan`                                                                                                                                                                                                                                              |                                                                                                                                                     |
 | 2   |        | <-        | Legge la tabella `userBorrowProducts` le righe dove l'utente è proprietario oppure richiedente di un prestito e `terminationDate` è null. Calcola in base alla data corrente e al campo `maxLoanDays` dell'oggetto i giorni rimanenti alla fine del prestito | `loans` (array di oggetti con dati del prestito, dati dell'oggetto, flag `myProduct` (`true` o `false`) e flag `alreadyStarted` (`true` o `false`)) | 
 
+![[design files/Drawing 2022-11-22 18.55.58.excalidraw.png]]
 
 ## Storico prestiti effettuati
 GET `/api/loan/ended`   **<--- DA CAMBIARE**
