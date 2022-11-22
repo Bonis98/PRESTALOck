@@ -23,7 +23,7 @@ router.post('/', function (req, res){
                     });
                 }
                 else {
-                    res.status(400).json({errortext: "Nome utente o password errati"});
+                    res.status(400).json({errortext: "Indirizzo email o password errati"});
                 }
             }, (error) => {
                 console.error(error);
@@ -31,7 +31,7 @@ router.post('/', function (req, res){
             });
         }
         else {
-            res.status(400).json({errortext: "Nome utente o password errati"});
+            res.status(400).json({errortext: "Indirizzo email o password errati"});
         }
     }, (error) => {
         console.error(error);
