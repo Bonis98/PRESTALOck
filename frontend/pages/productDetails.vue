@@ -74,7 +74,36 @@ export default {
           }
         ]
       }
-    }
+    }/*
+    async getProduct () {
+      try {
+        const response = await fetch('/api/products', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+
+        if (!response.ok) {
+          if (response.status == 400) {
+            const data = await response.json()
+            throw data.errortext
+          } else {
+            throw `Si è verificato un errore. (${response.status})`
+          }
+        }
+
+        const data = await response.json()
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('name', data.name + ' ' + data.surname)
+        this.$router.push({ path: '/' })
+      } catch (ex) {
+        console.error(ex)
+        alert(ex)
+        this.loading = false
+        return
+      }
+    }*/
   },
 
   mounted () {

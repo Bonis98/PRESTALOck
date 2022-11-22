@@ -6,7 +6,7 @@
       <div class="mb-3 text-2xl"> Registrazione </div>
       <div class="mt-3"> Indirizzo email </div>
       <div>
-        <Input v-model="email" />
+        <Input v-model="email" type="email" />
       </div>
       <div class="mt-3"> Password </div>
       <div>
@@ -50,7 +50,7 @@
 <script>
 
 export default {
-  data () {
+  data() {
     return {
       loading: true,
       email: '',
@@ -66,7 +66,7 @@ export default {
   },
 
   watch: {
-    loading (newValue) {
+    loading(newValue) {
       for (let element of document.querySelectorAll('Input, Button, Select')) {
         element.disabled = newValue
       }
@@ -74,7 +74,7 @@ export default {
   },
 
   methods: {
-    async getProvinces () {
+    async getProvinces() {
       // richiesta simulata
       await new Promise((resolve => setTimeout(resolve, 1000)))
       this.allProvinces = [
@@ -88,19 +88,117 @@ export default {
         { val: 'Arezzo', name: 'Arezzo' }
       ]
       this.loading = false
-    },
+    },/*
+    async getProvinces () {
+      try {
+        const response = await fetch('/api/provinces', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
 
-    login () {
-      this.$router.push({ path: '/login' })
+        if (!response.ok) {
+          if (response.status == 400) {
+            const data = await response.json()
+            throw data.errortext
+          } else {
+            throw `Si è verificato un errore. (${response.status})`
+          }
+        }
+
+        const data = await response.json()
+        //data got
+        
+
+      } catch (ex) {
+        console.error(ex)
+        alert(ex)
+        this.loading = false
+        return
+      }
+    } */
+
+    async login() {
+      if (this.password != this.confirmPassword) {
+        alert('Le password devono coincidere')
+        return
+      }
+      if (this.email == '') {
+        alert('Inserisci email')
+        return
+      }
+      if (this.password == '') {
+        alert('Inserisci password')
+        return
+      }
+      if (this.name == '') {
+        alert('Inserisci name')
+        return
+      }
+      if (this.surname == '') {
+        alert('Inserisci surname')
+        return
+      }
+      if (this.dateOfBirth == '') {
+        alert('Inserisci dateOfBirth')
+        return
+      }
+      if (this.province == '') {
+        alert('Inserisci province')
+        return
+      }
+      if (this.gender == '') {
+        alert('Inserisci gender')
+        return
+      }
+      try {
+        const response = await fetch('/api/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: this.email,
+            password: this.password,
+            name: this.name,
+            surname: this.surname,
+            dateOfBirth: this.dateOfBirth,
+            province: this.province,
+            gender: this.gender
+          })
+        })
+
+        if (!response.ok) {
+          if (response.status == 400) {
+            const data = await response.json()
+            throw data.errortext
+          } else {
+            throw `Si è verificato un errore. (${response.status})`
+          }
+        }
+
+        const data = await response.json()
+        //data got
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('name', data.name + ' ' + data.surname)
+        this.$router.push({ path: '/login' })
+      }
+      catch (ex) {
+        console.error(ex)
+        alert(ex)
+        this.loading = false
+        return
+      }
     }
   },
 
-  created () {
+  created() {
     localStorage.removeItem('token')
     localStorage.removeItem('name')
   },
 
-  mounted () {
+  mounted() {
     this.getProvinces()
   }
 }
