@@ -1,5 +1,9 @@
 {
   "extends": [
     "@nuxtjs"
-  ]
+  ],
+  "rules": {
+    "eqeqeq": "off",
+    "no-throw-literal": "off"
+  }
 }
