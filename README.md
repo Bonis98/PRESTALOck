@@ -1,6 +1,6 @@
-# SintraLab-Hackaton
+# SintraLab-Hackathon
 
-Progetto del hackaton 2022 di SintraLab
+Progetto del hackathon 2022 di SintraLab
 
 
 ## Autori:
