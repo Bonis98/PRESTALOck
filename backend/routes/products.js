@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
         },
         include: {
             model: User,
-            attributes: [['name', 'ownerName'], ['surname', 'ownerSurname']]
+            attributes: ['name', 'surname']
         }
     }).then(function (products) {
         res.status(200).json(products);
