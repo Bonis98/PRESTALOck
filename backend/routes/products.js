@@ -14,6 +14,7 @@ router.get('/', function (req, res) {
         },
         include: {
             model: User,
+            as: 'user',
             attributes: ['name', 'surname']
         }
     }).then(function (products) {
