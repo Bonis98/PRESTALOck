@@ -19,7 +19,9 @@
     "webpack": "^4.46.0"
   },
   "devDependencies": {
+    "@nuxtjs/eslint-config": "^12.0.0",
     "@nuxtjs/tailwindcss": "^4.2.1",
+    "eslint": "^8.28.0",
     "postcss": "^8.4.4"
   }
 }
