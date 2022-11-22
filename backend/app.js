@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const middleware = require('./middleware/auth')
 const signup = require('./routes/signup');
 const signin = require('./routes/signin');
+const signinGoogle = require('./routes/signinGoogle');
 const lockersList = require('./routes/lockersList');
 const saveUserLockers = require("./routes/saveUserLockers");
 const user = require('./routes/user');
@@ -55,6 +56,7 @@ UserBorrowProduct.sync().then(() => {
 app.use(middleware.auth);
 app.use('/api/signup', signup);
 app.use('/api/signin', signin);
+app.use('/api/signinGoogle', signinGoogle);
 app.use('/api/lockersList', lockersList);
 app.use('/api/saveUserLockers', saveUserLockers);
 app.use('/api/user', user);

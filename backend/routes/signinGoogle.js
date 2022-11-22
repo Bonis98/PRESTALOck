@@ -60,7 +60,8 @@ router.get('/callback', async function (req, res, next) {
         })
         if (user){
             console.log('user already exists');
-            res.json({token: user.token});
+            var base64Data = Buffer.from(JSON.stringify({token: user.token})).toString("base64")
+            res.redirect('/aftergooglelogin?data=' + base64Data)
             return;
         }
     }
@@ -82,7 +83,18 @@ router.get('/callback', async function (req, res, next) {
         DOB += info.data.birthdays[1].date.month.toString().padStart(2, '0') + '-';
         DOB += info.data.birthdays[1].date.day.toString().padStart(2, '0');
         userInfo['dateOfBirth'] = DOB
-        userInfo['gender'] = info.data.genders[0].formattedValue.substring(0,1)
+        const gender = info.data.genders[0].formattedValue.substring(0,1)
+        switch (gender) {
+            case 'Male':
+                userInfo['gender'] = 'M'
+                break
+            case 'Female':
+                userInfo['gender'] = 'F'
+                break
+            default:
+                userInfo['gender'] = '*'
+                break
+        }
     }
     catch (error) {
         console.error(error)
@@ -101,9 +113,10 @@ router.get('/callback', async function (req, res, next) {
     }
     try {
         userInfo['token'] = crypto.randomBytes(20).toString('hex')
-        await User.create(userInfo)
+        //await User.create(userInfo)
         userInfo.dateOfBirth = moment(userInfo.dateOfBirth, 'YYYY-MM-DD').format('DD-MM-YYYY')
-        res.json(userInfo)
+        var base64Data = Buffer.from(JSON.stringify(userInfo)).toString("base64")
+        res.redirect('/aftergooglelogin?data=' + base64Data)
         return
     }
     catch (error) {
