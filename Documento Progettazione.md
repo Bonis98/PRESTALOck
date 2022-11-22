@@ -73,19 +73,21 @@
 - **Priorità 1**:
     - ~~Login~~
     - ~~Registrazione~~
-    - ~~Elenco tutte inserzioni~~
-    - ~~Vista dettagli inserzione~~
-    - ~~Creazione inserzione~~
-    - Modifica inserzione (con flag `available`)
-    - Pagina di richiesta prestito (selezionando locker)
-    - Pagina di conferma prestito con conferma prodotto depositato
+    - Login con OAuth
+    - Registrazione con OAuth
+    - ~~Elenco tutte prodotti~~
+    - ~~Vista dettagli prodotto con tasto per richiesta prestito in locker specificato~~
+    - Creazione prodotto
+    - Modifica prodotto (con flag `available`)
+    - Upload foto di prodotto
+    - Pagina di conferma prestito per confermare prodotto depositato nel locker
 - **Priorità 2**:
-    - Elenco di prestiti attivi (sia oggetti dati che ricevuti)
-    - Vista di storico inserzioni inserite
+    - Elenco di prestiti attivi (sia prodotti dati che ricevuti)
+    - Vista di storico prodotti inseriti
     - Vista di storico prestiti richiesti
 - **Priorità 3**:
     - Pagina di termine prestito con conferma prodotto depositato
-    - Vista tutte inserzioni per utente
+    - Vista tutti prodotti per utente
 - **Priorità 4**:
     - Pagina di modifica/recupero password
 
@@ -116,56 +118,85 @@ GET `/api/signinGoogle/callback`
 oppure
 GET `/api/signinFacebook`
 GET `/api/signinFacebook/callback`
-| Num | Client                                                                                                                                                                                                           | Direzione | Server                                                                                                                                                                                                                                                                                       | Struttura Dati                                                                                                                                             |     |     |     |     |
-| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- | --- | --- |
-| 1   | Comunica con autenticatore in base al tasto premuto (Google, Facebook...) fino ad ottenere i token necessari. Invia i token e il nome del servizio usato al server                                               | ->        |                                                                                                                                                                                                                                                                                              | `dati di OAuth`                                                                                                                                            |     |     |     |     |
-| 2   |                                                                                                                                                                                                                  | <-        | Controlla con autenticatore se token è valido. Se è valido, controlla in DB se esiste già mail registrata. Se l'utente esiste già ma non aveva creato account con OAuth vengono uniti i dati. Se non esiste crea account e manda dati utente. Se esiste utente ritorna token di utilizzo app | `token` (se esiste già utente), `userData` (se non esisteva utente, oggetto json con: `name`, `surname`, `dateOfBirth` (`dd-mm-yyyy`), `gender` (`M/F/*`)) |     |     |     |     |
-| 3   | Se non è presente token rimanda alla pagina di registrazione con dati utente precompilati. Se esiste salva il token nel local storage che poi utilizzerà negli header per autenticarsi nelle successive risposte |           |                                                                                                                                                                                                                                                                                              |                                                                                                                                                            |     |     |     |     |
-
-
-![](https://learn.microsoft.com/en-us/azure/active-directory/develop/media/v2-oauth2-auth-code-flow/convergence-scenarios-native.svg)
+| Num | Client                                                                                                                                                                                                           | Direzione | Server                                                                                                                                                                                                                                                                                       | Struttura Dati                                                                                                                                             |     |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| 1   | Comunica con autenticatore in base al tasto premuto (Google, Facebook...) fino ad ottenere i token necessari. Invia i token e il nome del servizio usato al server                                               | ->        |                                                                                                                                                                                                                                                                                              | `dati di OAuth`                                                                                                                                            |     |
+| 2   |                                                                                                                                                                                                                  | <-        | Controlla con autenticatore se token è valido. Se è valido, controlla in DB se esiste già mail registrata. Se l'utente esiste già ma non aveva creato account con OAuth vengono uniti i dati. Se non esiste crea account e manda dati utente. Se esiste utente ritorna token di utilizzo app | `token` (se esiste già utente), `userData` (se non esisteva utente, oggetto json con: `name`, `surname`, `dateOfBirth` (`dd-mm-yyyy`), `gender` (`M/F/*`)) |     |
+| 3   | Se non è presente token rimanda alla pagina di registrazione con dati utente precompilati. Se esiste salva il token nel local storage che poi utilizzerà negli header per autenticarsi nelle successive risposte |           |                                                                                                                                                                                                                                                                                              |                                                                                                                                                            |     |
 
 ## Lista di tutte le province italiane
-GET `/api/provinces`
+| Num | Client | Direzione | Server                                                      | Struttura dati                  |
+| --- | ------ | --------- | ----------------------------------------------------------- | ------------------------------- |
+| 1   |        | ->        | GET `/api/provinces`                                        |                                 |
+| 2   |        | <-        | Legge le province dal file apposito e le rimanda all'utente | `provinces` (array di stringhe) |
 
 ## Visualizza info utente
-GET `/api/user/{id}`
+| Num | Client | Direzione | Server                                       | Struttura dati                                           |
+| --- | ------ | --------- | -------------------------------------------- | -------------------------------------------------------- |
+| 1   |        | ->        | GET `/api/user/{id}`                         |                                                          |
+| 2   |        | <-        | Legge l'utente dal db e lo rimanda al client | `user` (oggetto con `id`, `name`, `surname`, `province`) |
 
-## Creazione nuova inserzione
-POST `/api/product`
-POST `/api/product/updateImage/{idProduct}`
-| Num | Client                                                                                                                      | Server                                                                                                                                                               | Struttura dati                                                                |
-| --- | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| 1   | Invia i dati al server                                                                                                      |                                                                                                                                                                      | `title`, `description`, `maxLoanDays` (num, rappresenta giorni)               |
-| 2   |                                                                                                                             | Salva i dati in db, comunica al client esito (200 se ok, 400 se mancano dati)                                                                                        | `id` (dell'inserzione appena creata)                                          |
-| 3   | Notifica utente dell'esito, se ok chiede se caricare foto. Se si, seleziona foto e invia. Se no, mostra la nuova inserzione |                                                                                                                                                                      | `image` (**DA DEFINIRE FORMATO**, probabilmente richiesta POST con blob foto) |
-| 4   |                                                                                                                             | (Comprime?) e salva foto in cartella apposita (oppure come dato binario direttamente in db), aggiorna inserzione nel db inserendo il nome dell'immagine. Ritorna 200 |                                                                               |
-| 5   | Mostra la nuova inserzione                                                                                                  |                                                                                                                                                                      |                                                                               |
+## Creazione nuovo prodotto
+| Num | Client                                                                                                           | Direzione | Server                                                                        | Struttura dati                                                  |
+| --- | ---------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| 1   | Invia i dati al server                                                                                           | ->        | POST `/api/product`                                                           | `title`, `description`, `maxLoanDays` (num, rappresenta giorni) |
+| 2   |                                                                                                                  | <-        | Salva i dati in db, comunica al client esito (200 se ok, 400 se mancano dati) | `id` (del prodotto appena creata)                               |
+| 3   | Notifica utente dell'esito, se ok chiede se caricare foto (vedere flusso sotto). Infine mostra il nuovo prodotto |           |                                                                               |                                                                 |
+
+## Creazione/modifica immagine prodotto
+| Num | Client | Direzione | Server                                                                                                                                                   | Struttura dati                                                                                                              |
+| --- | ------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| 1   |        | ->        | POST `/api/product/{id}/updateImage`                                                                                                                     | `image` (**Attenzione** non è json ma `multipart/form-data`. L'immagine può avere come mimetype `image/jpeg` o `image/png`) |
+| 2   |        | <-        | Se è attivo un prestito con questo prodotto, torna 400. Altrimenti (comprime?) e salva foto come blob binario in db. Ritorna 200 oppure 500 se da errore |                                                                                                                             |
 
 ## Modifica prodotto
-PUT `/api/product/{id}`
+| Num | Client                        | Direzione | Server                                                                                                                                           | Struttura dati                                                                  |
+| --- | ----------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| 1   | Invia i dati al server        | ->        | PUT `/api/product/{id}`                                                                                                                          | `title`, `description`, `maxLoanDays` (num, rappresenta giorni), `availability` |
+| 2   |                               | <-        | Se è attivo un prestito con questo prodotto, torna 400. Altrimenti salva i dati in db, comunica al client esito (200 se ok, 400 se mancano dati) |                                                                                 |
+| 3   | Mostra il prodotto modificato |           |                                                                                                                                                  |                                                                                 |
 
-## Visualizzazione prodotto
-GET `/api/product/{id}`
-- Risposta: `product` (`id`, `idOwner`, `title`, `description`, `maxLoanDays`, `imageUrl`, `ownerProvince`,  `insertionDate`, `lockersList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`)
+
+## Visualizzazione singolo prodotto
+| Num | Client                   | Direzione | Server                  | Struttura dati                                                                                                                                                                                                                                                            |
+| --- | ------------------------ | --------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Chiede info              | ->        | GET `/api/product/{id}` |                                                                                                                                                                                                                                                                           |
+| 2   |                          | <-        |                         | `product` (oggetto con `id`, `ownerId`, `User` (oggetto con `name`, `surname` e `province`), `title`, `description`, `maxLoanDays`, `ownerProvince`,  `insertionDate`, `lockersList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`) |
+| 3   | Mostra i dati all'utente |           |                         |                                                                                                                                                                                                                                                                           |
+
+## Visualizzazione immagine prodotto
+(L'URL di questa API non verrà utilizzata come ajax ma come `src` del tag \<img\> HTML)
+| Num | Client                                     | Direzione | Server                                                                           | Struttura dati |
+| --- | ------------------------------------------ | --------- | -------------------------------------------------------------------------------- | -------------- |
+| 1   |                                            | ->        | GET `/api/product/{id}/image`                                                    |                |
+| 2   |                                            | <-        | Legge da db il blob dell'immagine del prodotto e lo rimanda indietro come stream | (lo stream)    |
+| 3   | Visualizza l'immagine nel tag \<img\> HTML |           |                                                                                  |                |
 
 ## Visualizzazione elenco prodotti
-GET `/api/products`
-- Risposta: `products` (array di oggetti composti da: `id`, `idOwner`, `ownerName`, `ownerSurname`, `title`, `description`, `maxLoanDays`, `insertionDate`, `imageUrl`)
+| Num | Client                 | Direzione | Server                                                                                                            | Struttura dati                                                                                                                                               |
+| --- | ---------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | Chiede elenco prodotti | ->        | GET `/api/products`                                                                                               |                                                                                                                                                              |
+| 2   |                        | <-        | Legge i prodotti dal db (dove `availability = true` e la provincia è la stessa del client) e li rimanda al client | `products` (array di oggetti composti da: `id`, `idOwner`, `User` (oggetto con: `nome` e `surname`), `title`, `description`, `maxLoanDays`, `insertionDate`) |
 
 ## Prenotazione prodotto
-POST `/api/book`
-| Num | Client                     | Server                                                | Struttura dati          |
-| --- | -------------------------- | ----------------------------------------------------- | ----------------------- |
-| 1   | Invia i dati al server     |                                                       | `productId`, `lockerId` |
-| 2   |                            | Salva avvio prestito (200), notifica utente con email |                         |
-| 3   | Mostra conferma all'utente |                                                       |                         |
+| Num | Client                                  | Direzione | Server                                                                                                                                                                                                                  | Struttura dati          |
+| --- | --------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 1   | Invia i dati al server                  | ->        | POST `/api/book`                                                                                                                                                                                                        | `productId`, `lockerId` |
+| 2   |                                         | <-        | Chiama le API di Sintra per prenotare il primo slot libero del locker (se non trova locker disponibili, torna 409 (Conflict)). Salva avvio prestito nella tabella `userBorrowProducts` (200), notifica utenti con email |                         |
+| 3   | Mostra conferma o errore 409 all'utente |           |                                                                                                                                                                                                                         |                         |
 
 ## Conferma prodotto depositato (da propietario)
-GET `/api/start-loan`
+| Num | Client | Direzione | Server                                                                                                               | Struttura dati |
+| --- | ------ | --------- | -------------------------------------------------------------------------------------------------------------------- | -------------- |
+| 1   |        | ->        | GET `/api/start-loan`                                                                                                |                |
+| 2   |        | <-        | Aggiorna il campo `startLoanDate` della tabella `userBorrowProducts`, invia email di conferma agli utenti, torna 200 |                |
 
-## Elenco prestiti attivi (sia oggetti dati che ricevuti) e in attesa di conferma deposito
-GET `/api/loan`
+## Elenco prestiti attivi (sia prodotti dati che ricevuti) e in attesa di conferma deposito
+| Num | Client | Direzione | Server                                                                                                                                                                                                                                                       | Struttura dati                                                                                                                                      |
+| --- | ------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   |        | ->        | GET `/api/loan`                                                                                                                                                                                                                                              |                                                                                                                                                     |
+| 2   |        | <-        | Legge la tabella `userBorrowProducts` le righe dove l'utente è proprietario oppure richiedente di un prestito e `terminationDate` è null. Calcola in base alla data corrente e al campo `maxLoanDays` dell'oggetto i giorni rimanenti alla fine del prestito | `loans` (array di oggetti con dati del prestito, dati dell'oggetto, flag `myProduct` (`true` o `false`) e flag `alreadyStarted` (`true` o `false`)) | 
+
 
 ## Storico prestiti effettuati
 GET `/api/loan/ended`   **<--- DA CAMBIARE**
