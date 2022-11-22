@@ -8,9 +8,14 @@ class UserBorrowProduct extends Model {}
 UserBorrowProduct.init({
     //Structure of this model could be find in 'relational.pdf'
     //No need to define ID (assumed by default in Sequelize)
-    loanDate: {
+    requestDate: {
         type: DataTypes.DATEONLY,
         allowNull: false,
+        defaultValue: DataTypes.NOW,
+    },
+    loanStartDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: true,
     },
     lockerSlot: {
         type: DataTypes.INTEGER,
