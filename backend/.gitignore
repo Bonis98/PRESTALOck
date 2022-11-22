@@ -109,3 +109,6 @@ dist
 # Certificates for HTTPS
 certificates/server.cert
 certificates/server.key
+
+# DB file
+database/*.sqlite
