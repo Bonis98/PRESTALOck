@@ -1,2 +1,3 @@
+Inside the `database` folder:
 -Run 'npx sequelize-cli db:seed:all' to populate DB with demo data
 -Run 'npx sequelize-cli db:seed:undo:all' to remove demo data

@@ -24,6 +24,12 @@ const app = express();
 const port = 443;
 
 app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+  useDefaults: true,
+  directives: {
+    scriptSrc: ["'self'", "'unsafe-inline'"]
+  }
+}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
