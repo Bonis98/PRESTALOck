@@ -3,24 +3,34 @@
     <TopBar back-redirect="/" />
     <div class="max-w-screen-md m-auto p-4 pt-12">
       <!-- Title -->
-      <div class="text-center mb-3 text-2xl">{{ product.title }} </div>
+      <div class="text-center mb-3 text-2xl">
+        {{ product.title }}
+      </div>
       <!-- Image -->
       <div class="mb-3">
         <img class="max-w-full m-auto" :src="product.imageUrl">
       </div>
       <div class="text-left flex justify-between mb-3">
         <!-- Owner -->
-        <div class="truncate whitespace-nowrap w-2/4"> {{ product.owner }} </div>
+        <div class="truncate whitespace-nowrap w-2/4">
+          {{ product.owner }}
+        </div>
         <!-- Date -->
-        <div class="text-right truncate whitespace-nowrap w-2/4"> {{ product.insertionDate }} </div>
+        <div class="text-right truncate whitespace-nowrap w-2/4">
+          {{ product.insertionDate }}
+        </div>
       </div>
       <!-- Description -->
-      <div class="mb-12"> {{ product.description }} </div>
+      <div class="mb-12">
+        {{ product.description }}
+      </div>
       <div class="flex flex-wrap items-center justify-end gap-4 mb-3">
         <!-- Lockers list -->
         <div>
-          <select name="cars" id="cars" class="border-2 border-blue-400 border-solid rounded px-2 py-1">
-            <option v-for="locker in product.lockersList" :key="locker.id" :value="locker.id"> {{ locker.name }} ({{ locker.address }}) </option>
+          <select id="cars" name="cars" class="border-2 border-blue-400 border-solid rounded px-2 py-1">
+            <option v-for="locker in product.lockersList" :key="locker.id" :value="locker.id">
+              {{ locker.name }} ({{ locker.address }})
+            </option>
           </select>
         </div>
         <!-- Button -->
@@ -33,12 +43,15 @@
 </template>
 
 <script>
-
 export default {
   data () {
     return {
       product: {}
     }
+  },
+
+  mounted () {
+    this.getProduct()
   },
 
   methods: {
@@ -103,11 +116,7 @@ export default {
         this.loading = false
         return
       }
-    }*/
-  },
-
-  mounted () {
-    this.getProduct()
+    } */
   }
 }
 </script>

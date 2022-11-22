@@ -58,7 +58,7 @@
         />
       </div>
       <div class="mt-12">
-        <Button text="Registrati" />
+        <Button text="Registrati" @click="signup()" />
       </div>
       <div class="mt-12">
         <Button text="Torna al login" @click="login()" />
@@ -68,7 +68,6 @@
 </template>
 
 <script>
-
 export default {
   data () {
     return {
@@ -147,7 +146,7 @@ export default {
       }
     } */
 
-    async login () {
+    async signup () {
       if (this.password != this.confirmPassword) {
         alert('Le password devono coincidere')
         return
@@ -216,6 +215,10 @@ export default {
         alert(ex)
         this.loading = false
       }
+    },
+
+    login () {
+      this.$router.push({ path: '/login' })
     }
   }
 }

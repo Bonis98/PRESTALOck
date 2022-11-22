@@ -8,12 +8,15 @@
 </template>
 
 <script>
-
 export default {
   data () {
     return {
       products: []
     }
+  },
+
+  mounted () {
+    this.getAllProducts()
   },
 
   methods: {
@@ -24,6 +27,7 @@ export default {
       // })).json()
 
       // finta chiamata alle api
+
       this.products = [
         {
           id: 1,
@@ -31,7 +35,7 @@ export default {
           owner: 'Mario Rossi',
           description: 'descrizione oggetto di prova',
           maxLoanDays: 10,
-          imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/1200px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+          imageUrl: '/logo.png',
           insertionDate: '10/11/2022'
         },
         {
@@ -40,7 +44,7 @@ export default {
           owner: 'Mario Rossi',
           description: 'descrizione oggetto di prova',
           maxLoanDays: 10,
-          imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/1200px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+          imageUrl: '/logo.png',
           insertionDate: '10/11/2022'
         },
         {
@@ -49,7 +53,7 @@ export default {
           owner: 'Mario Rossi',
           description: 'descrizione oggetto di prova',
           maxLoanDays: 10,
-          imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/1200px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+          imageUrl: '/logo.png',
           insertionDate: '10/11/2022'
         },
         {
@@ -58,7 +62,7 @@ export default {
           owner: 'Mario Rossi',
           description: 'descrizione oggetto di prova',
           maxLoanDays: 10,
-          imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/1200px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+          imageUrl: '/logo.png',
           insertionDate: '10/11/2022'
         },
         {
@@ -67,7 +71,7 @@ export default {
           owner: 'Mario Rossi',
           description: 'descrizione oggetto di prova',
           maxLoanDays: 10,
-          imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/1200px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+          imageUrl: '/logo.png',
           insertionDate: '10/11/2022'
         },
         {
@@ -76,15 +80,11 @@ export default {
           owner: 'Mario Rossi',
           description: 'descrizione oggetto di prova',
           maxLoanDays: 10,
-          imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/1200px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
+          imageUrl: '/logo.png',
           insertionDate: '10/11/2022'
         }
       ]
     }
-  },
-
-  mounted () {
-    this.getAllProducts()
   }
 }
 </script>

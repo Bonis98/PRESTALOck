@@ -4,6 +4,8 @@
   ],
   "rules": {
     "eqeqeq": "off",
-    "no-throw-literal": "off"
+    "no-throw-literal": "off",
+    "vue/multi-word-component-names": "off",
+    "no-console": "off"
   }
 }

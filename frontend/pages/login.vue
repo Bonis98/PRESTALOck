@@ -3,7 +3,9 @@
     <Loader v-show="loading" />
     <TopBar />
     <div class="text-center w-11/12 m-auto mb-6 justify-around gap-24 pt-12">
-      <div class="text-center mb-3 text-2xl"> Login </div>
+      <div class="text-center mb-3 text-2xl">
+        Login
+      </div>
       <div class="text-center">
         <div class="mt-3">
           <div>Indirizzo email</div>
@@ -25,7 +27,6 @@
 </template>
 
 <script>
-
 export default {
   data () {
     return {
@@ -37,10 +38,15 @@ export default {
 
   watch: {
     loading (newValue) {
-      for (let element of document.querySelectorAll('Input, Button, Select')) {
+      for (const element of document.querySelectorAll('Input, Button, Select')) {
         element.disabled = newValue
       }
     }
+  },
+
+  created () {
+    localStorage.removeItem('token')
+    localStorage.removeItem('name')
   },
 
   methods: {
@@ -82,18 +88,12 @@ export default {
         console.error(ex)
         alert(ex)
         this.loading = false
-        return
       }
     },
 
     signup () {
       this.$router.push({ path: '/signup' })
     }
-  },
-
-  created () {
-    localStorage.removeItem('token')
-    localStorage.removeItem('name')
   }
 }
 </script>
