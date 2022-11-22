@@ -19,6 +19,15 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
       idOwner: 2,
+    }, {
+      title: "Product 3",
+      description: "Good conditions!",
+      maxLoanDays: 2,
+      availability: false,
+      insertionDate: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      idOwner: 2,
     }
     ])
   },
