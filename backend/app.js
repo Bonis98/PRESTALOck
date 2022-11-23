@@ -8,7 +8,8 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-const middleware = require('./middleware/auth')
+const middleware = require('./middleware/auth');
+const provinces = require('./routes/provinces');
 const signup = require('./routes/signup');
 const signin = require('./routes/signin');
 const signinGoogle = require('./routes/signinGoogle');
@@ -54,6 +55,7 @@ UserBorrowProduct.sync().then(() => {
 //routes
 //Authentication middleware
 app.use(middleware.auth);
+app.use('/api/provinces', provinces);
 app.use('/api/signup', signup);
 app.use('/api/signin', signin);
 app.use('/api/signinGoogle', signinGoogle);
