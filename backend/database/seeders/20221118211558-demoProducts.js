@@ -5,6 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     var nowDate = new Date();
     return queryInterface.bulkInsert('Products', [{
+      id: 1,
       title: "Product 1",
       description: "Very good conditions!",
       maxLoanDays: 2,
@@ -14,6 +15,7 @@ module.exports = {
       updatedAt: new Date(),
       idOwner: 1,
     }, {
+      id: 2,
       title: "Product 2",
       description: "Acceptable conditions!",
       maxLoanDays: 2,
@@ -23,6 +25,7 @@ module.exports = {
       updatedAt: new Date(),
       idOwner: 2,
     }, {
+      id: 3,
       title: "Product 3",
       description: "Good conditions!",
       maxLoanDays: 2,
@@ -32,6 +35,7 @@ module.exports = {
       updatedAt: new Date(),
       idOwner: 2,
     }, {
+      id: 4,
       title: "Product 4",
       description: "Meh conditions!",
       maxLoanDays: 2,
