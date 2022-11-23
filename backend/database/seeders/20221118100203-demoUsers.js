@@ -27,6 +27,18 @@ module.exports = {
       lockerList: "6;22;",
       createdAt: new Date(),
       updatedAt: new Date()
+    }, {
+      email: "example3@example.com",
+      password: "$2b$10$81hUnKXLJx1uHRCn3.UP5.npCz7QLV8Oab1wwjCFj3zyDXD5wxQba", //"sicura"
+      name: "Elizabeth",
+      surname: "Brown",
+      dateOfBirth: "2001-12-21",
+      province: "Torino",
+      gender: "F",
+      token: "ceb8437df3dca4686ecdece11673e695eaf24f54",
+      lockerList: "2;4;",
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
     ])
   },

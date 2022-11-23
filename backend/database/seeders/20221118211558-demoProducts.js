@@ -31,6 +31,15 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
       idOwner: 2,
+    }, {
+      title: "Product 4",
+      description: "Meh conditions!",
+      maxLoanDays: 2,
+      availability: true,
+      insertionDate: nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      idOwner: 3,
     }
     ])
   },
