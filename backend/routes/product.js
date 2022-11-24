@@ -2,7 +2,9 @@ const express = require('express');
 const {User} = require("../database/models/user");
 const {Product} = require("../database/models/product");
 const fetch = require("node-fetch");
-const fs = require('fs');
+const multer  = require('multer')
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage, fileFilter: fileFilter});
 const router = express.Router();
 
 router.post('/', async function (req, res) {
@@ -30,10 +32,35 @@ router.post('/', async function (req, res) {
     }
 });
 
-router.put('/:id', function (req, res, next){
-    if (!checkParams(req)){
+router.post('/:id/updateImage', upload.single('picture'), async function (req, res) {
+    try {
+        //If user doesn't own the product return unauthorized
+        if (!(await checkOwner(req.get('token'), req.params.id))) {
+            res.sendStatus(401)
+            return;
+        }
+        //Insert image in DB
+        await Product.update({picture: req.file.buffer}, {
+            where: {
+                id: req.params.id,
+            }
+        })
+        res.sendStatus(200)
+    } catch (error) {
+        console.error(error)
+        res.sendStatus(500)
+    }
+})
+
+router.put('/:id', async function (req, res) {
+    if (!checkParams(req)) {
         res.sendStatus(400);
         return
+    }
+    //If user doesn't own the product return unauthorized
+    if (!(await checkOwner(req.get('token'), req.params.id))) {
+        res.sendStatus(401)
+        return;
     }
     Product.update({
         title: req.body.title,
@@ -50,7 +77,7 @@ router.put('/:id', function (req, res, next){
     })
 });
 
-router.get('/:id', async function (req, res, next) {
+router.get('/:id', async function (req, res) {
     try {
         const product = await Product.findOne({
             where: {
@@ -65,8 +92,7 @@ router.get('/:id', async function (req, res, next) {
                 exclude: ['createdAt', 'updatedAt', 'picture'],
             }
         });
-        const lockerList = await getLockerList(product.user.lockerList);
-        product.dataValues['lockerList'] = lockerList;
+        product.dataValues['lockerList'] = await getLockerList(product.user.lockerList);
         delete product.user.dataValues.lockerList;
         res.json(product);
     } catch (error) {
@@ -118,6 +144,44 @@ function checkParams(req){
     if (body.maxLoanDays <= 0)
         return false
     return true
+}
+
+async function checkOwner(token, idProduct) {
+    try {
+        //Find all id of products of user
+        let products = await User.findOne({
+            where: {
+                token: token,
+            },
+            include: [{
+                model: Product,
+                required: true,
+                attributes: ['id']
+            }],
+        });
+        //Check that user is updating a product that she owns
+        let exists = 0
+        for (let i = 0; i < products.Products.length; i++) {
+            if (products.Products[i].id == idProduct) {
+                exists = !exists
+                break
+            }
+        }
+        return exists
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+//Limit file types to jpeg and png in multer
+function fileFilter(req, file, callback){
+    if (file.mimetype != 'image/jpeg' && file.mimetype != 'image/png') {
+        //res.status(400).json({errorText: "Formato di file non supportato"})
+        callback('Gli unici formati accettati sono jpeg e png', false)
+    }
+    else{
+        callback(null, true)
+    }
 }
 
 module.exports = router; //eof
