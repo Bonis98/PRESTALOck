@@ -35,18 +35,21 @@ router.post('/', function (req, res, next){
                 token: crypto.randomBytes(20).toString('hex'),
             };
             //Calculate hash of the password
-            bcrypt.hash(req.body.password, bcrypt.genSaltSync(10)).then((hash) => {
-                userData.password = hash
-                User.create(userData).then(() => {
-                    res.status(200).json({token: userData.token});
-                },(error) => {
-                    console.error(error)
-                    res.sendStatus(500);
-                });
-            }, (error) => {
-                console.error(error);
+            try {
+                if (req.body.password){
+                    let hash = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
+                    userData.password = hash
+                }
+            } catch (error) {
+                console.error(error)
                 res.sendStatus(500);
-            })
+            }
+            User.create(userData).then(() => {
+                res.status(200).json({token: userData.token});
+            },(error) => {
+                console.error(error)
+                res.sendStatus(500);
+            });
         }
     });
 });

@@ -1,6 +1,7 @@
 const express = require('express');
 const {User} = require("../database/models/user");
 const bcrypt = require("bcrypt");
+const {Op} = require("sequelize");
 const router = express.Router();
 
 
@@ -11,6 +12,10 @@ router.post('/', async function (req, res) {
             const user = await User.findOne({
                 where: {
                     email: email,
+                    //If password is null, user registered with Oauth2
+                    password: {
+                        [Op.ne]: null
+                    },
                 }
             });
             if (user) {

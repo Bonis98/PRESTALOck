@@ -12,7 +12,7 @@ const oauth2Client = new google.auth.OAuth2(
     'https://localhost/api/signinGoogle/callback'
 );
 
-router.get('/', function (req, res, next){
+router.get('/', function (req, res){
     const scopes = [
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile',
@@ -25,7 +25,7 @@ router.get('/', function (req, res, next){
     res.redirect(url)
 })
 
-router.get('/callback', async function (req, res, next) {
+router.get('/callback', async function (req, res) {
     let userInfo = {}
     //Get a token from authcode
     try {
@@ -60,7 +60,7 @@ router.get('/callback', async function (req, res, next) {
         })
         if (user){
             console.log('user already exists');
-            var base64Data = Buffer.from(JSON.stringify({token: user.token})).toString("base64")
+            let base64Data = Buffer.from(JSON.stringify({token: user.token})).toString("base64")
             res.redirect('/aftergooglelogin?data=' + base64Data)
             return;
         }
@@ -112,17 +112,15 @@ router.get('/callback', async function (req, res, next) {
         return
     }
     try {
-        userInfo['token'] = crypto.randomBytes(20).toString('hex')
+        //userInfo['token'] = crypto.randomBytes(20).toString('hex')
         //await User.create(userInfo)
         userInfo.dateOfBirth = moment(userInfo.dateOfBirth, 'YYYY-MM-DD').format('DD-MM-YYYY')
-        var base64Data = Buffer.from(JSON.stringify(userInfo)).toString("base64")
+        let base64Data = Buffer.from(JSON.stringify(userInfo)).toString("base64")
         res.redirect('/aftergooglelogin?data=' + base64Data)
-        return
     }
     catch (error) {
         console.error(error)
         res.sendStatus(500)
-        return
     }
 })
 
