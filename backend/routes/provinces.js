@@ -7,7 +7,6 @@ router.get('/', function (req, res) {
     try {
         const data = fs.readFileSync('./provinces.txt', 'binary');
         provinceList = data.split(/\r?\n/);
-        provinceList.pop();
         res.json(provinceList);
     } catch (err) {
         console.error(err);
