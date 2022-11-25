@@ -52,6 +52,22 @@ router.post('/:id/updateImage', upload.single('picture'), async function (req, r
     }
 })
 
+router.get('/:id/image', async function (req, res) {
+    try {
+        const image = await Product.findOne({
+            where: {
+                id: req.params.id
+            },
+            attributes: ['picture']
+        });
+        res.write(image.picture)
+        res.end()
+    } catch (error) {
+        console.error(error)
+        res.sendStatus(500)
+    }
+})
+
 router.put('/:id', async function (req, res) {
     if (!checkParams(req)) {
         res.sendStatus(400);
