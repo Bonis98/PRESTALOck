@@ -24,12 +24,6 @@
       <div>
         <Input v-model="maxLoanDays" type="number" min="1" />
       </div>
-      <div class="mt-3">
-        Seleziona immagine
-      </div>
-      <div>
-        <Input v-model="image" type="file" />
-      </div>
       <div class="mt-12">
         <Button text="Crea" @click="create()" />
       </div>

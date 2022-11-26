@@ -81,10 +81,10 @@
     - Registrazione con OAuth
     - ~~Elenco tutti prodotti~~
     - ~~Vista dettagli prodotto con tasto per richiesta prestito in locker specificato~~
-    - Creazione prodotto
-    - Modifica prodotto (con flag `available`)
-    - Upload foto di prodotto
-    - Pagina di conferma prestito per confermare prodotto depositato nel locker
+    - ~~Creazione prodotto~~
+    - ~~Modifica prodotto (con flag `available`)~~
+    - ~~Upload foto di prodotto~~
+    - ~~Pagina di conferma prestito per confermare prodotto depositato nel locker~~
 - **Priorità 2**:
     - Elenco di prestiti attivi (sia prodotti dati che ricevuti)
     - Vista di storico prodotti inseriti

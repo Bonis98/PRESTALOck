@@ -5,7 +5,7 @@
     <div class="max-w-screen-md m-auto p-4 pt-12">
       <!-- Title -->
       <div class="text-center mb-3 text-2xl">
-        Conferma il prestito di: {{ product.title }}
+        Conferma il deposito nel locker di: <div>{{ product.title }}</div>
       </div>
       <!-- Image -->
       <div class="mb-3">
@@ -42,7 +42,7 @@
         </div>
         <!-- Button -->
         <div>
-          <Button text="Accetta" />
+          <Button text="Conferma" @click="confirm()" />
         </div>
       </div>
     </div>
@@ -80,6 +80,9 @@ export default {
           address: 'Piazza Duomo, Milano'
         }
       }
+    },
+    confirm () {
+      alert('Prodotto confermato')
     }
   }
 }
