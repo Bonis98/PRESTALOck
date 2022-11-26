@@ -1,8 +1,10 @@
 const express = require('express');
 const {User} = require("../database/models/user");
 const {Product} = require("../database/models/product");
-const fetch = require("node-fetch");
 const multer  = require('multer')
+const {getLockerList} = require("../SintraApiUtils");
+const {UserBorrowProduct} = require("../database/models/userBorrowProduct");
+const {Op} = require("sequelize");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, fileFilter: fileFilter});
 const router = express.Router();
@@ -32,7 +34,7 @@ router.post('/', async function (req, res) {
     }
 });
 
-router.post('/:id/updateImage', upload.single('picture'), async function (req, res) {
+router.post('/:id/updateImage', upload.single('image'), async function (req, res) {
     try {
         //If user doesn't own the product return unauthorized
         if (!(await checkOwner(req.get('token'), req.params.id))) {
@@ -69,14 +71,28 @@ router.get('/:id/image', async function (req, res) {
 })
 
 router.put('/:id', async function (req, res) {
-    if (!checkParams(req)) {
+    if (!(checkParams(req) && req.body.hasOwnProperty('availability'))) {
         res.sendStatus(400);
         return
     }
     //If user doesn't own the product return unauthorized
     if (!(await checkOwner(req.get('token'), req.params.id))) {
-        res.sendStatus(401)
+        res.sendStatus(403)
         return;
+    }
+    //Check that product is not lent (terminationDate date is null)
+    const loan = await UserBorrowProduct.findOne({
+        where: {
+            idProduct: req.params.id,
+            terminationDate: {
+                [Op.is]: null,
+            }
+        }
+    })
+    //If exists a loan with terminationDate null, return forbidden
+    if (loan){
+        res.sendStatus(403)
+        return
     }
     Product.update({
         title: req.body.title,
@@ -117,41 +133,11 @@ router.get('/:id', async function (req, res) {
     }
 });
 
-//Filter out lockers list by user's lockers
-function getLockerList(list){
-    //Convert string of ids (1;2;) to int array
-    const lockerList = String(list).substring(0,list.length-1).split(';').map(Number);
-    let UserLockersList = {}
-    return new Promise((resolve, reject) => {
-        //retrieving complete lockers list, parsing it and sending it for filtering
-        fetch('http://hack-smartlocker.sintrasviluppo.it/api/lockers', {
-            method: 'get',
-            headers: {
-                "x-apikey": process.env.API_KEY_LOCKERS,
-                "x-tenant": process.env.TENANT
-            }
-        }).then((resp) => {
-            resp.json().then((jsonData) => {
-                for (let key in jsonData) {
-                    //Copy only user's lockers
-                    if (lockerList.includes(jsonData[key].id)) {
-                        UserLockersList[key] = jsonData[key]
-                    }
-                }
-                resolve(UserLockersList);
-            }, (error) => {
-                reject(error);
-            })
-        }, (error) => {
-            reject(error);
-        });
-    });
-}
-
 //Check request params
 function checkParams(req){
     const body = req.body;
-    if (!(body.hasOwnProperty('title') && body.hasOwnProperty('description') && body.hasOwnProperty('maxLoanDays')))
+    if (!(body.hasOwnProperty('title') && body.hasOwnProperty('description')
+        && body.hasOwnProperty('maxLoanDays')))
         return false
     if (body.title.length == 0)
         return false
@@ -177,8 +163,8 @@ async function checkOwner(token, idProduct) {
         });
         //Check that user is updating a product that she owns
         let exists = 0
-        for (let i = 0; i < products.Products.length; i++) {
-            if (products.Products[i].id == idProduct) {
+        for (let i = 0; i < products.products.length; i++) {
+            if (products.products[i].id == idProduct) {
                 exists = !exists
                 break
             }

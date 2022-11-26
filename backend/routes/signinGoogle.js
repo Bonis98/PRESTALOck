@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {google} = require('googleapis');
-const signupUtils = require("../signupUtils");
 const {User} = require("../database/models/user");
-const crypto = require("crypto");
 const moment = require("moment");
 
 const oauth2Client = new google.auth.OAuth2(
@@ -101,19 +99,7 @@ router.get('/callback', async function (req, res) {
         res.sendStatus(500)
         return
     }
-    if (signupUtils.ageCalculation(userInfo.dateOfBirth, "YYYY-MM-DD")<18){
-        console.log('user is a baby');
-        res.status(400).json({errortext: "L'utente è minorenne"});
-        return
-    }
-    if (!signupUtils.genderControl(userInfo.gender)){
-        console.log('gender not valid');
-        res.status(400).json({errortext: "Il gender non è valido"})
-        return
-    }
     try {
-        //userInfo['token'] = crypto.randomBytes(20).toString('hex')
-        //await User.create(userInfo)
         userInfo.dateOfBirth = moment(userInfo.dateOfBirth, 'YYYY-MM-DD').format('DD-MM-YYYY')
         let base64Data = Buffer.from(JSON.stringify(userInfo)).toString("base64")
         res.redirect('/aftergooglelogin?data=' + base64Data)

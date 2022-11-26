@@ -30,7 +30,7 @@ UserBorrowProduct.init({
     }
 }, {
     sequelize,
-    modelName: 'UserBorrowProduct',
+    modelName: 'userBorrowProduct',
 })
 
 //Associations

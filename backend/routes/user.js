@@ -1,5 +1,6 @@
 const express = require('express');
 const {User} = require("../database/models/user");
+const {getLockerList} = require("../SintraApiUtils");
 const router = express.Router();
 
 router.get('/:id', function (req, res){
@@ -7,8 +8,11 @@ router.get('/:id', function (req, res){
         where: {
             id: req.params.id,
         },
-        attributes: ['id', 'name', 'surname', 'province',]
-    }).then(user => res.json(user), (error) => {
+        attributes: ['id', 'name', 'surname', 'province', 'lockerList']
+    }).then(async (user) => {
+        user.dataValues['lockerList'] = await getLockerList(user.lockerList);
+        res.json(user)
+    }, (error) => {
         console.error(error);
         res.sendStatus(500);
     })

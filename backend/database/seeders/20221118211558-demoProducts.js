@@ -4,7 +4,7 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     var nowDate = new Date();
-    return queryInterface.bulkInsert('Products', [{
+    return queryInterface.bulkInsert('products', [{
       id: 1,
       title: "Product 1",
       description: "Very good conditions!",
@@ -49,6 +49,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('Products', null, {});
+    return queryInterface.bulkDelete('products', null, {});
   }
 };

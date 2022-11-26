@@ -39,7 +39,7 @@ Product.init({
     },
 }, {
     sequelize,
-    modelName: 'Product',
+    modelName: 'product',
 })
 
 //Associatons
