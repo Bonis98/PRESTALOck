@@ -31,24 +31,28 @@
     - Pagina con lista di prodotti in prestito
     - Richiesta di prestito
     - Conferma di accettazione prestito
+
 - **Priorità 2**:
-    - Apertura del locker per deposito prodotto (c'è api per aprirli??)
-    - Apertura del locker per ritiro prodotto (c'è api per aprirli??)
+    - Elenco di prestiti attivi (sia prodotti dati che ricevuti)
+    - Vista di storico prodotti inseriti
+    - Vista di storico prestiti richiesti
+
 - **Priorità 3**:
     - Restituzione di prodotto prestato:
         - Apertura del locker per deposito prodotto a fine prestito
         - Apertura del locker per ritiro dell'prodotto a fine prestito
     - Modifica prodotto
+
 - **Priorità 4**:
-    - Pre-hash lato frontend delle password
-    - Noleggio a pagamento
-    - Passaggio a SQL più serio (tipo MySQL/MariaDB)
-    - Notifiche push
     - Cambio password/password dimenticata
 
 - **Sviluppi futuri**:
     - Clustering di utenti (tramite IA)
     - Sistema di feedback degli utenti e prestiti
+    - Pre-hash lato frontend delle password
+    - Noleggio a pagamento
+    - Passaggio a SQL più serio (tipo MySQL/MariaDB)
+    - Notifiche push
 
 ---
 # Parti principali del progetto
@@ -72,9 +76,10 @@
 - **Priorità 1**:
     - ~~Login~~
     - ~~Registrazione~~
+    - Modifica di locker
     - Login con OAuth
     - Registrazione con OAuth
-    - ~~Elenco tutte prodotti~~
+    - ~~Elenco tutti prodotti~~
     - ~~Vista dettagli prodotto con tasto per richiesta prestito in locker specificato~~
     - Creazione prodotto
     - Modifica prodotto (con flag `available`)
@@ -116,7 +121,7 @@
 ## Login con OAuth
 GET `/api/signinGoogle`
 GET `/api/signinGoogle/callback`
-/aftergooglelogin?data={base64 del json}
+`/aftergooglelogin?data={base64 del json}`
 oppure
 GET `/api/signinFacebook`
 GET `/api/signinFacebook/callback`
@@ -133,10 +138,10 @@ GET `/api/signinFacebook/callback`
 | 2   |        | <-        | Legge le province dal file apposito e le rimanda all'utente | `provinces` (array di stringhe) |
 
 ## Visualizza info utente
-| Num | Client | Direzione | Server                                       | Struttura dati                                           |
-| --- | ------ | --------- | -------------------------------------------- | -------------------------------------------------------- |
-| 1   |        | ->        | GET `/api/user/{id}`                         |                                                          |
-| 2   |        | <-        | Legge l'utente dal db e lo rimanda al client | `user` (oggetto con `id`, `name`, `surname`, `province`) |
+| Num | Client | Direzione | Server                                       | Struttura dati                                                                                                                                               |
+| --- | ------ | --------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   |        | ->        | GET `/api/user/{id}`                         |                                                                                                                                                              | 
+| 2   |        | <-        | Legge l'utente dal db e lo rimanda al client | `user` (oggetto con `id`, `name`, `surname`, `province`, `lockersList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`)) |
 
 ## Creazione nuovo prodotto
 | Num | Client                                                                                                           | Direzione | Server                                                                        | Struttura dati                                                  |
@@ -152,19 +157,18 @@ GET `/api/signinFacebook/callback`
 | 2   |        | <-        | Se è attivo un prestito con questo prodotto, torna 400. Altrimenti (comprime?) e salva foto come blob binario in db. Ritorna 200 oppure 500 se da errore |                                                                                                                             |
 
 ## Modifica prodotto
-| Num | Client                        | Direzione | Server                                                                                                                                           | Struttura dati                                                                  |
-| --- | ----------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
-| 1   | Invia i dati al server        | ->        | PUT `/api/product/{id}`                                                                                                                          | `title`, `description`, `maxLoanDays` (num, rappresenta giorni), `availability` |
-| 2   |                               | <-        | Se è attivo un prestito con questo prodotto, torna 400. Altrimenti salva i dati in db, comunica al client esito (200 se ok, 400 se mancano dati) |                                                                                 |
-| 3   | Mostra il prodotto modificato |           |                                                                                                                                                  |                                                                                 |
-
+| Num | Client                        | Direzione | Server                                                                                                                                                                                                                                                                                          | Struttura dati                                                                  |
+| --- | ----------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| 1   | Invia i dati al server        | ->        | PUT `/api/product/{id}`                                                                                                                                                                                                                                                                         | `title`, `description`, `maxLoanDays` (num, rappresenta giorni), `availability` |
+| 2   |                               | <-        | Se l'utente non è il proprietario, torna 403 (Forbidden). Se è attivo un prestito con questo prodotto (`userBorrowProducts`, di quel prodotto, con `terminationDate` = `null`), torna 403 (Forbidden). Altrimenti salva i dati in db, comunica al client esito (200 se ok, 400 se mancano dati) |                                                                                 |
+| 3   | Mostra il prodotto modificato |           |                                                                                                                                                                                                                                                                                                 |                                                                                 |
 
 ## Visualizzazione singolo prodotto
-| Num | Client                   | Direzione | Server                  | Struttura dati                                                                                                                                                                                                                                                            |
-| --- | ------------------------ | --------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Chiede info              | ->        | GET `/api/product/{id}` |                                                                                                                                                                                                                                                                           |
-| 2   |                          | <-        |                         | `product` (oggetto con `id`, `idOwner`, `user` (oggetto con `name`, `surname` e `province`), `title`, `description`, `maxLoanDays`, `insertionDate`, `lockersList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`) |
-| 3   | Mostra i dati all'utente |           |                         |                                                                                                                                                                                                                                                                           |
+| Num | Client                   | Direzione | Server                  | Struttura dati                                                                                                                                                                                                                                           |
+| --- | ------------------------ | --------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Chiede info              | ->        | GET `/api/product/{id}` |                                                                                                                                                                                                                                                          |
+| 2   |                          | <-        |                         | `product` (oggetto con `id`, `idOwner`, `user` (oggetto con `name`, `surname` e `province`), `title`, `description`, `maxLoanDays`, `insertionDate`, `lockersList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`)) | 
+| 3   | Mostra i dati all'utente |           |                         |                                                                                                                                                                                                                                                          |
 
 ## Visualizzazione immagine prodotto
 (L'URL di questa API non verrà utilizzata come ajax ma come `src` del tag \<img\> HTML)
@@ -181,37 +185,37 @@ GET `/api/signinFacebook/callback`
 | 2   |                        | <-        | Legge i prodotti dal db (dove `availability = true` e la provincia è la stessa del client) e li rimanda al client | `products` (array di oggetti composti da: `id`, `idOwner`, `user` (oggetto con: `nome` e `surname`), `title`, `description`, `maxLoanDays`, `insertionDate`) |
 
 ## Prenotazione prodotto
-| Num | Client                                  | Direzione | Server                                                                                                                                                                                                                  | Struttura dati          |
-| --- | --------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 1   | Invia i dati al server                  | ->        | POST `/api/book`                                                                                                                                                                                                        | `productId`, `lockerId` |
-| 2   |                                         | <-        | Chiama le API di Sintra per prenotare il primo slot libero del locker (se non trova locker disponibili, torna 409 (Conflict)). Salva avvio prestito nella tabella `userBorrowProducts` (200), notifica utenti con email |                         |
-| 3   | Mostra conferma o errore 409 all'utente |           |                                                                                                                                                                                                                         |                         |
+| Num | Client                                  | Direzione | Server                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Struttura dati          |
+| --- | --------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 1   | Invia i dati al server                  | ->        | POST `/api/book`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `productId`, `lockerId` |
+| 2   |                                         | <-        | Controlla che il prodotto abbia `availability` a `true`. Inoltre controlla che nella tabella `userBorrowProducts` controlla che non ci sia già un record di quel prodotto con `terminationDate` = `null`. Chiama le API di Sintra per prenotare il primo slot libero del locker (se non trova locker disponibili, torna 409 (Conflict)). Imposta `availability` a `false` e salva avvio prestito nella tabella `userBorrowProducts` (impostando `requestDate` a oggi e `lockerSlot` con l'id dello slot del Locker) (200), notifica utenti con email (a proprietario da anche codice per aprire locker) |                         |
+| 3   | Mostra conferma o errore 409 all'utente |           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |                         |
 
-## Conferma prodotto depositato (da propietario)
-| Num | Client | Direzione | Server                                                                                                               | Struttura dati |
-| --- | ------ | --------- | -------------------------------------------------------------------------------------------------------------------- | -------------- |
-| 1   |        | ->        | GET `/api/start-loan`                                                                                                |                |
-| 2   |        | <-        | Aggiorna il campo `startLoanDate` della tabella `userBorrowProducts`, invia email di conferma agli utenti, torna 200 |                |
+## Conferma prodotto depositato (da proprietario)
+| Num | Client | Direzione | Server                                                                                                                                                                             | Struttura dati |
+| --- | ------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| 1   |        | ->        | GET `/api/start-loan/{idProduct}`                                                                                                                                                  |                |
+| 2   |        | <-        | Aggiorna il campo `startLoanDate` della tabella `userBorrowProducts`, invia email di conferma agli utenti (al richiedente manda il secondo codice per aprire il locker), torna 200 |                |
 
 ## Elenco prestiti attivi (sia prodotti dati che ricevuti) e in attesa di conferma deposito
-| Num | Client | Direzione | Server                                                                                                                                                                                                                                                       | Struttura dati                                                                                                                                      |
-| --- | ------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   |        | ->        | GET `/api/loan`                                                                                                                                                                                                                                              |                                                                                                                                                     |
-| 2   |        | <-        | Legge la tabella `userBorrowProducts` le righe dove l'utente è proprietario oppure richiedente di un prestito e `terminationDate` è null. Calcola in base alla data corrente e al campo `maxLoanDays` dell'oggetto i giorni rimanenti alla fine del prestito | `loans` (array di oggetti con dati del prestito, dati dell'oggetto, flag `myProduct` (`true` o `false`) e flag `alreadyStarted` (`true` o `false`)) | 
+| Num | Client | Direzione | Server                                                                                                                                                                                                                                                                                                            | Struttura dati                                                                                                                                      |
+| --- | ------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   |        | ->        | GET `/api/loans`                                                                                                                                                                                                                                                                                                  |                                                                                                                                                     |
+| 2   |        | <-        | Legge la tabella `userBorrowProducts` le righe dove l'utente è proprietario oppure è il richiedente di un prestito e `terminationDate` è null. Calcola in base alla data corrente e al campo `maxLoanDays` dell'oggetto i giorni rimanenti alla fine del prestito. Calcola il flag `myProduct` e `alreadyStarted` | `loans` (array di oggetti con dati del prestito, dati dell'oggetto, flag `myProduct` (`true` o `false`) e flag `alreadyStarted` (`true` o `false`)) |
 
 ![[design files/Drawing 2022-11-22 18.55.58.excalidraw.png]]
 
 ## Storico prestiti effettuati
-GET `/api/loan/ended`   **<--- DA CAMBIARE**
+GET `/api/loans/ended`   **<--- DA CAMBIARE**
 
 ## Storico prestiti richiesti
-GET `/api/loan/requested`
+GET `/api/loans/requested`
 
 ## Termine prestito con conferma prodotto depositato
 GET `/api/loan/close`
 
 ## Lista prodotti per propietario
-GET `/api/product/by-owner/{id}`   **<--- DA CONTROLLARE NOME**
+GET `/api/user/{id}/products
 
 ## Modifica/recupero password
 
