@@ -3,6 +3,8 @@ const router = express.Router();
 const {google} = require('googleapis');
 const {User} = require("../database/models/user");
 const moment = require("moment");
+const crypto = require('crypto');
+const {signedCookie} = require("cookie-parser");
 
 const oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
@@ -17,13 +19,22 @@ router.get('/', function (req, res){
         'https://www.googleapis.com/auth/user.birthday.read',
         'https://www.googleapis.com/auth/user.gender.read',
     ];
+    const state = crypto.randomBytes(30).toString('hex')
     const url = oauth2Client.generateAuthUrl({
-        scope: scopes
+        scope: scopes,
+        state: state
     });
+    res.cookie('state', state, {signed: true})
     res.redirect(url)
 })
 
 router.get('/callback', async function (req, res) {
+    res.clearCookie('state')
+    //Check state parameter
+    if (req.signedCookies.state != req.query.state){
+        res.sendStatus(401)
+        return
+    }
     let userInfo = {}
     //Get a token from authcode
     try {

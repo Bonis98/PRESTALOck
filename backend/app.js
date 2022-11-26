@@ -13,6 +13,7 @@ const provinces = require('./routes/provinces');
 const signup = require('./routes/signup');
 const signin = require('./routes/signin');
 const signinGoogle = require('./routes/signinGoogle');
+const signinFacebook = require('./routes/signinFacebook');
 const lockersList = require('./routes/lockersList');
 const saveUserLockers = require("./routes/saveUserLockers");
 const user = require('./routes/user');
@@ -21,6 +22,7 @@ const products = require ('./routes/products');
 const {User} = require("./database/models/user");
 const {Product} = require("./database/models/product");
 const {UserBorrowProduct} = require("./database/models/userBorrowProduct");
+const Process = require("process");
 
 const app = express();
 const port = 443;
@@ -33,7 +35,8 @@ app.use(helmet.contentSecurityPolicy({
   }
 }));
 app.use(bodyParser.json());
-app.use(cookieParser());
+//Cookie_sign should be a strong crypto random generated string
+app.use(cookieParser(Process.env.COOKIE_SIGN));
 
 //Create tables if not exists
 User.sync().then(() => {
@@ -59,6 +62,7 @@ app.use('/api/provinces', provinces);
 app.use('/api/signup', signup);
 app.use('/api/signin', signin);
 app.use('/api/signinGoogle', signinGoogle);
+app.use('/api/signinFacebook', signinFacebook);
 app.use('/api/lockersList', lockersList);
 app.use('/api/saveUserLockers', saveUserLockers);
 app.use('/api/user', user);
