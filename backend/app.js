@@ -14,7 +14,7 @@ const signup = require('./routes/signup');
 const signin = require('./routes/signin');
 const signinGoogle = require('./routes/signinGoogle');
 const signinFacebook = require('./routes/signinFacebook');
-const lockersList = require('./routes/lockersList');
+const lockerList = require('./routes/lockerList');
 const saveUserLockers = require("./routes/saveUserLockers");
 const user = require('./routes/user');
 const product = require('./routes/product');
@@ -65,7 +65,7 @@ app.use('/api/signup', signup);
 app.use('/api/signin', signin);
 app.use('/api/signinGoogle', signinGoogle);
 app.use('/api/signinFacebook', signinFacebook);
-app.use('/api/lockersList', lockersList);
+app.use('/api/lockerList', lockerList);
 app.use('/api/saveUserLockers', saveUserLockers);
 app.use('/api/user', user);
 app.use('/api/product', product)
