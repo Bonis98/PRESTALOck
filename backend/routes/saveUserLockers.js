@@ -12,7 +12,7 @@ router.post('/', function (req, res, next){
     lockerList += ';';
     User.update({lockerList: lockerList}, {
         where: {
-            token: req.get('token')
+            token: req.get('Auth-Token')
         }
     }).then(() => res.sendStatus(200), (error) => {
         console.error(error);

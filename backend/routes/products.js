@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/', function (req, res) {
     User.findOne({
         where: {
-            token: req.get('token')
+            token: req.get('Auth-Token')
         }
     }).then(function (currentUser){
         Product.findAll({

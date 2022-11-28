@@ -10,7 +10,7 @@ router.get('/', async function (req, res) {
         //Extract user id
         const user = await  User.findOne({
             where: {
-                token: req.get('token')
+                token: req.get('Auth-Token')
             }
         })
         const idUser = user.id

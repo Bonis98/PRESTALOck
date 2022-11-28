@@ -12,7 +12,7 @@ router.get('/', function (req, res){
     async function findInDb(){
         await User.findOne({
             where: {
-                token: req.get('token')
+                token: req.get('Auth-Token')
             }
         }).then(function (user){
             currentUserProvince = user.province

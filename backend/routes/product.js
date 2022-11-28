@@ -17,7 +17,7 @@ router.post('/', async function (req, res) {
     try {
         const user = await User.findOne({
             where: {
-                token: req.get('token'),
+                token: req.get('Auth-Token'),
             }
         });
         const productInfo = {
@@ -37,7 +37,7 @@ router.post('/', async function (req, res) {
 router.post('/:id/updateImage', upload.single('image'), async function (req, res) {
     try {
         //If user doesn't own the product return unauthorized
-        if (!(await checkOwner(req.get('token'), req.params.id))) {
+        if (!(await checkOwner(req.get('Auth-Token'), req.params.id))) {
             res.sendStatus(401)
             return;
         }
@@ -76,7 +76,7 @@ router.put('/:id', async function (req, res) {
         return
     }
     //If user doesn't own the product return unauthorized
-    if (!(await checkOwner(req.get('token'), req.params.id))) {
+    if (!(await checkOwner(req.get('Auth-Token'), req.params.id))) {
         res.sendStatus(403)
         return;
     }

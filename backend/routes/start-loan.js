@@ -24,7 +24,7 @@ router.get('/:idProduct', function(req, res){
     let receiverUnlockCode;
     User.findOne({
         where: {
-            token: req.get('token')}
+            token: req.get('Auth-Token')}
     }).then(
         function (currentUser){
             Product.findOne({

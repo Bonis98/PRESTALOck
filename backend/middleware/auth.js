@@ -13,10 +13,10 @@ module.exports = {
             return next();
         }
 
-        if (req.get('token')) {
+        if (req.get('Auth-Token')) {
             User.findOne({
                 where: {
-                    token: req.get('token'),
+                    token: req.get('Auth-Token'),
                 }
             }).then((user) => {
                 if (!user) {
