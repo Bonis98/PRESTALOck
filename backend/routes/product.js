@@ -62,8 +62,12 @@ router.get('/:id/image', async function (req, res) {
             },
             attributes: ['picture']
         });
-        res.write(image.picture)
-        res.end()
+        if (image && image.picture) {
+            res.write(image.picture)
+            res.end()
+        } else {
+          res.redirect('/empty.jpg')
+        }
     } catch (error) {
         console.error(error)
         res.sendStatus(500)
