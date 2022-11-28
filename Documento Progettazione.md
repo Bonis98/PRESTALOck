@@ -73,20 +73,21 @@
 ### A parte il login e la registrazione, tutte le richieste necessitano di un header chiamato `token` per l'autenticazione e identificazione dell'utente
 
 ## Pagine del frontend
+*(corsivo: layout terminato, manca implementare chiamate ad API)*
 - **Priorità 1**:
     - ~~Login~~
-    - ~~Registrazione~~
+    - *Registrazione*
     - Modifica di locker
     - Login con OAuth
     - Registrazione con OAuth
     - ~~Elenco tutti prodotti~~
-    - ~~Vista dettagli prodotto con tasto per richiesta prestito in locker specificato~~
+    - *Vista dettagli prodotto con tasto per richiesta prestito in locker specificato*
     - ~~Creazione prodotto~~
-    - ~~Modifica prodotto (con flag `available`)~~
-    - ~~Upload foto di prodotto~~
-    - ~~Pagina di conferma prestito per confermare prodotto depositato nel locker~~
-- **Priorità 2**:
+    - *Modifica prodotto (con flag `available`)*
+    - *Upload foto di prodotto*
+    - *Pagina di conferma prestito per confermare prodotto depositato nel locker*
     - Elenco di prestiti attivi (sia prodotti dati che ricevuti)
+- **Priorità 2**:
     - Vista di storico prodotti inseriti
     - Vista di storico prestiti richiesti
 - **Priorità 3**:
