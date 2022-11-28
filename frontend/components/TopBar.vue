@@ -1,9 +1,7 @@
 <template>
   <div class="h-10 w-screen items-center bg-blue-500 flex flex-row gap-3 fixed px-4 text-white">
-    <NuxtLink v-if="backRedirect" :to="{ path: backRedirect }">
-      <div class="text-xl font-bold cursor-pointer">
-        &lt;
-      </div>
+    <NuxtLink v-if="backRedirect" class="h-2/4 cursor-pointer" :to="{ path: backRedirect }">
+      <img class="h-full" src="/icons/back.png">
     </NuxtLink>
     <div class="flex-grow" />
     <div> {{ name }} </div>

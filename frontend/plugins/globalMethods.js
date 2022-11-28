@@ -3,10 +3,11 @@ export default (context, inject) => {
     try {
       const response = await fetch(url, {
         method,
-        body,
         headers: {
+          'Content-Type': 'application/json',
           'Auth-Token': localStorage.getItem('token')
-        }
+        },
+        body: JSON.stringify(body)
       })
       if (!response.ok) {
         console.error(response)

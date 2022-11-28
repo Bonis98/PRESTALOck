@@ -53,27 +53,19 @@ export default {
 
   methods: {
     async create () {
+      if (this.loading) { return }
       this.loading = true
 
-      if (this.image.split('.').pop() == 'jpg') {
-        if (this.title == '' || this.description == '' || this.maxLoanDays <= 0 || this.image == '') {
-          alert('Inserire correttamente le informazioni')
-          this.loading = false
-          return
-        }
-      } else {
-        alert('Formato immagine non supportato')
-        this.loading = false
-        return
-      }
-
       // make the request
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      const respond = true
-      if (respond) {
+      const result = await this.$callApi('/api/product', 'POST', {
+        title: this.title,
+        description: this.description,
+        maxLoanDays: parseInt(this.maxLoanDays)
+      })
+      if (result.data) {
+        this.$router.push({ path: '/uploadPhoto', query: { idProduct: result.data } })
+      } else {
         this.loading = false
-        // send imagee
-        alert('Prodotto Creato')
       }
     }
   }
