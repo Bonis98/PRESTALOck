@@ -19,6 +19,7 @@ const saveUserLockers = require("./routes/saveUserLockers");
 const user = require('./routes/user');
 const product = require('./routes/product');
 const products = require ('./routes/products');
+const loans = require ('./routes/loans');
 const {User} = require("./database/models/user");
 const {Product} = require("./database/models/product");
 const {UserBorrowProduct} = require("./database/models/userBorrowProduct");
@@ -68,6 +69,7 @@ app.use('/api/saveUserLockers', saveUserLockers);
 app.use('/api/user', user);
 app.use('/api/product', product)
 app.use('/api/products', products);
+app.use('/api/loans', loans);
 app.use('/', express.static('public'));
 
 
