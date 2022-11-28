@@ -26,7 +26,8 @@ router.get('/:idProduct', async function (req, res) {
         const currentUser = await User.findOne({
             where: {
                 token: req.get('Auth-Token')
-            }
+            },
+            attributes: ['id, email, name, surname']
         })
         const product = await Product.findOne({
             where: {
@@ -59,9 +60,11 @@ router.get('/:idProduct', async function (req, res) {
                 idProduct: product.id,
                 terminationDate: null
             },
+            attributes: ['lockerSlot'],
             include: [{
                 model: User,
-                required: true
+                required: true,
+                attributes: ['email']
             }]
         })
         let emailSubject = "L'oggetto prenotato è pronto per il ritiro"
