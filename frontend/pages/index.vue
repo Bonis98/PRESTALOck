@@ -22,68 +22,10 @@ export default {
   methods: {
     // get the array of products from the backend API
     async getAllProducts () {
-      // this.products = await (await fetch('api/products', {
-      //   header: {'Auth-Token': '123'}
-      // })).json()
-
-      // finta chiamata alle api
-
-      this.products = [
-        {
-          id: 1,
-          title: 'oggetto di prova',
-          owner: 'Mario Rossi',
-          description: 'descrizione oggetto di prova',
-          maxLoanDays: 10,
-          imageUrl: '/logo.png',
-          insertionDate: '10/11/2022'
-        },
-        {
-          id: 2,
-          title: 'oggetto di prova',
-          owner: 'Mario Rossi',
-          description: 'descrizione oggetto di prova',
-          maxLoanDays: 10,
-          imageUrl: '/logo.png',
-          insertionDate: '10/11/2022'
-        },
-        {
-          id: 3,
-          title: 'oggetto di prova',
-          owner: 'Mario Rossi',
-          description: 'descrizione oggetto di prova',
-          maxLoanDays: 10,
-          imageUrl: '/logo.png',
-          insertionDate: '10/11/2022'
-        },
-        {
-          id: 4,
-          title: 'oggetto di prova',
-          owner: 'Mario Rossi',
-          description: 'descrizione oggetto di prova',
-          maxLoanDays: 10,
-          imageUrl: '/logo.png',
-          insertionDate: '10/11/2022'
-        },
-        {
-          id: 5,
-          title: 'oggetto di prova',
-          owner: 'Mario Rossi',
-          description: 'descrizione oggetto di prova',
-          maxLoanDays: 10,
-          imageUrl: '/logo.png',
-          insertionDate: '10/11/2022'
-        },
-        {
-          id: 6,
-          title: 'oggetto di prova',
-          owner: 'Mario Rossi',
-          description: 'descrizione oggetto di prova',
-          maxLoanDays: 10,
-          imageUrl: '/logo.png',
-          insertionDate: '10/11/2022'
-        }
-      ]
+      const result = await this.$callApi('/api/products', 'GET')
+      if (result.data) {
+        this.products = result.data
+      }
     }
   }
 }

@@ -83,7 +83,7 @@ export default {
         const data = await response.json()
         localStorage.setItem('token', data.token)
         localStorage.setItem('name', data.name + ' ' + data.surname)
-        this.$router.push({ path: '/' })
+        this.$router.replace({ path: '/' })
       } catch (ex) {
         console.error(ex)
         alert(ex)

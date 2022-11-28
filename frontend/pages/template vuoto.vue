@@ -14,6 +14,21 @@ export default {
   data () {
     return {
     }
+  },
+
+  methods: {
+    async methodThatCallsTheBackend () {
+      // 'methods' can be: "GET", "POST", "PUT",
+      // body is used in "POST" and "PUT" requests
+      // result is an object that can have a number called `errorStatus` (is the HTTP error status) or an object/array called `data` and a status code if there
+      const result = await this.$callApi('/api/url', 'POST', { key: 'value' })
+      if (result.data) {
+        console.log(result.data)
+      } else {
+        // optional: do something if there's an error
+        console.log(result.errorStatus)
+      }
+    }
   }
 }
 </script>
