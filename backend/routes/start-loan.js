@@ -22,6 +22,7 @@ async function checkDuplicate(product){
 
 router.get('/:idProduct', async function (req, res) {
     let receiverUnlockCode;
+    let slotIndex;
     try {
         const currentUser = await User.findOne({
             where: {
@@ -59,6 +60,27 @@ router.get('/:idProduct', async function (req, res) {
         })
         const jsonData = await resp.json()
         receiverUnlockCode = jsonData.status.unlockCodes[1]
+        slotIndex = jsonData.index
+
+        //retrieving complete lockers list
+        let lockerList = await fetch('http://hack-smartlocker.sintrasviluppo.it/api/lockers', {
+            method: 'get',
+            headers: {
+                "x-apikey": process.env.API_KEY_LOCKERS,
+                "x-tenant": process.env.TENANT
+            }
+        });
+
+        lockerList = await lockerList.json();
+        //retrieve locker data -> send its name and address through email
+        let locker;
+        for (let i=0; i<lockerList.length; i++){
+            if (lockerList[i].id === req.body.lockerId){
+                locker = lockerList[i]
+                break
+            }
+        }
+
         await UserBorrowProduct.update({
             loanStartDate: moment(new Date(), moment.ISO_8601)
         }, {
@@ -74,7 +96,7 @@ router.get('/:idProduct', async function (req, res) {
             nextWeek: 'dddd',
         })
         let emailText = currentUser.name + " " + currentUser.surname + " ha depositato l'oggetto " +
-            product.title + " nello slot " + borrower.lockerSlot +
+            product.title + " nello slot " + slotIndex + "del locker " + locker.name + " in " + locker.address +
             ". Il codice per aprire lo sportello e accedere al ritiro è il seguente: " +
             receiverUnlockCode + ". Ti ricordiamo che il prodotto dovrà essere restituito entro " +
             returningDate + "."

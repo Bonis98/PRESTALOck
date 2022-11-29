@@ -182,7 +182,7 @@ router.post('/', async function (req, res) {
         emailSubject = "Richiesta di prestito"
         emailText = "L'oggetto " + product.title + " è stato prenotato. Recati al locker " + locker.nome +
             " sito in via " + locker.address + " e depositalo nello slot " +
-            slot.id + ". Il codice per aprire lo slot è il seguente: " + receiverUnlockCode + "."
+            slot.index + ". Il codice per aprire lo slot è il seguente: " + receiverUnlockCode + "."
         const mailObjOwner = {
             from: process.env.MAIL_USER,
             to: product.user.email,
