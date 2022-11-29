@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Loader v-show="loading" />
     <TopBar back-redirect="/" />
     <div class="max-w-screen-md m-auto p-4 pt-12">
       <!-- Title -->
@@ -26,17 +27,15 @@
       </div>
       <div class="flex flex-wrap items-center justify-end gap-4 mb-3">
         <!-- Lockers list -->
-        <div>
-          <select v-model="selectedLockerId">
-            class="border-2 border-blue-400 border-solid rounded px-2 py-1">
-            <option v-for="locker in product.lockerList" :key="locker.id" :value="locker.id">
-              {{ locker.name }} ({{ locker.address }}, {{ locker.province }})
-            </option>
-          </select>
+        <div v-if="product.availability">
+          <Select v-model="selectedLockerId" :options="formattedLockersList" />
         </div>
         <!-- Button -->
-        <div>
+        <div v-if="product.availability">
           <Button text="Prenota" @click="book()" />
+        </div>
+        <div v-if="!product && !product.availability">
+          Non disponibile.
         </div>
       </div>
     </div>
@@ -60,6 +59,19 @@ export default {
 
     formattedDate () {
       return this.product ? this.$formatDate(this.product.insertionDate) : ''
+    },
+
+    formattedLockersList () {
+      const result = []
+      for (let k = 0; k < this.product.lockerList.length; k++) {
+        const locker = this.product.lockerList[k]
+        result.push({
+          val: locker.id,
+          name: `${locker.name} (${locker.address}, ${locker.province})`
+        })
+      }
+
+      return result
     }
   },
 
@@ -78,6 +90,7 @@ export default {
       }
       this.loading = false
     },
+
     async book () {
       if (this.loading) {
         return
@@ -88,15 +101,14 @@ export default {
       }
       this.loading = true
       const result = await this.$callApi('/api/book/', 'POST', {
-        productId: this.product.productId,
+        productId: this.product.id,
         lockerId: this.selectedLockerId
       })
-      if (result.data) {
-        location.reload()
+      if (!result.error) {
+        this.$router.go() // reloads the page
       }
       this.loading = false
     }
-
   }
 }
 
