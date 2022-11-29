@@ -1,6 +1,7 @@
 const express = require('express');
 const {User} = require("../database/models/user");
 const {getLockerList} = require("../utils/SintraApiUtils");
+const {Product} = require("../database/models/product");
 const router = express.Router();
 
 router.get('/:id', function (req, res){
@@ -16,5 +17,19 @@ router.get('/:id', function (req, res){
         console.error(error);
         res.sendStatus(500);
     })
+})
+
+router.get('/:id/products', async function(req, res){
+    try {
+        const productsByOwner = await Product.findAll({
+            where: {
+                idOwner: req.params.id
+            }
+        });
+        res.json(productsByOwner);
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
 })
 module.exports = router; //eof
