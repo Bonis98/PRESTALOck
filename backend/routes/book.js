@@ -19,7 +19,7 @@ router.post('/', async function (req, res) {
     let UserBorrowProductData;
     let bodyPostBook;
 
-    async function findUserInDB() {
+    async function findCurrentUserInDB() {
         return await User.findOne({
             where: {
                 token: req.get('Auth-Token')
@@ -37,6 +37,7 @@ router.post('/', async function (req, res) {
                 return slotData;
             }
         }
+        return false;
     }
 
 
@@ -56,7 +57,7 @@ router.post('/', async function (req, res) {
     try {
         const product = await Product.findOne({
             where: {
-                id: req.productId,
+                id: req.body.productId,
                 availability: true
             }, //TODO: define attributes
             include: [{
@@ -66,11 +67,16 @@ router.post('/', async function (req, res) {
             }]
         });
 
+        if (!product){
+            res.sendStatus(409)
+            return
+        }
+
         await checkNoActiveBook(product);
 
-        const userReceiver = await findUserInDB();
+        const userReceiver = await findCurrentUserInDB();
 
-        let url = 'http://hack-smartlocker.sintrasviluppo.it/api/slots?lockerId=' + req.body.lockerId.toString();
+        let url = 'http://hack-smartlocker.sintrasviluppo.it/api/slots?lockerId=' + req.body.lockerId;
         const resp = await fetch(url, {
             method: 'get',
             headers: {
@@ -80,15 +86,7 @@ router.post('/', async function (req, res) {
         });
 
         const jsonData = await resp.json();
-        /*for(let i = 0; i < jsonData.length; i++){
-            if (jsonData[i].status.booked === false){
-                slotData = jsonData[i];
-                postBookApi(bodyPostBook);
-                break;
-            }
-        }*/
         let slot = await searchSlot(jsonData)
-        //await searchSlot(json, bodyPostBook);
         if (!slot) {
             throw new NoSlotError("No available slots found.")
         }
@@ -102,15 +100,18 @@ router.post('/', async function (req, res) {
 
         const respPost = await fetch('http://hack-smartlocker.sintrasviluppo.it/api/book', {
             method: 'post',
-            body: bodyPostBook,
+            body: JSON.stringify(bodyPostBook),
             headers: {
                 "x-apikey": process.env.API_KEY_LOCKERS,
                 "x-tenant": process.env.TENANT,
                 'Content-Type': 'application/json'
             }
         })
-        console.log(respPost) // needed to understand response --> maybe insert check on status response
-
+        if (respPost.status != 200){
+            res.sendStatus(409)
+            return
+        }
+        const jsonSlotData = await respPost.json()
         await Product.update({
             availability: false
         }, {
@@ -122,25 +123,31 @@ router.post('/', async function (req, res) {
         UserBorrowProductData = {
             idUser: userReceiver.id,
             idProduct: product.id,
-            requestDate: moment(new Date(), moment.ISO_8601),
             lockerSlot: slot.id
         }
 
         //creating new entry in UserBorrowProduct (new book)
         await UserBorrowProduct.create(UserBorrowProductData)
 
-        //retrieving slot unlock code for product owner
-        url = 'http://hack-smartlocker.sintrasviluppo.it/api/slots/' + slot.id.toString();
-        const respCode = await fetch(url, {
+        let receiverUnlockCode = jsonSlotData.status.unlockCodes[0]
+
+        //retrieving complete lockers list, parsing it and sending it for filtering
+        let lockerList = await fetch('http://hack-smartlocker.sintrasviluppo.it/api/lockers', {
             method: 'get',
             headers: {
                 "x-apikey": process.env.API_KEY_LOCKERS,
                 "x-tenant": process.env.TENANT
             }
         })
-        const jsonSlotData = await respCode.json()
-        let receiverUnlockCode = jsonSlotData.status.unlockCodes[0]
 
+        lockerList = await lockerList.json()
+        let locker
+        for (let i=0; i<lockerList.length; i++){
+            if (lockerList[i].id === req.body.lockerId){
+                locker = lockerList[i]
+                break
+            }
+        }
         //setting email for reciever
         let emailSubject = "Prenotazione confermata"
         let emailText = "Il proprietario dell'oggetto è stato notificato della richiesta di prestito. " +
@@ -155,7 +162,8 @@ router.post('/', async function (req, res) {
 
         //setting email for owner
         emailSubject = "Richiesta di prestito"
-        emailText = "L'oggetto " + product.title + " è stato prenotato. Recati al locker e depositalo nello slot " +
+        emailText = "L'oggetto " + product.title + " è stato prenotato. Recati al locker " + locker.nome +
+            " sito in via " + locker.address + " e depositalo nello slot " +
             slot.id + ". Il codice per aprire lo slot è il seguente: " + receiverUnlockCode + "."
         const mailObjOwner = {
             from: process.env.MAIL_USER,
@@ -165,6 +173,7 @@ router.post('/', async function (req, res) {
         }
         await sendMail(mailObjOwner);
 
+        res.sendStatus(200)
     } catch (e) {
         if (e instanceof NoSlotError) {
             console.error(e.message);

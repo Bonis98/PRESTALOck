@@ -17,6 +17,7 @@ const signinFacebook = require('./routes/signinFacebook');
 const lockerList = require('./routes/lockerList');
 const saveUserLockers = require("./routes/saveUserLockers");
 const user = require('./routes/user');
+const book = require('./routes/book')
 const product = require('./routes/product');
 const products = require ('./routes/products');
 const loans = require ('./routes/loans');
@@ -71,6 +72,7 @@ app.use('/api/user', user);
 app.use('/api/product', product)
 app.use('/api/products', products);
 app.use('/api/loans', loans);
+app.use('/api/book', book);
 app.use('/api/start-loan', startLoan);
 app.use('/', express.static('public'));
 
