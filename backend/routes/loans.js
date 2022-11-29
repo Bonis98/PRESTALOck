@@ -76,25 +76,31 @@ router.get('/', async function (req, res) {
         console.error(error)
         res.sendStatus(500)
     }
-})
+});
 
 router.get('/requested', async function(req, res){
-    const currentUser = await User.findOne({
-        where: {
-            token: req.get('Auth-Token')
-        },
-        attributes: ['id']
-    })
-    const allRequestedProducts = await UserBorrowProduct.findAll({
-        where: {
-            idUser: currentUser.id,
-            terminationDate: {
-                [Op.not]: null
+    try {
+        const currentUser = await User.findOne({
+            where: {
+                token: req.get('Auth-Token')
+            },
+            attributes: ['id']
+        });
+        const allRequestedProducts = await UserBorrowProduct.findAll({
+            where: {
+                idUser: currentUser.id,
+                terminationDate: {
+                    [Op.not]: null
+                }
             }
-        }
-    })
-    res.json(allRequestedProducts)
-})
+        });
+        res.json(allRequestedProducts);
+    } catch (error) {
+        console.error(error)
+        res.sendStatus(500)
+    }
+
+});
 
 //return number of days between now and the date passed
 function diffDaysNow(date){
