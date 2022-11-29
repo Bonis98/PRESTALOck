@@ -27,7 +27,8 @@
       <div class="flex flex-wrap items-center justify-end gap-4 mb-3">
         <!-- Lockers list -->
         <div>
-          <select id="cars" v-model="selectedLockerId" name="cars" class="border-2 border-blue-400 border-solid rounded px-2 py-1">
+          <select v-model="selectedLockerId">
+            class="border-2 border-blue-400 border-solid rounded px-2 py-1">
             <option v-for="locker in product.lockerList" :key="locker.id" :value="locker.id">
               {{ locker.name }} ({{ locker.address }}, {{ locker.province }})
             </option>
@@ -35,7 +36,7 @@
         </div>
         <!-- Button -->
         <div>
-          <Button text="Prenota" />
+          <Button text="Prenota" @click="book()" />
         </div>
       </div>
     </div>
@@ -69,15 +70,34 @@ export default {
   methods: {
     // get the single of product from the backend API
     async getProduct () {
+      this.loading = true
       const productId = this.$route.query.productId
       const result = await this.$callApi('/api/product/' + productId, 'GET')
       if (result.data) {
         this.product = result.data
       }
+      this.loading = false
     },
-
-
+    async book () {
+      if (this.loading) {
+        return
       }
+      if (!this.selectedLockerId) {
+        alert('Selezionare il locker')
+        return
+      }
+      this.loading = true
+      const result = await this.$callApi('/api/book/', 'POST', {
+        productId: this.product.productId,
+        lockerId: this.selectedLockerId
+      })
+      if (result.data) {
+        location.reload()
+      }
+      this.loading = false
+    }
+
   }
 }
+
 </script>
