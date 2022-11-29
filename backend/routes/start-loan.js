@@ -27,7 +27,7 @@ router.get('/:idProduct', async function (req, res) {
             where: {
                 token: req.get('Auth-Token')
             },
-            attributes: ['id, email, name, surname']
+            attributes: ['id', 'email', 'name', 'surname']
         })
         const product = await Product.findOne({
             where: {
@@ -36,8 +36,20 @@ router.get('/:idProduct', async function (req, res) {
             },
             attributes: ['id', 'maxLoanDays', 'title']
         })
+        const borrower = await UserBorrowProduct.findOne({
+            where: {
+                idProduct: product.id,
+                terminationDate: null
+            },
+            attributes: ['lockerSlot'],
+            include: [{
+                model: User,
+                required: true,
+                attributes: ['email']
+            }]
+        })
         await checkDuplicate(product)
-        let url = 'http://hack-smartlocker.sintrasviluppo.it/api/slots/' + req.params.idProduct.toString();
+        let url = 'http://hack-smartlocker.sintrasviluppo.it/api/slots/' + borrower.lockerSlot;
         const resp = await fetch(url, {
             method: 'get',
             headers: {
@@ -54,18 +66,6 @@ router.get('/:idProduct', async function (req, res) {
                 idProduct: product.id,
                 terminationDate: null
             },
-        })
-        const borrower = await UserBorrowProduct.findOne({
-            where: {
-                idProduct: product.id,
-                terminationDate: null
-            },
-            attributes: ['lockerSlot'],
-            include: [{
-                model: User,
-                required: true,
-                attributes: ['email']
-            }]
         })
         let emailSubject = "L'oggetto prenotato è pronto per il ritiro"
         let returningDate = moment().add(10, 'days').locale('it').calendar({
