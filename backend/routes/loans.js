@@ -78,6 +78,24 @@ router.get('/', async function (req, res) {
     }
 })
 
+router.get('/requested', async function(req, res){
+    const currentUser = await User.findOne({
+        where: {
+            token: req.get('Auth-Token')
+        },
+        attributes: ['id']
+    })
+    const allRequestedProducts = await UserBorrowProduct.findAll({
+        where: {
+            idUser: currentUser.id,
+            terminationDate: {
+                [Op.not]: null
+            }
+        }
+    })
+    res.json(allRequestedProducts)
+})
+
 //return number of days between now and the date passed
 function diffDaysNow(date){
     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
