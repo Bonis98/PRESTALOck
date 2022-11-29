@@ -1,4 +1,3 @@
-//require("dotenv").config();
 const nodemailer = require("nodemailer");
 
 /**
@@ -27,7 +26,7 @@ const sendEmail = async (mailObj) => {
             if (error) {
                 console.error(error);
             } else {
-                console.log('Server is ready to take our messages');
+                console.log('Server is ready to take messages');
             }
         });
 
@@ -38,7 +37,7 @@ const sendEmail = async (mailObj) => {
             subject: subject, // subject line
             text: text, // plain text body
         });
-        console.log('Message sent: ' + info.messageId);
+
     } catch (error) {
         console.error(error);
         throw new Error(

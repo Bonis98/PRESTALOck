@@ -1,6 +1,6 @@
 const express = require('express');
 const {User} = require("../database/models/user");
-const {getLockerList} = require("../SintraApiUtils");
+const {getLockerList} = require("../utils/SintraApiUtils");
 const router = express.Router();
 
 router.get('/:id', function (req, res){

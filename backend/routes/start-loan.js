@@ -4,7 +4,7 @@ const {UserBorrowProduct} = require("../database/models/userBorrowProduct");
 const {User} = require("../database/models/user");
 const fetch = require("node-fetch");
 const moment = require("moment");
-const sendMail = require("../nodemailer/src/send-mail");
+const sendMail = require("../utils/mailUtils");
 const router = express.Router();
 
 async function checkDuplicate(product){

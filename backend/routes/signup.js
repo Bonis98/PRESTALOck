@@ -3,7 +3,7 @@ const express = require('express');
 const bcrypt = require("bcrypt");
 const crypto = require('crypto');
 const {User} = require("../database/models/user");
-const signupUtils = require("../signupUtils");
+const signupUtils = require("../utils/signupUtils");
 const router = express.Router();
 
 
