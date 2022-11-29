@@ -19,16 +19,17 @@ router.post('/', async function (req, res) {
     let UserBorrowProductData;
     let bodyPostBook;
 
+    //find current user in DB
     async function findCurrentUserInDB() {
         return await User.findOne({
             where: {
                 token: req.get('Auth-Token')
             },
             attributes: ['id', 'name', 'surname', 'email']
-        })
+        });
     }
 
-
+    //search and return the first free slot
     function searchSlot(json) {
         let slotData;
         for (let i = 0; i < json.length; i++) {
@@ -40,26 +41,29 @@ router.post('/', async function (req, res) {
         return false;
     }
 
-
+    //check product has no other active book //hookable
     async function checkNoActiveBook(product) {
         const numberOfOccurrences = await UserBorrowProduct.count({
             where: {
                 idProduct: product.id,
                 terminationDate: null
             }
-        })
+        });
         if (numberOfOccurrences > 0) {
-            throw new Error("Found active book of the same product in UserBorrowProduct table")
+            throw new Error("Found active book of the same product in UserBorrowProduct table");
         }
     }
 
 
     try {
+
+        //find the product requested for book
         const product = await Product.findOne({
             where: {
                 id: req.body.productId,
                 availability: true
-            }, //TODO: define attributes
+            },
+            attributes: ['id', 'idOwner', 'title'],
             include: [{
                 model: User,
                 required: true,
@@ -67,15 +71,23 @@ router.post('/', async function (req, res) {
             }]
         });
 
+        //if the product does not exist, send status 409 and return
         if (!product){
-            res.sendStatus(409)
-            return
+            res.sendStatus(409);
+            return;
         }
 
         await checkNoActiveBook(product);
 
         const userReceiver = await findCurrentUserInDB();
 
+        //the receiver cannot be the owner of the reqeusted product //hookable
+        if (userReceiver.id === product.idOwner){
+            res.sendStatus(409);
+            return;
+        }
+
+        //retrieve slot list of a locker
         let url = 'http://hack-smartlocker.sintrasviluppo.it/api/slots?lockerId=' + req.body.lockerId;
         const resp = await fetch(url, {
             method: 'get',
@@ -86,18 +98,19 @@ router.post('/', async function (req, res) {
         });
 
         const jsonData = await resp.json();
-        let slot = await searchSlot(jsonData)
+        let slot = await searchSlot(jsonData);
         if (!slot) {
-            throw new NoSlotError("No available slots found.")
+            throw new NoSlotError("No available slots found.");
         }
 
         bodyPostBook = {
             customerId: userReceiver.id,
-            customerName: userReceiver.name,
+            customerName: userReceiver.name + " " + userReceiver.surname,
             slotId: slot.id,
             slotContent: product.title
         }
 
+        //book the slot on Sintra API
         const respPost = await fetch('http://hack-smartlocker.sintrasviluppo.it/api/book', {
             method: 'post',
             body: JSON.stringify(bodyPostBook),
@@ -106,12 +119,15 @@ router.post('/', async function (req, res) {
                 "x-tenant": process.env.TENANT,
                 'Content-Type': 'application/json'
             }
-        })
+        });
+
         if (respPost.status != 200){
-            res.sendStatus(409)
-            return
+            res.sendStatus(409);
+            return;
         }
-        const jsonSlotData = await respPost.json()
+        const jsonSlotData = await respPost.json();
+
+
         await Product.update({
             availability: false
         }, {
@@ -127,27 +143,29 @@ router.post('/', async function (req, res) {
         }
 
         //creating new entry in UserBorrowProduct (new book)
-        await UserBorrowProduct.create(UserBorrowProductData)
+        await UserBorrowProduct.create(UserBorrowProductData);
 
-        let receiverUnlockCode = jsonSlotData.status.unlockCodes[0]
+        let receiverUnlockCode = jsonSlotData.status.unlockCodes[0];
 
-        //retrieving complete lockers list, parsing it and sending it for filtering
+        //retrieving complete lockers list
         let lockerList = await fetch('http://hack-smartlocker.sintrasviluppo.it/api/lockers', {
             method: 'get',
             headers: {
                 "x-apikey": process.env.API_KEY_LOCKERS,
                 "x-tenant": process.env.TENANT
             }
-        })
+        });
 
-        lockerList = await lockerList.json()
-        let locker
+        lockerList = await lockerList.json();
+        //retrieve locker data -> send its name and address through email
+        let locker;
         for (let i=0; i<lockerList.length; i++){
             if (lockerList[i].id === req.body.lockerId){
                 locker = lockerList[i]
                 break
             }
         }
+
         //setting email for reciever
         let emailSubject = "Prenotazione confermata"
         let emailText = "Il proprietario dell'oggetto è stato notificato della richiesta di prestito. " +
@@ -173,7 +191,7 @@ router.post('/', async function (req, res) {
         }
         await sendMail(mailObjOwner);
 
-        res.sendStatus(200)
+        res.sendStatus(200);
     } catch (e) {
         if (e instanceof NoSlotError) {
             console.error(e.message);
