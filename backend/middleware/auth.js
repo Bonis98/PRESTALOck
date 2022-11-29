@@ -7,7 +7,7 @@ module.exports = {
             return next();
         } else if (req.path.startsWith('/api/user') || req.path.startsWith('/api/signin')) {
             return next();
-        } else if (req.path.startsWith('/api/product') && req.method == 'GET') {
+        } else if (!req.path.startsWith('/api/products') && req.path.startsWith('/api/product') && req.method == 'GET') {
             return next();
         } else if (!req.path.startsWith('/api/')) {
             return next();
