@@ -78,6 +78,40 @@ router.get('/', async function (req, res) {
     }
 });
 
+
+router.get('/ended', async function(req, res){
+    try {
+        const currentUser = await User.findOne({
+            where: {
+                token: req.get('Auth-Token')
+            },
+            attributes: ['id']
+        });
+
+        const allLoansSucceeded = await UserBorrowProduct.findAll({
+            where:{
+                terminationDate: {
+                    [Op.not]: null
+                }
+            },
+            include: {
+                model: Product,
+                where: {
+                    idOwner: currentUser.id
+                }
+            }
+        });
+
+        res.json(allLoansSucceeded);
+
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+
+});
+
+
 router.get('/requested', async function(req, res){
     try {
         const currentUser = await User.findOne({
@@ -96,8 +130,8 @@ router.get('/requested', async function(req, res){
         });
         res.json(allRequestedProducts);
     } catch (error) {
-        console.error(error)
-        res.sendStatus(500)
+        console.error(error);
+        res.sendStatus(500);
     }
 
 });
