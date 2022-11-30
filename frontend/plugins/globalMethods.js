@@ -12,6 +12,10 @@ export default (context, inject) => {
       if (!response.ok) {
         console.error(response)
         const contentType = response.headers.get('content-type')
+        if (response.status == 401) {
+          location.assign('/login')
+          return
+        }
         if (contentType && contentType.includes('application/json')) {
           throw {
             message: (await response.json()).errortext,
@@ -25,9 +29,15 @@ export default (context, inject) => {
         }
       }
 
-      const data = (await response.json())
-      console.log(method, url, ':', data)
-      return { error: false, data }
+      const contentType = response.headers.get('content-type')
+      if (contentType && contentType.includes('application/json')) {
+        const data = (await response.json())
+        console.log(method, url, response.status, ':', data)
+        return { error: false, data }
+      } else {
+        console.log(method, url, response.status)
+        return { error: false }
+      }
     } catch (ex) {
       console.error(ex.message)
       alert(ex.message)
@@ -38,7 +48,7 @@ export default (context, inject) => {
   inject('formatDate', (date) => {
     try {
       let result = new Date(date).toLocaleString('it-IT', {
-        timeStyle: 'short',
+        // timeStyle: 'short',
         dateStyle: 'long'
       })
       result = result == 'Invalid Date' ? '' : result

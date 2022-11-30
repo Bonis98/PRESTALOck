@@ -63,6 +63,9 @@ export default {
 
     formattedLockersList () {
       const result = []
+      if (!this.product.lockerList) {
+        return result
+      }
       for (let k = 0; k < this.product.lockerList.length; k++) {
         const locker = this.product.lockerList[k]
         result.push({
@@ -86,7 +89,7 @@ export default {
       const productId = this.$route.query.productId
       const result = await this.$callApi('/api/product/' + productId, 'GET')
       if (result.data) {
-        this.product = result.data
+        this.product = result.data.product
       }
       this.loading = false
     },

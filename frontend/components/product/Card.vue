@@ -1,8 +1,8 @@
 <template>
   <NuxtLink :to="{ path: '/productDetails', query: { productId: passedProduct.id } }">
-    <div class="border border-solid border-gray-200 rounded-md shadow w-96 h-64 flex-shrink-0 flex flex-col items-center cursor-pointer">
+    <div class="border border-solid border-gray-200 rounded-md shadow w-96 flex-shrink-0 flex flex-col items-center cursor-pointer" style="height: 32rem;">
       <!-- image div -->
-      <div class="h-2/4 overflow-hidden">
+      <div class="h-3/4 overflow-hidden">
         <img class="w-full" :src="imageUrl">
       </div>
       <!-- first row -->
@@ -20,7 +20,7 @@
       </div>
       <!-- last row -->
       <div class="text-right w-11/12 font-light text-sm">
-        {{ passedProduct.insertionDate }}
+        {{ formattedDate }}
       </div>
     </div>
   </NuxtLink>
@@ -38,6 +38,10 @@ export default {
   computed: {
     imageUrl () {
       return `/api/product/${this.passedProduct.id}/image`
+    },
+
+    formattedDate () {
+      return this.product ? this.$formatDate(this.passedProduct.insertionDate) : ''
     }
   }
 }
