@@ -130,7 +130,8 @@ router.get('/:id', async function (req, res) {
         });
         product.dataValues['lockerList'] = await getLockerList(product.user.lockerList);
         delete product.user.dataValues.lockerList;
-        res.json(product);
+        const productObj = {product}
+        res.json(productObj);
     } catch (error) {
         console.error(error)
         res.sendStatus(500);
