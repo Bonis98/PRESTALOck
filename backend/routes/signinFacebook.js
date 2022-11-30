@@ -69,11 +69,11 @@ router.get('/callback', async function (req, res) {
         if (user){
             console.log('user already exists');
             let base64Data = Buffer.from(JSON.stringify({token: user.token})).toString("base64")
-            res.redirect('/afterfacebooklogin?data=' + base64Data)
+            res.redirect('/afterOAuthLogin?data=' + base64Data)
             return;
         }
         let base64Data = Buffer.from(JSON.stringify(userInfo)).toString("base64")
-        res.redirect('/afterfacebooklogin?data=' + base64Data)
+        res.redirect('/afterOAuthLogin?data=' + base64Data)
     } catch (error) {
         console.error(error)
         res.sendStatus(500)

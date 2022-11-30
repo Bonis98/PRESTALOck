@@ -70,7 +70,7 @@ router.get('/callback', async function (req, res) {
         if (user){
             console.log('user already exists');
             let base64Data = Buffer.from(JSON.stringify({token: user.token})).toString("base64")
-            res.redirect('/aftergooglelogin?data=' + base64Data)
+            res.redirect('/afterOAuthLogin?data=' + base64Data)
             return;
         }
     }
@@ -113,7 +113,7 @@ router.get('/callback', async function (req, res) {
     try {
         userInfo.dateOfBirth = moment(userInfo.dateOfBirth, 'YYYY-MM-DD').format('DD-MM-YYYY')
         let base64Data = Buffer.from(JSON.stringify(userInfo)).toString("base64")
-        res.redirect('/aftergooglelogin?data=' + base64Data)
+        res.redirect('/afterOAuthLogin?data=' + base64Data)
     }
     catch (error) {
         console.error(error)
