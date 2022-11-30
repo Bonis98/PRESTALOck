@@ -195,7 +195,7 @@ GET `/api/signinFacebook/callback`
 ## Conferma prodotto depositato (da proprietario)
 | Num | Client | Direzione | Server                                                                                                                                                                             | Struttura dati |
 | --- | ------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| 1   |        | ->        | GET `/api/start-loan/{idProduct}`                                                                                                                                                  |                |
+| 1   |        | ->        | GET `/api/loan/start/{idProduct}`                                                                                                                                                  |                |
 | 2   |        | <-        | Aggiorna il campo `startLoanDate` della tabella `userBorrowProducts`, invia email di conferma agli utenti (al richiedente manda il secondo codice per aprire il locker), torna 200 |                |
 
 ## Elenco prestiti attivi (sia prodotti dati che ricevuti) e in attesa di conferma deposito
@@ -213,10 +213,15 @@ GET `/api/loans/ended`   **<--- DA CAMBIARE**
 GET `/api/loans/requested`
 
 ## Termine prestito con conferma prodotto depositato
-GET `/api/loan/close`
+GET `/api/loan/close/{idProduct}`
 
 ## Lista prodotti per propietario
-GET `/api/user/{id}/products
+GET `/api/user/{id}/products`
+| Num | Client                   | Direzione | Server                                                           | Struttura dati                                                                                                                                                                                                                                                    |
+|-----|--------------------------|-----------|------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1   |                          | ->        | GET `/api/user/{id}/products`                                    | `id` utente                                                                                                                                                                                                                                                       |
+| 2   |                          | <-        | Legge utente dal db e ritorna tutti gli oggetti da lui posseduti | `products` (array di oggetti con `id`, `idOwner`, `user` (oggetto con `name`, `surname` e `province`), `title`, `description`, `maxLoanDays`, `insertionDate`, `lockerList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`)) |
+| 3   | Mostra i dati all'utente |           |                                                                  |                                                                                                                                                                                                                                                                   |
 
 ## Modifica/recupero password
 
