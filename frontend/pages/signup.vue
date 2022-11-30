@@ -63,6 +63,12 @@
       <div class="mt-12">
         <Button text="Torna al login" @click="login()" />
       </div>
+      <div class="mt-12">
+        <Button text="Registrati con Facebook" @click="facebook()" />
+      </div>
+      <div class="mt-12">
+        <Button text="Registrati con Google" @click="google()" />
+      </div>
     </div>
   </div>
 </template>
@@ -219,6 +225,12 @@ export default {
 
     login () {
       this.$router.push({ path: '/login' })
+    },
+    facebook () {
+      this.$router.push({ path: '/api/signinFacebook' })
+    },
+    google () {
+      this.$router.push({ path: '/api/signinGoogle' })
     }
   }
 }
