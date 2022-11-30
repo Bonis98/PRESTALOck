@@ -60,6 +60,7 @@ router.get('/:idProduct', async function (req, res) {
         })
         const jsonData = await resp.json()
         receiverUnlockCode = jsonData.status.unlockCodes[1]
+        let lockerId = jsonData.lockerId
         slotIndex = jsonData.index
 
         //retrieving complete lockers list
@@ -75,7 +76,7 @@ router.get('/:idProduct', async function (req, res) {
         //retrieve locker data -> send its name and address through email
         let locker;
         for (let i=0; i<lockerList.length; i++){
-            if (lockerList[i].id === req.body.lockerId){
+            if (lockerList[i].id === lockerId){
                 locker = lockerList[i]
                 break
             }
@@ -96,7 +97,7 @@ router.get('/:idProduct', async function (req, res) {
             nextWeek: 'dddd',
         })
         let emailText = currentUser.name + " " + currentUser.surname + " ha depositato l'oggetto " +
-            product.title + " nello slot " + slotIndex + "del locker " + locker.name + " in " + locker.address +
+            product.title + " nello slot " + slotIndex + " del locker " + locker.nome + " in " + locker.address +
             ". Il codice per aprire lo sportello e accedere al ritiro è il seguente: " +
             receiverUnlockCode + ". Ti ricordiamo che il prodotto dovrà essere restituito entro " +
             returningDate + "."

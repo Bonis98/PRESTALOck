@@ -81,7 +81,7 @@ router.post('/', async function (req, res) {
 
         const userReceiver = await findCurrentUserInDB();
 
-        //the receiver cannot be the owner of the reqeusted product //hookable
+        //the receiver cannot be the owner of the requested product //hookable
         if (userReceiver.id === product.idOwner){
             res.sendStatus(409);
             return;
