@@ -10,7 +10,7 @@
         Titolo prodotto
       </div>
       <div>
-        <Input v-model="product.title"/>
+        <Input v-model="product.title" />
       </div>
       <div class="mt-3">
         Descrizione
@@ -22,13 +22,13 @@
         Numero dei giorni massimo di prestito (in giorni)
       </div>
       <div>
-        <Input v-model="product.maxLoanDays" type="number" :placeholder= "[[ product.maxLoanDays ]]" min="1"  />
+        <Input v-model="product.maxLoanDays" type="number" :placeholder="[[ product.maxLoanDays ]]" min="1" />
       </div>
       <div class="mt-3">
         Rendi disponibile il prodotto
       </div>
-      <input type="checkbox" id="available" v-model="available">
-      <label for="available">{{ available ? "Disponibile" : "Non disponibile" }}</label>
+      <input id="available" v-model="availability" type="checkbox">
+      <label for="available">{{ availability ? "Disponibile" : "Non disponibile" }}</label>
       <div class="mt-12">
         <Button text="Modifica" @click="modify()" />
       </div>
@@ -42,7 +42,7 @@ export default {
     return {
       loading: false,
       product: '',
-      available: ''
+      availability: ''
     }
   },
   watch: {
@@ -56,24 +56,15 @@ export default {
     this.getProduct()
   },
   methods: {
-    getProduct () {
-      // finta chiamata alle api
-      this.product = {
-        id: 1,
-        title: 'oggetto di prova',
-        owner: 'Mario Rossi',
-        description: 'descrizione oggetto di prova',
-        maxLoanDays: 10,
-        insertionDate: '10/11/2022',
-        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/1200px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg',
-        locker:
-        {
-          id: 1,
-          name: 'locker 1',
-          province: 'Milano',
-          address: 'Piazza Duomo, Milano'
-        }
+    // get the single of product from the backend API
+    async getProduct () {
+      this.loading = true
+      const productId = this.$route.query.productId
+      const result = await this.$callApi('/api/product/' + productId, 'GET')
+      if (result.data) {
+        this.product = result.data
       }
+      this.loading = false
     },
     async modify () {
       this.loading = true
@@ -81,14 +72,20 @@ export default {
         alert('errore')
         return
       }
-
       // make the request
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      const respond = true
-      if (respond) {
-        this.loading = false
-        // send imagee
-        alert('Prodotto Modificato')
+      const productId = this.$route.query.productId
+      const result = await this.$callApi('/api/product/' + productId, 'PUT', {
+        title: this.product.title,
+        description: this.product.description,
+        maxLoanDays: this.product.maxLoanDays,
+        available: this.availability
+      })
+      if (result.data) {
+        console.log(result.data)
+        // this.$router.push({ path: '/productDetails/', query: { idProduct: productId } })
+      } else {
+        // optional: do something if there's an error
+        console.log(result.errorStatus)
       }
     }
   }
