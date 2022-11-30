@@ -13,19 +13,9 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
       idUser: 2,
-      idProduct: 1,
+      idProduct: 3,
     }, {
       id: 2,
-      requestDate: nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate(),
-      loanStartDate: null,
-      lockerSlot: 42,
-      terminationDate: null,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      idUser: 2,
-      idProduct: 2,
-    }, {
-      id: 3,
       requestDate: nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate(),
       loanStartDate: nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate(),
       lockerSlot: 11,
@@ -33,9 +23,9 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
       idUser: 1,
-      idProduct: 3,
+      idProduct: 4,
     }, {
-      id: 4,
+      id: 3,
       requestDate: nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate(),
       loanStartDate: null,
       lockerSlot: 10,
@@ -43,7 +33,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
       idUser: 4,
-      idProduct: 4,
+      idProduct: 5,
     }
     ])
   },
