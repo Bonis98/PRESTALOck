@@ -53,6 +53,7 @@
     - Noleggio a pagamento
     - Passaggio a SQL più serio (tipo MySQL/MariaDB)
     - Notifiche push
+    - Duplicazione dati dell'oggetto nei prestiti (per storico)
 
 ---
 # Parti principali del progetto
@@ -77,9 +78,10 @@
 - **Priorità 1**:
     - ~~Login~~
     - *Registrazione*
-    - Modifica di locker
+    - Modifica di locker dell'utente
     - Login con OAuth
     - Registrazione con OAuth
+    - Pagina `afterOAuthLogin`
     - ~~Elenco tutti prodotti~~
     - *Vista dettagli prodotto con tasto per richiesta prestito in locker specificato*
     - ~~Creazione prodotto~~
@@ -87,12 +89,12 @@
     - *Upload foto di prodotto*
     - *Pagina di conferma prestito per confermare prodotto depositato nel locker*
     - Elenco di prestiti attivi (sia prodotti dati che ricevuti)
+    - Elenco propri oggetti
 - **Priorità 2**:
     - Vista di storico prodotti inseriti
     - Vista di storico prestiti richiesti
 - **Priorità 3**:
     - Pagina di termine prestito con conferma prodotto depositato
-    - Vista tutti prodotti per utente
 - **Priorità 4**:
     - Pagina di modifica/recupero password
 
@@ -122,7 +124,7 @@
 ## Login con OAuth
 GET `/api/signinGoogle`
 GET `/api/signinGoogle/callback`
-`/aftergooglelogin?data={base64 del json}`
+`/afterOAuthLogin?data={base64 del json}`
 oppure
 GET `/api/signinFacebook`
 GET `/api/signinFacebook/callback`
@@ -207,21 +209,29 @@ GET `/api/signinFacebook/callback`
 ![[design files/Drawing 2022-11-22 18.55.58.excalidraw.png]]
 
 ## Storico prestiti effettuati
-GET `/api/loans/ended`   **<--- DA CAMBIARE**
+| Num | Client | Direzione | Server                 | Struttura dati                                                                                                                                                             |
+| --- | ------ | --------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   |        | ->        | GET `/api/loans/ended` |                                                                                                                                                                            |
+| 2   |        | <-        |                        | `loans` (array di oggetti con `requestDate`, `startLoanDate`, `terminationDate`, `product` (oggetto con: `id`, `title`), `borrower` (oggetto con `id`, `name`, `surname`)) |
 
 ## Storico prestiti richiesti
-GET `/api/loans/requested`
+| Num | Client | Direzione | Server                     | Struttura dati                                                                                                                                                          |
+| --- | ------ | --------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   |        | ->        | GET `/api/loans/requested` |                                                                                                                                                                         |
+| 2   |        | <-        |                            | `loans` (array di oggetti con `requestDate`, `startLoanDate`, `terminationDate`, `product` (oggetto con: `id`, `title`), `owner` (oggetto con `id`, `name`, `surname`)) |
+
 
 ## Termine prestito con conferma prodotto depositato
-GET `/api/loan/close/{idProduct}`
+| Num | Client | Direzione | Server                                                                                                                 | Struttura dati |
+| --- | ------ | --------- | ---------------------------------------------------------------------------------------------------------------------- | -------------- |
+| 1   |        | ->        | GET `/api/loan/close/{idProduct}`                                                                                      |                |
+| 2   |        | <-        | Aggiorna il campo `terminationDate` della tabella `userBorrowProducts`, invia email di conferma agli utenti, torna 200 |                |
 
-## Lista prodotti per propietario
-GET `/api/user/{id}/products`
+## Lista prodotti per proprietario
 | Num | Client                   | Direzione | Server                                                           | Struttura dati                                                                                                                                                                                                                                                    |
-|-----|--------------------------|-----------|------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1   |                          | ->        | GET `/api/user/{id}/products`                                    | `id` utente                                                                                                                                                                                                                                                       |
+| --- | ------------------------ | --------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   |                          | ->        | GET `/api/user/{id}/products`                                    |                                                                                                                                                                                                                                                                   |
 | 2   |                          | <-        | Legge utente dal db e ritorna tutti gli oggetti da lui posseduti | `products` (array di oggetti con `id`, `idOwner`, `user` (oggetto con `name`, `surname` e `province`), `title`, `description`, `maxLoanDays`, `insertionDate`, `lockerList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`)) |
 | 3   | Mostra i dati all'utente |           |                                                                  |                                                                                                                                                                                                                                                                   |
 
 ## Modifica/recupero password
-
