@@ -21,12 +21,22 @@ router.get('/:id', function (req, res){
 
 router.get('/:id/products', async function(req, res){
     try {
-        const productsByOwner = await Product.findAll({
+        const products = await Product.findAll({
             where: {
                 idOwner: req.params.id
+            },
+            attributes: {
+                exclude: ['picture', 'createdAt', 'updatedAt']
+            },
+            include: {
+                model: User,
+                attributes: ['name', 'surname', 'province', 'lockerList']
             }
         });
+
+        const productsByOwner = {products}
         res.json(productsByOwner);
+
     } catch (error) {
         console.error(error);
         res.sendStatus(500);

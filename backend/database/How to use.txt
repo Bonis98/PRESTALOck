@@ -1,4 +1,4 @@
-Create a empty DB (running app.js creates it)
+Create an empty DB (running app.js creates it)
 
 Inside the `database` folder:
 -Run 'npx sequelize-cli db:seed:all' to populate DB with demo data
