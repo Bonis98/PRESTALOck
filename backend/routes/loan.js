@@ -5,6 +5,7 @@ const {User} = require("../database/models/user");
 const fetch = require("node-fetch");
 const moment = require("moment");
 const sendMail = require("../utils/mailUtils");
+const {Op} = require("sequelize");
 const router = express.Router();
 
 async function checkDuplicate(product){
@@ -20,7 +21,7 @@ async function checkDuplicate(product){
     }
 }
 
-router.get('/:idProduct', async function (req, res) {
+router.get('/start/:idProduct', async function (req, res) {
     let receiverUnlockCode;
     let slotIndex;
     try {
@@ -119,6 +120,25 @@ router.get('/:idProduct', async function (req, res) {
         }
         await sendMail(mailObjOwner)
         res.sendStatus(200)
+    } catch (error) {
+        console.error(error)
+        res.sendStatus(500)
+    }
+})
+
+router.get('/close/:idProduct', async function(req, res){
+    try {
+
+        UserBorrowProduct.findOne({
+            where: {
+                idProduct: req.params.idProduct,
+                loanStartDate: {
+                    [Op.not]: null
+                },
+                terminationDate: null
+            }
+        })
+    //TODO: finish route
     } catch (error) {
         console.error(error)
         res.sendStatus(500)

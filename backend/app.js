@@ -21,7 +21,7 @@ const book = require('./routes/book')
 const product = require('./routes/product');
 const products = require ('./routes/products');
 const loans = require ('./routes/loans');
-const startLoan = require('./routes/start-loan')
+const loan = require('./routes/loan');
 const {User} = require("./database/models/user");
 const {Product} = require("./database/models/product");
 const {UserBorrowProduct} = require("./database/models/userBorrowProduct");
@@ -73,7 +73,7 @@ app.use('/api/product', product)
 app.use('/api/products', products);
 app.use('/api/loans', loans);
 app.use('/api/book', book);
-app.use('/api/start-loan', startLoan);
+app.use('/api/loan', loan);
 app.use('/', express.static('public'));
 
 
