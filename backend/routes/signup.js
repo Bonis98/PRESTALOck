@@ -45,7 +45,11 @@ router.post('/', function (req, res, next){
                 res.sendStatus(500);
             }
             User.create(userData).then(() => {
-                res.status(200).json({token: userData.token});
+                res.status(200).json({
+                    token: userData.token,
+                    name: userData.name,
+                    surname: userData.surname
+                });
             },(error) => {
                 console.error(error)
                 res.sendStatus(500);
