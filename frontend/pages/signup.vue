@@ -40,7 +40,7 @@
         Data di nascita
       </div>
       <div>
-        <Input v-model="dateOfBirth" />
+        <Input v-model="dateOfBirth" type="date" />
       </div>
       <div class="mt-3">
         Provincia
@@ -109,48 +109,17 @@ export default {
 
   methods: {
     async getProvinces () {
-      // richiesta simulata
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      this.allProvinces = [
-        { val: 'Milano', name: 'Milano' },
-        { val: 'Cremona', name: 'Cremona' },
-        { val: 'Bergamo', name: 'Bergamo' },
-        { val: 'Brescia', name: 'Brescia' },
-        { val: 'Venezia', name: 'Venezia' },
-        { val: 'Modena', name: 'Modena' },
-        { val: 'Bologna', name: 'Bologna' },
-        { val: 'Arezzo', name: 'Arezzo' }
-      ]
-      this.loading = false
-    }, /*
-    async getProvinces () {
-      try {
-        const response = await fetch('/api/provinces', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-
-        if (!response.ok) {
-          if (response.status == 400) {
-            const data = await response.json()
-            throw data.errortext
-          } else {
-            throw `Si è verificato un errore. (${response.status})`
-          }
+      const result = await this.$callApi('/api/provinces', 'GET')
+      if (result.data) {
+        for (const prov of result.data.provinces) {
+          this.allProvinces.push({
+            val: prov,
+            name: prov
+          })
         }
-
-        const data = await response.json()
-        //data got
-
-      } catch (ex) {
-        console.error(ex)
-        alert(ex)
-        this.loading = false
-        return
       }
-    } */
+      this.loading = false
+    },
 
     async signup () {
       if (this.password != this.confirmPassword) {
@@ -158,69 +127,55 @@ export default {
         return
       }
       if (this.email == '') {
-        alert('Inserisci email')
+        alert('Inserisci l\'indirizzo email')
         return
       }
       if (this.password == '') {
-        alert('Inserisci password')
+        alert('Inserisci la password')
         return
       }
       if (this.name == '') {
-        alert('Inserisci name')
+        alert('Inserisci il nome')
         return
       }
       if (this.surname == '') {
-        alert('Inserisci surname')
+        alert('Inserisci il cognome')
         return
       }
       if (this.dateOfBirth == '') {
-        alert('Inserisci dateOfBirth')
+        alert('Inserisci la data di nascita')
         return
       }
       if (this.province == '') {
-        alert('Inserisci province')
+        alert('Inserisci la provincia')
         return
       }
       if (this.gender == '') {
-        alert('Inserisci gender')
+        alert('Inserisci il sesso')
         return
       }
-      try {
-        const response = await fetch('/api/signup', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: this.email,
-            password: this.password,
-            name: this.name,
-            surname: this.surname,
-            dateOfBirth: this.dateOfBirth,
-            province: this.province,
-            gender: this.gender
-          })
-        })
 
-        if (!response.ok) {
-          if (response.status == 400) {
-            const data = await response.json()
-            throw data.errortext
-          } else {
-            throw `Si è verificato un errore. (${response.status})`
-          }
-        }
+      // FROM yyyy-mm-dd to dd-mm-yyyy
+      let formattedDate = this.dateOfBirth.split('-')
+      formattedDate = `${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}`
 
-        const data = await response.json()
-        // data got
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('name', data.name + ' ' + data.surname)
-        this.$router.push({ path: '/login' })
-      } catch (ex) {
-        console.error(ex)
-        alert(ex)
-        this.loading = false
+      const result = await this.$callApi('/api/signup', 'POST', {
+        email: this.email,
+        password: this.password,
+        name: this.name,
+        surname: this.surname,
+        dateOfBirth: formattedDate,
+        province: this.province,
+        gender: this.gender
+      })
+
+      if (result.data) {
+        localStorage.setItem('token', result.data.token)
+        localStorage.setItem('name', result.data.name + ' ' + result.data.surname)
+        this.$router.push({ path: '/editLocker' })
       }
+
+      this.loading = false
     },
 
     login () {
