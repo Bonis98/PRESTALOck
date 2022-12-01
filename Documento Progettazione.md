@@ -209,16 +209,16 @@ GET `/api/signinFacebook/callback`
 ![[design files/Drawing 2022-11-22 18.55.58.excalidraw.png]]
 
 ## Storico prestiti effettuati
-| Num | Client | Direzione | Server                 | Struttura dati                                                                                                                                                             |
-| --- | ------ | --------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   |        | ->        | GET `/api/loans/ended` |                                                                                                                                                                            |
-| 2   |        | <-        |                        | `loans` (array di oggetti con `requestDate`, `startLoanDate`, `terminationDate`, `product` (oggetto con: `id`, `title`), `borrower` (oggetto con `id`, `name`, `surname`)) |
+| Num | Client | Direzione | Server                 | Struttura dati                                                                                                                                                                   |
+|-----|--------|-----------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1   |        | ->        | GET `/api/loans/ended` |                                                                                                                                                                                  |
+| 2   |        | <-        |                        | `loans` (array di oggetti con `id`, `requestDate`, `startLoanDate`, `terminationDate`, `product` (oggetto con: `id`, `title`), `borrower` (oggetto con `id`, `name`, `surname`)) |
 
 ## Storico prestiti richiesti
-| Num | Client | Direzione | Server                     | Struttura dati                                                                                                                                                          |
-| --- | ------ | --------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   |        | ->        | GET `/api/loans/requested` |                                                                                                                                                                         |
-| 2   |        | <-        |                            | `loans` (array di oggetti con `requestDate`, `startLoanDate`, `terminationDate`, `product` (oggetto con: `id`, `title`), `owner` (oggetto con `id`, `name`, `surname`)) |
+| Num | Client | Direzione | Server                     | Struttura dati                                                                                                                                                                |
+|-----|--------|-----------|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1   |        | ->        | GET `/api/loans/requested` |                                                                                                                                                                               |
+| 2   |        | <-        |                            | `loans` (array di oggetti con `id`, `requestDate`, `startLoanDate`, `terminationDate`, `product` (oggetto con: `id`, `title`), `owner` (oggetto con `id`, `name`, `surname`)) |
 
 
 ## Termine prestito con conferma prodotto depositato
