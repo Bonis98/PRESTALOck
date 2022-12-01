@@ -80,7 +80,7 @@ export default {
         if (!response.ok) {
           if (response.status == 400) {
             const data = await response.json()
-            throw data.errortext
+            throw data.errorText
           } else {
             throw `Si è verificato un errore. (${response.status})`
           }

@@ -28,10 +28,10 @@ router.post('/', async function (req, res) {
                         surname: user.surname
                     });
                 } else {
-                    res.status(400).json({errortext: "Indirizzo email o password errati"});
+                    res.status(400).json({errorText: "Indirizzo email o password errati"});
                 }
             } else {
-                res.status(400).json({errortext: "Indirizzo email o password errati"});
+                res.status(400).json({errorText: "Indirizzo email o password errati"});
             }
         } catch (error) {
             console.error(error);

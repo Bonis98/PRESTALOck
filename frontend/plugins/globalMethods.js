@@ -18,7 +18,7 @@ export default (context, inject) => {
         }
         if (contentType && contentType.includes('application/json')) {
           throw {
-            message: (await response.json()).errortext,
+            message: (await response.json()).errorText,
             status: response.status
           }
         } else {
