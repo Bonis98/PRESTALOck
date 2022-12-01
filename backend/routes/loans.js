@@ -110,11 +110,7 @@ router.get('/ended', async function(req, res){
             }
             ]
 
-        }).catch(error =>{
-            console.error(error.name);
-            console.error(error.parent);
         });
-
 
         let loan;
         for (loan of loans){
@@ -123,7 +119,6 @@ router.get('/ended', async function(req, res){
         }
         const allLoansSucceeded = {loans}
         res.json(allLoansSucceeded);
-
 
     } catch (error) {
         console.error(error);
@@ -169,6 +164,7 @@ router.get('/requested', async function(req, res){
 
         const  allRequestedProducts = {loans}
         res.json(allRequestedProducts);
+
     } catch (error) {
         console.error(error);
         res.sendStatus(500);
