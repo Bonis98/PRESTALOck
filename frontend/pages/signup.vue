@@ -10,18 +10,19 @@
         Indirizzo email
       </div>
       <div>
-        <Input v-model="email" type="email" />
+        <Input v-if="!fromOAuth" v-model="email" type="email" />
+        <span v-if="fromOAuth"> {{ email }} </span>
       </div>
-      <div class="mt-3">
+      <div v-if="!fromOAuth" class="mt-3">
         Password
       </div>
-      <div>
+      <div v-if="!fromOAuth">
         <Input v-model="password" type="password" />
       </div>
-      <div class="mt-3">
+      <div v-if="!fromOAuth" class="mt-3">
         Conferma password
       </div>
-      <div>
+      <div v-if="!fromOAuth">
         <Input v-model="confirmPassword" type="password" />
       </div>
       <div class="mt-12">
@@ -63,12 +64,6 @@
       <div class="mt-12">
         <Button text="Torna al login" @click="signin()" />
       </div>
-      <div class="mt-12">
-        <Button text="Registrati con Facebook" @click="facebook()" />
-      </div>
-      <div class="mt-12">
-        <Button text="Registrati con Google" @click="google()" />
-      </div>
     </div>
   </div>
 </template>
@@ -86,7 +81,8 @@ export default {
       dateOfBirth: '',
       province: '',
       gender: '*',
-      allProvinces: []
+      allProvinces: [],
+      fromOAuth: false
     }
   },
 
@@ -104,6 +100,19 @@ export default {
   },
 
   mounted () {
+    const data = new URLSearchParams(window.location.search).get('data')
+    if (data) {
+      const parsedData = JSON.parse(Buffer.from(data, 'base64').toString('utf-8'))
+      this.fromOAuth = true
+      this.email = parsedData.userData.email
+      this.name = parsedData.userData.name
+      this.surname = parsedData.userData.surname
+      let date = parsedData.userData.dateOfBirth.split('-')
+      date = `${date[2]}-${date[1]}-${date[0]}`
+      this.dateOfBirth = date
+      this.gender = parsedData.userData.gender
+    }
+
     this.getProvinces()
   },
 
@@ -122,7 +131,7 @@ export default {
     },
 
     async signup () {
-      if (this.password != this.confirmPassword) {
+      if (this.password != this.confirmPassword && !this.fromOAuth) {
         alert('Le password devono coincidere')
         return
       }
@@ -130,7 +139,7 @@ export default {
         alert('Inserisci l\'indirizzo email')
         return
       }
-      if (this.password == '') {
+      if (this.password == '' && !this.fromOAuth) {
         alert('Inserisci la password')
         return
       }
@@ -180,12 +189,6 @@ export default {
 
     signin () {
       this.$router.push({ path: '/signin' })
-    },
-    facebook () {
-      this.$router.push({ path: '/api/signinFacebook' })
-    },
-    google () {
-      this.$router.push({ path: '/api/signinGoogle' })
     }
   }
 }

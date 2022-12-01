@@ -65,11 +65,12 @@ router.get('/callback', async function (req, res) {
         const user = await User.findOne({
             where: {
                 email: userInfo.email
-            }
+            },
+            attributes: ['name', 'surname', 'token']
         })
         if (user){
             console.log('user already exists');
-            let base64Data = Buffer.from(JSON.stringify({token: user.token})).toString("base64")
+            let base64Data = Buffer.from(JSON.stringify(user.dataValues)).toString("base64")
             res.redirect('/afterOAuthLogin?data=' + base64Data)
             return;
         }
@@ -112,7 +113,7 @@ router.get('/callback', async function (req, res) {
     }
     try {
         userInfo.dateOfBirth = moment(userInfo.dateOfBirth, 'YYYY-MM-DD').format('DD-MM-YYYY')
-        let base64Data = Buffer.from(JSON.stringify(userInfo)).toString("base64")
+        let base64Data = Buffer.from(JSON.stringify({ userData: userInfo })).toString("base64")
         res.redirect('/afterOAuthLogin?data=' + base64Data)
     }
     catch (error) {

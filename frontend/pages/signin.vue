@@ -21,6 +21,12 @@
         <div class="mt-12">
           <Button text="Registrati" @click="signup()" />
         </div>
+        <div class="mt-3">
+          <Button text="Accedi con Google" @click="google()" />
+        </div>
+        <div class="mt-3">
+          <Button text="Accedi con Facebook" @click="facebook()" />
+        </div>
       </div>
     </div>
   </div>
@@ -93,6 +99,14 @@ export default {
 
     signup () {
       this.$router.push({ path: '/signup' })
+    },
+
+    google () {
+      location.assign('/api/signinGoogle')
+    },
+
+    facebook () {
+      location.assign('/api/signinFacebook')
     }
   }
 }
