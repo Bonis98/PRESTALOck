@@ -3,6 +3,7 @@ const {UserBorrowProduct} = require("../database/models/userBorrowProduct");
 const {User} = require("../database/models/user");
 const {Op} = require("sequelize");
 const {Product} = require("../database/models/product");
+const {getLockerList} = require("../utils/SintraApiUtils");
 const router = express.Router();
 
 router.get('/', async function (req, res) {
@@ -88,21 +89,41 @@ router.get('/ended', async function(req, res){
             attributes: ['id']
         });
 
-        const allLoansSucceeded = await UserBorrowProduct.findAll({
+        const loans = await UserBorrowProduct.findAll({
             where:{
                 terminationDate: {
                     [Op.not]: null
                 }
             },
-            include: {
+            attributes: ['id', 'requestDate', 'loanStartDate', 'terminationDate'],
+            include: [{
                 model: Product,
+                required: true,
                 where: {
                     idOwner: currentUser.id
-                }
+                },
+                attributes: ['id', 'title']
+            },{
+                model: User,
+                required: true,
+                attributes: ['id', 'name', 'surname']
             }
+            ]
+
+        }).catch(error =>{
+            console.error(error.name);
+            console.error(error.parent);
         });
 
+
+        let loan;
+        for (loan of loans){
+            loan.dataValues['borrower'] = loan.user.dataValues;
+            delete loan.user.dataValues;
+        }
+        const allLoansSucceeded = {loans}
         res.json(allLoansSucceeded);
+
 
     } catch (error) {
         console.error(error);
@@ -120,14 +141,33 @@ router.get('/requested', async function(req, res){
             },
             attributes: ['id']
         });
-        const allRequestedProducts = await UserBorrowProduct.findAll({
+        const loans = await UserBorrowProduct.findAll({
             where: {
                 idUser: currentUser.id,
                 terminationDate: {
                     [Op.not]: null
                 }
+            },
+            attributes: ['id','requestDate', 'loanStartDate', 'terminationDate'],
+            include:{
+                model: Product,
+                required: true,
+                attributes: ['id', 'title'],
+                include: {
+                    model: User,
+                    required: true,
+                    attributes: ['id','name', 'surname']
+                }
             }
-        });
+        })
+
+        let loan;
+        for (loan of loans){
+            loan.dataValues['owner'] = loan.product.user.dataValues;
+            delete loan.product.user.dataValues;
+        }
+
+        const  allRequestedProducts = {loans}
         res.json(allRequestedProducts);
     } catch (error) {
         console.error(error);

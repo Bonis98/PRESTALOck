@@ -30,10 +30,15 @@ router.get('/:id/products', async function(req, res){
             },
             include: {
                 model: User,
+                required: true,
                 attributes: ['name', 'surname', 'province', 'lockerList']
             }
         });
-
+        let product;
+        for (product of products){
+            product.dataValues['lockerList'] = await getLockerList(product.user.lockerList);
+            delete product.user.dataValues.lockerList;
+        }
         const productsByOwner = {products}
         res.json(productsByOwner);
 
