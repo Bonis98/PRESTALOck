@@ -71,7 +71,9 @@ router.get('/', async function (req, res) {
                 product.dataValues.alreadyStarted = false
             delete product.dataValues.product
         })
-        res.json(lentProducts.concat(borrowedProducts))
+        let loans = lentProducts.concat(borrowedProducts)
+        loans = {loans}
+        res.json(loans)
     }
     catch (error) {
         console.error(error)
