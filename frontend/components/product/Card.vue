@@ -1,6 +1,10 @@
 <template>
-  <NuxtLink :to="{ path: '/productDetails', query: { productId: passedProduct.id } }">
-    <div class="border border-solid border-gray-200 rounded-md shadow w-96 flex-shrink-0 flex flex-col items-center cursor-pointer" style="height: 32rem;">
+  <NuxtLink
+    :to="{ path: '/productDetails', query: { productId: passedProduct.id } }"
+    class="w-96"
+    style="max-width: 95vw;"
+  >
+    <div class="border border-solid border-gray-200 rounded-md shadow flex-shrink-0 flex flex-col items-center cursor-pointer" style="height: 32rem;">
       <!-- image div -->
       <div class="h-3/4 overflow-hidden">
         <img class="w-full" :src="imageUrl">
@@ -41,7 +45,7 @@ export default {
     },
 
     formattedDate () {
-      return this.product ? this.$formatDate(this.passedProduct.insertionDate) : ''
+      return this.passedProduct ? this.$formatDate(this.passedProduct.insertionDate) : ''
     }
   }
 }
