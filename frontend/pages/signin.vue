@@ -16,7 +16,7 @@
           <Input v-model="password" type="password" />
         </div>
         <div class="mt-3">
-          <Button text="Login" @click="login()" />
+          <Button text="Login" @click="signin()" />
         </div>
         <div class="mt-12">
           <Button text="Registrati" @click="signup()" />
@@ -50,7 +50,7 @@ export default {
   },
 
   methods: {
-    async login () {
+    async signin () {
       this.loading = true
 
       if (this.email == '' || this.password == '') {

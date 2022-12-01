@@ -13,7 +13,7 @@ export default (context, inject) => {
         console.error(response)
         const contentType = response.headers.get('content-type')
         if (response.status == 401) {
-          location.assign('/login')
+          location.assign('/signin')
           return
         }
         if (contentType && contentType.includes('application/json')) {

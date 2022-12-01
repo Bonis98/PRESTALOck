@@ -61,7 +61,7 @@
         <Button text="Registrati" @click="signup()" />
       </div>
       <div class="mt-12">
-        <Button text="Torna al login" @click="login()" />
+        <Button text="Torna al login" @click="signin()" />
       </div>
       <div class="mt-12">
         <Button text="Registrati con Facebook" @click="facebook()" />
@@ -178,8 +178,8 @@ export default {
       this.loading = false
     },
 
-    login () {
-      this.$router.push({ path: '/login' })
+    signin () {
+      this.$router.push({ path: '/signin' })
     },
     facebook () {
       this.$router.push({ path: '/api/signinFacebook' })

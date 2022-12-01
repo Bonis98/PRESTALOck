@@ -29,7 +29,7 @@ export default {
   methods: {
     logout () {
       if (confirm('Sei sicuro di voler uscire?')) {
-        this.$router.push({ path: '/login' })
+        this.$router.push({ path: '/signin' })
       }
     }
   }
