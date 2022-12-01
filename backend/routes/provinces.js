@@ -3,10 +3,11 @@ const fs = require("fs");
 const router = express.Router();
 
 router.get('/', function (req, res) {
-    let provinceList = [];
+    let provinces = [];
     try {
         const data = fs.readFileSync('./provinces.txt', 'binary');
-        provinceList = data.split(/\r?\n/);
+        provinces = data.split(/\r?\n/);
+        const provinceList = {provinces}
         res.json(provinceList);
     } catch (err) {
         console.error(err);

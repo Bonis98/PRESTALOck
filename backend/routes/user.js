@@ -12,7 +12,8 @@ router.get('/:id', function (req, res){
         attributes: ['id', 'name', 'surname', 'province', 'lockerList']
     }).then(async (user) => {
         user.dataValues['lockerList'] = await getLockerList(user.lockerList);
-        res.json(user)
+        let userInfo = {user}
+        res.json(userInfo)
     }, (error) => {
         console.error(error);
         res.sendStatus(500);

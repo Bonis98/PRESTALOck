@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 router.get('/', function (req, res){
-    let lockerProvinceList = [];
+    let listalocker = [];
     let currentUserProvince;
 
     //find user in DB to retrieve its province
@@ -26,10 +26,11 @@ router.get('/', function (req, res){
     function filterJSON (json){
         findInDb().then(() => {
             for (let i = 0; i<json.length; i++){
-            if (currentUserProvince === json[i].provincia){
-                lockerProvinceList.push(json[i]);
+                if (currentUserProvince === json[i].provincia){
+                    listalocker.push(json[i]);
+                }
             }
-        }
+            const lockerProvinceList = {listalocker}
             res.json(lockerProvinceList);
         }, (error) => {
             console.error(error);
