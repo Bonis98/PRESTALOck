@@ -76,27 +76,27 @@
 ## Pagine del frontend
 *(corsivo: layout terminato, manca implementare chiamate ad API)*
 - **Priorità 1**:
-    - ~~Login~~
-    - *Registrazione*
-    - Modifica di locker dell'utente
-    - Login con OAuth
-    - Registrazione con OAuth
-    - Pagina `afterOAuthLogin`
-    - ~~Elenco tutti prodotti~~
-    - *Vista dettagli prodotto con tasto per richiesta prestito in locker specificato*
-    - ~~Creazione prodotto~~
-    - *Modifica prodotto (con flag `available`)*
-    - *Upload foto di prodotto*
-    - *Pagina di conferma prestito per confermare prodotto depositato nel locker*
-    - Elenco di prestiti attivi (sia prodotti dati che ricevuti)
-    - Elenco propri oggetti
+    - [x] Login
+    - [ ] *Registrazione*
+    - [ ] Modifica di locker dell'utente
+    - [ ] Login con OAuth
+    - [ ] Registrazione con OAuth
+    - [ ] Pagina `afterOAuthLogin`
+    - [x] Elenco tutti prodotti
+    - [ ] *Vista dettagli prodotto con tasto per richiesta prestito in locker specificato*
+    - [x] Creazione prodotto
+    - [ ] *Modifica prodotto (con flag `available`)*
+    - [ ] *Upload foto di prodotto*
+    - [ ] *Pagina di conferma prestito per confermare prodotto depositato nel locker*
+    - [ ] Elenco di prestiti attivi (sia prodotti dati che ricevuti)
+    - [ ] Elenco propri oggetti
 - **Priorità 2**:
-    - Vista di storico prodotti inseriti
-    - Vista di storico prestiti richiesti
+    - [ ] Vista di storico prodotti inseriti
+    - [ ] Vista di storico prestiti richiesti
 - **Priorità 3**:
-    - Pagina di termine prestito con conferma prodotto depositato
+    - [ ] Pagina di termine prestito con conferma prodotto depositato
 - **Priorità 4**:
-    - Pagina di modifica/recupero password
+    - [ ] Pagina di modifica/recupero password
 
 
 *Esempio pagina dettagli prodotto*
