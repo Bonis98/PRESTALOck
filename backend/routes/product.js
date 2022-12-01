@@ -18,16 +18,24 @@ router.post('/', async function (req, res) {
         const user = await User.findOne({
             where: {
                 token: req.get('Auth-Token'),
+                lockerList: {
+                    [Op.not]: null
+                }
             }
         });
-        const productInfo = {
-            idOwner: user.id,
-            title: req.body.title,
-            description: req.body.description,
-            maxLoanDays: req.body.maxLoanDays,
+        if (user){
+            const productInfo = {
+                idOwner: user.id,
+                title: req.body.title,
+                description: req.body.description,
+                maxLoanDays: req.body.maxLoanDays,
+            }
+            const product = await Product.create(productInfo)
+            res.json({id: product.id});
+        } else {
+            res.sendStatus(403);
         }
-        const product = await Product.create(productInfo)
-        res.json({id: product.id});
+
     } catch (error) {
         console.error(error);
         res.sendStatus(500);
