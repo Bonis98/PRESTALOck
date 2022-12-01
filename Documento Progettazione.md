@@ -82,9 +82,9 @@
     - [x] Login con OAuth Google
     - [x] Registrazione con OAuth Google
     - [x] Pagina `afterOAuthLogin` per Google
-    - [ ] Login con OAuth Facebook
-    - [ ] Registrazione con OAuth Facebook
-    - [ ] Pagina `afterOAuthLogin` per Facebook
+    - [x] Login con OAuth Facebook
+    - [x] Registrazione con OAuth Facebook
+    - [x] Pagina `afterOAuthLogin` per Facebook
     - [x] Elenco tutti prodotti
     - [ ] *Vista dettagli prodotto con tasto per richiesta prestito in locker specificato*
     - [ ] Creazione prodotto (In teoria finita, gestire però lo stato 403 quando non ha locker)
