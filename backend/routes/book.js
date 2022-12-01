@@ -71,9 +71,9 @@ router.post('/', async function (req, res) {
             }]
         });
 
-        //if the product does not exist, send status 409 and return
+        //if the product does not exist, send status 404 and return
         if (!product){
-            res.sendStatus(409);
+            res.sendStatus(404); // Not Found
             return;
         }
 
@@ -83,7 +83,8 @@ router.post('/', async function (req, res) {
 
         //the receiver cannot be the owner of the requested product //hookable
         if (userReceiver.id === product.idOwner){
-            res.sendStatus(409);
+            // TODO: send `errorText`
+            res.sendStatus(400); // Client error
             return;
         }
 
@@ -121,8 +122,9 @@ router.post('/', async function (req, res) {
             }
         });
 
-        if (respPost.status != 200){
-            res.sendStatus(409);
+        if (respPost.status != 200) {
+            // TODO: send `errorText`
+            res.sendStatus(503); // Service unavailable
             return;
         }
         const jsonSlotData = await respPost.json();
@@ -195,7 +197,7 @@ router.post('/', async function (req, res) {
     } catch (e) {
         if (e instanceof NoSlotError) {
             console.error(e.message);
-            res.sendStatus(409);
+            res.sendStatus(409); // Conflict
         } else {
             console.log(e);
             res.sendStatus(500);
