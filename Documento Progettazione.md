@@ -77,7 +77,7 @@
 *(corsivo: layout terminato, manca implementare chiamate ad API)*
 - **Priorità 1**:
     - [x] Login
-    - [ ] *Registrazione*
+    - [x] Registrazione
     - [ ] Modifica di locker dell'utente
     - [ ] Login con OAuth
     - [ ] Registrazione con OAuth
