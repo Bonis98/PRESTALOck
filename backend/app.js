@@ -84,12 +84,18 @@ const httpsOptions = {
     cert: fs.readFileSync('./certificates/server.cert')
 }
 
-const server = https.createServer(httpsOptions, app)
-    .listen(port, () => {
-        console.log('server running at ' + port)
-    })
+if (Process.env.SERVE_HTTP && Process.env.SERVE_HTTP == "true") {
+      http.createServer(app).listen(80, () => {
+        console.log('Server running. Listening on port ' + 80)
+    });
+} else {
+    https.createServer(httpsOptions, app)
+        .listen(port, () => {
+            console.log('Server running. Listening on port ' + port)
+        })
 
-http.createServer(function (req, res) {
-    res.writeHead(307, { "Location": "https://" + req.headers['host'] + req.url });
-    res.end();
-}).listen(80);
+    http.createServer(function (req, res) {
+        res.writeHead(307, { "Location": "https://" + req.headers['host'] + req.url });
+        res.end();
+    }).listen(80);
+}
