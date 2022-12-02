@@ -42,7 +42,7 @@ export default {
     return {
       loading: false,
       product: '',
-      availability: ''
+      availability: false
     }
   },
   watch: {
@@ -62,7 +62,7 @@ export default {
       const productId = this.$route.query.productId
       const result = await this.$callApi('/api/product/' + productId, 'GET')
       if (result.data) {
-        this.product = result.data
+        this.product = result.data.product
       }
       this.loading = false
     },
@@ -78,11 +78,13 @@ export default {
         title: this.product.title,
         description: this.product.description,
         maxLoanDays: this.product.maxLoanDays,
-        available: this.availability
+        availability: this.availability
       })
-      if (result.data) {
+      if (!result.error) {
         console.log(result.data)
+        this.$router.replace({ path: '/productDetails', query: { productId } })
         // this.$router.push({ path: '/productDetails/', query: { idProduct: productId } })
+        this.loading = false
       } else {
         // optional: do something if there's an error
         console.log(result.errorStatus)
