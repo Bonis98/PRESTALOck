@@ -35,7 +35,6 @@ router.post('/', async function (req, res) {
         } else {
             res.sendStatus(403); // Forbidden
         }
-
     } catch (error) {
         console.error(error);
         res.sendStatus(500);
@@ -193,7 +192,6 @@ async function checkOwner(token, idProduct) {
 //Limit file types to jpeg and png in multer
 function fileFilter(req, file, callback){
     if (file.mimetype != 'image/jpeg' && file.mimetype != 'image/png') {
-        //res.status(400).json({errorText: "Formato di file non supportato"})
         callback('Gli unici formati accettati sono jpeg e png', false)
     }
     else{

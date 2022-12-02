@@ -3,7 +3,6 @@ const {UserBorrowProduct} = require("../database/models/userBorrowProduct");
 const {User} = require("../database/models/user");
 const {Op} = require("sequelize");
 const {Product} = require("../database/models/product");
-const {getLockerList} = require("../utils/SintraApiUtils");
 const router = express.Router();
 
 router.get('/', async function (req, res) {
