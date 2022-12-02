@@ -46,7 +46,7 @@ router.post('/:id/updateImage', upload.single('image'), async function (req, res
     try {
         //If user doesn't own the product return unauthorized
         if (!(await checkOwner(req.get('Auth-Token'), req.params.id))) {
-            res.sendStatus(401)
+            res.sendStatus(403) // Forbidden
             return;
         }
         //Insert image in DB
@@ -176,10 +176,12 @@ async function checkOwner(token, idProduct) {
         });
         //Check that user is updating a product that she owns
         let exists = 0
-        for (let i = 0; i < products.products.length; i++) {
-            if (products.products[i].id == idProduct) {
-                exists = !exists
-                break
+        if (products) {
+            for (let i = 0; i < products.products.length; i++) {
+                if (products.products[i].id == idProduct) {
+                  exists = !exists
+                  break
+                }
             }
         }
         return exists
