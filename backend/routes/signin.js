@@ -24,6 +24,7 @@ router.post('/', async function (req, res) {
                     //Send back token header for authentication
                     res.status(200).json({
                         token: user.token,
+                        userId: user.id,
                         name: user.name,
                         surname: user.surname
                     });

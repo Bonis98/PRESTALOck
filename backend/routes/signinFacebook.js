@@ -64,7 +64,7 @@ router.get('/callback', async function (req, res) {
             where: {
                 email: userInfo.email
             },
-            attributes: ['name', 'surname', 'token']
+            attributes: [['id', 'userId'], 'name', 'surname', 'token']
         })
         //If already exists, send back token
         if (user){
