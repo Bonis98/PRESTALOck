@@ -108,9 +108,7 @@ export default {
       this.email = parsedData.userData.email
       this.name = parsedData.userData.name
       this.surname = parsedData.userData.surname
-      let date = parsedData.userData.dateOfBirth.split('-')
-      date = `${date[2]}-${date[1]}-${date[0]}`
-      this.dateOfBirth = date
+      this.dateOfBirth = parsedData.userData.dateOfBirth
       this.gender = parsedData.userData.gender
     }
 
@@ -132,49 +130,45 @@ export default {
     },
 
     async signup () {
-      if (this.password != this.confirmPassword && !this.fromOAuth) {
+      if (!this.fromOAuth && (this.password != this.confirmPassword)) {
         alert('Le password devono coincidere')
         return
       }
-      if (this.email == '') {
+      if (!this.email || this.email == '') {
         alert('Inserisci l\'indirizzo email')
         return
       }
-      if (this.password == '' && !this.fromOAuth) {
+      if (!this.fromOAuth && (!this.password || this.password == '')) {
         alert('Inserisci la password')
         return
       }
-      if (this.name == '') {
+      if (!this.name || this.name == '') {
         alert('Inserisci il nome')
         return
       }
-      if (this.surname == '') {
+      if (!this.surname || this.surname == '') {
         alert('Inserisci il cognome')
         return
       }
-      if (this.dateOfBirth == '') {
+      if (!this.dateOfBirth || this.dateOfBirth == '') {
         alert('Inserisci la data di nascita')
         return
       }
-      if (this.province == '') {
+      if (!this.province || this.province == '') {
         alert('Inserisci la provincia')
         return
       }
-      if (this.gender == '') {
+      if (!this.gender || this.gender == '') {
         alert('Inserisci il sesso')
         return
       }
-
-      // FROM yyyy-mm-dd to dd-mm-yyyy
-      let formattedDate = this.dateOfBirth.split('-')
-      formattedDate = `${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}`
 
       const result = await this.$callApi('/api/signup', 'POST', {
         email: this.email,
         password: this.password,
         name: this.name,
         surname: this.surname,
-        dateOfBirth: formattedDate,
+        dateOfBirth: this.dateOfBirth,
         province: this.province,
         gender: this.gender
       })
