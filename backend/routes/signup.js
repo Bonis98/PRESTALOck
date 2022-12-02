@@ -1,6 +1,4 @@
-const moment = require('moment');
 const express = require('express');
-const bcrypt = require("bcrypt");
 const crypto = require('crypto');
 const {User} = require("../database/models/user");
 const signupUtils = require("../utils/signupUtils");
@@ -34,15 +32,9 @@ router.post('/', function (req, res, next){
                 province: req.body.province,
                 token: crypto.randomBytes(20).toString('hex'),
             };
-            //Calculate hash of the password
-            try {
-                if (req.body.password){
-                    let hash = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
-                    userData.password = hash
-                }
-            } catch (error) {
-                console.error(error)
-                res.sendStatus(500);
+            //Hashing is done by sequelize
+            if (req.body.password){
+                userData.password = req.body.password
             }
             User.create(userData).then((userData) => {
                 res.status(200).json({
