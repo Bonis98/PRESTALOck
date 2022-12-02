@@ -24,6 +24,13 @@ UserBorrowProduct.init({
             isInt: true,
         }
     },
+    returnLockerSlot: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+            isInt: true,
+        }
+    },
     terminationDate: {
         type: DataTypes.DATEONLY,
         allowNull: true,
