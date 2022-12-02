@@ -89,7 +89,7 @@
     - [ ] *Vista dettagli prodotto con tasto per richiesta prestito in locker specificato*
     - [ ] Creazione prodotto (In teoria finita, gestire però lo stato 403 quando non ha locker)
     - [ ] *Modifica prodotto (con flag `available`)*
-    - [ ] *Upload foto di prodotto*
+    - [x] Upload foto di prodotto
     - [ ] *Pagina di conferma prestito per confermare prodotto depositato nel locker*
     - [ ] Elenco di prestiti attivi (sia prodotti dati che ricevuti)
     - [ ] Elenco propri oggetti
@@ -175,10 +175,10 @@ GET `/api/signinFacebook/callback`
 | 3   | Notifica utente dell'esito, se ok chiede se caricare foto (vedere flusso sotto). Infine mostra il nuovo prodotto |           |                                                                                                                                                        |                                                                 |
 
 ## Creazione/modifica immagine prodotto
-| Num | Client | Direzione | Server                                                                                                                                                   | Struttura dati                                                                                                              |
-| --- | ------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| 1   |        | ->        | POST `/api/product/{id}/updateImage`                                                                                                                     | `image` (**Attenzione** non è json ma `multipart/form-data`. L'immagine può avere come mimetype `image/jpeg` o `image/png`) |
-| 2   |        | <-        | Se è attivo un prestito con questo prodotto, torna 400. Altrimenti (comprime?) e salva foto come blob binario in db. Ritorna 200 oppure 500 se da errore |                                                                                                                             |
+| Num | Client | Direzione | Server                                                                                                                                                                                                             | Struttura dati                                                                                                              |
+| --- | ------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| 1   |        | ->        | POST `/api/product/{id}/updateImage`                                                                                                                                                                               | `image` (**Attenzione** non è json ma `multipart/form-data`. L'immagine può avere come mimetype `image/jpeg` o `image/png`) |
+| 2   |        | <-        | Se l'utente non è il proprietario, torna 403 (Forbidden). Se è attivo un prestito con questo prodotto, torna 400. Altrimenti (comprime?) e salva foto come blob binario in db. Ritorna 200 oppure 500 se da errore |                                                                                                                             |
 
 ## Modifica prodotto
 | Num | Client                        | Direzione | Server                                                                                                                                                                                                                                                                                          | Struttura dati                                                                  |
