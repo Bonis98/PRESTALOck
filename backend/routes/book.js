@@ -1,10 +1,10 @@
 const express = require("express");
 const {Product} = require ("../database/models/product");
-const moment = require("moment");
 const fetch = require("node-fetch");
 const {UserBorrowProduct} = require("../database/models/userBorrowProduct");
 const {User} = require("../database/models/user");
 const sendMail = require("../utils/mailUtils");
+const {sequelize} = require("../database/connection");
 const router = express.Router();
 
 class NoSlotError extends Error {
@@ -55,6 +55,7 @@ router.post('/', async function (req, res) {
     }
 
 
+    const t = await sequelize.transaction()
     try {
 
         //find the product requested for book
@@ -134,7 +135,8 @@ router.post('/', async function (req, res) {
         }, {
             where: {
                 id: product.id
-            }
+            },
+            transaction: t
         });
 
         UserBorrowProductData = {
@@ -144,7 +146,7 @@ router.post('/', async function (req, res) {
         }
 
         //creating new entry in UserBorrowProduct (new book)
-        await UserBorrowProduct.create(UserBorrowProductData);
+        await UserBorrowProduct.create(UserBorrowProductData, {transaction: t});
 
         let receiverUnlockCode = jsonSlotData.status.unlockCodes[0];
 
@@ -192,8 +194,10 @@ router.post('/', async function (req, res) {
         }
         await sendMail(mailObjOwner);
 
+        await t.commit()
         res.sendStatus(200);
     } catch (e) {
+        await t.rollback()
         if (e instanceof NoSlotError) {
             console.error(e.message);
             res.sendStatus(409); // Conflict

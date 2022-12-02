@@ -6,6 +6,7 @@ const fetch = require("node-fetch");
 const moment = require("moment");
 const sendMail = require("../utils/mailUtils");
 const {Op} = require("sequelize");
+const {sequelize} = require("../database/connection");
 const router = express.Router();
 
 async function checkDuplicate(product){
@@ -24,6 +25,7 @@ async function checkDuplicate(product){
 router.get('/start/:idProduct', async function (req, res) {
     let receiverUnlockCode;
     let slotIndex;
+    const t = await sequelize.transaction()
     try {
         const currentUser = await User.findOne({
             where: {
@@ -90,6 +92,7 @@ router.get('/start/:idProduct', async function (req, res) {
                 idProduct: product.id,
                 terminationDate: null
             },
+            transaction: t
         })
         let emailSubject = "L'oggetto prenotato è pronto per il ritiro"
         let returningDate = moment().add(10, 'days').locale('it').calendar({
@@ -119,16 +122,19 @@ router.get('/start/:idProduct', async function (req, res) {
             text: emailText
         }
         await sendMail(mailObjOwner)
+        await t.commit()
         res.sendStatus(200)
     } catch (error) {
         console.error(error)
+        await t.rollback()
         res.sendStatus(500)
     }
 })
 
 router.get('/close/:idProduct', async function(req, res){
+    const t = await sequelize.transaction();
+    //TODO: Use transactions
     try {
-
         UserBorrowProduct.findOne({
             where: {
                 idProduct: req.params.idProduct,
