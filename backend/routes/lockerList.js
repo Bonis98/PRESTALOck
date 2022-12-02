@@ -27,6 +27,12 @@ router.get('/', function (req, res){
         findInDb().then(() => {
             for (let i = 0; i<json.length; i++){
                 if (currentUserProvince === json[i].provincia){
+                    json[i].name = json[i].nome;
+                    json[i].province = json[i].provincia;
+                    json[i].region = json[i].regione;
+                    delete json[i].nome;
+                    delete json[i].provincia;
+                    delete json[i].regione;
                     lockerList.push(json[i]);
                 }
             }
