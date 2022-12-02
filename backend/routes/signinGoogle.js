@@ -89,16 +89,18 @@ router.get('/callback', async function (req, res) {
         personFields: 'genders,birthdays'
     })
     try {
-        let DOB = info.data.birthdays[1].date.year + '-';
-        DOB += info.data.birthdays[1].date.month.toString().padStart(2, '0') + '-';
-        DOB += info.data.birthdays[1].date.day.toString().padStart(2, '0');
-        userInfo['dateOfBirth'] = DOB
+        if (info.data.birthdays && info.data.birthdays[1]) {
+            let DOB = info.data.birthdays[1].date.year + '-';
+            DOB += info.data.birthdays[1].date.month.toString().padStart(2, '0') + '-';
+            DOB += info.data.birthdays[1].date.day.toString().padStart(2, '0');
+            userInfo['dateOfBirth'] = DOB
+        }
         const gender = info.data.genders[0].formattedValue.substring(0,1)
         switch (gender) {
-            case 'Male':
+            case 'male':
                 userInfo['gender'] = 'M'
                 break
-            case 'Female':
+            case 'female':
                 userInfo['gender'] = 'F'
                 break
             default:
