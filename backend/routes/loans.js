@@ -185,7 +185,7 @@ function diffDaysNow(date){
 Date.prototype.addDays = function(days) {
     let date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
-    return date;
+    return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 }
 
 module.exports = router;

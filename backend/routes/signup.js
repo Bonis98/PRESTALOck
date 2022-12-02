@@ -16,7 +16,7 @@ router.post('/', function (req, res, next){
         if (user) {
             console.log('user already exists');
             res.status(400).json({errorText: "L'utente esiste già"});
-        }else if (signupUtils.ageCalculation(req.body.dateOfBirth, "DD-MM-YYYY")<18) {
+        }else if (signupUtils.ageCalculation(req.body.dateOfBirth, "YYYY-MM-DD")<18) {
             console.log('user is a baby');
             res.status(400).json({errorText: "L'utente è minorenne"});
         }else if (!signupUtils.genderControl(req.body.gender)){
@@ -29,7 +29,7 @@ router.post('/', function (req, res, next){
                 email: req.body.email,
                 name: req.body.name,
                 surname: req.body.surname,
-                dateOfBirth: moment(req.body.dateOfBirth, "DD-MM-YYYY").toDate().toISOString(),
+                dateOfBirth: req.body.dateOfBirth,
                 gender: req.body.gender,
                 province: req.body.province,
                 token: crypto.randomBytes(20).toString('hex'),

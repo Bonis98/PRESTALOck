@@ -14,9 +14,10 @@ router.get('/', function (req, res) {
         Product.findAll({
             where: {
                 availability: true,
-                idOwner: {
+                //Uncomment this lines if you want the system not to show products of current user in home section
+                /*idOwner: {
                     [Op.ne]: currentUser.id
-                }
+                }*/
             },
             attributes: {
                 exclude: ['idOwner', 'picture', 'availability', 'createdAt', 'updatedAt']

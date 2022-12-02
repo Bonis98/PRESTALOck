@@ -83,8 +83,8 @@ router.post('/', async function (req, res) {
 
         //the receiver cannot be the owner of the requested product //hookable
         if (userReceiver.id === product.idOwner){
-            res.status(400).json({errorTex: "Error: the receiver cannot be the owner " +
-                    "of the requested product"}); // Client error
+            res.status(400).json({errorTex: "Errore: Il ricevente non corrispondere al proprietario " +
+                    "del prodotto richiesto"}); // Client error
             return;
         }
 
@@ -123,7 +123,7 @@ router.post('/', async function (req, res) {
         });
 
         if (respPost.status != 200) {
-            res.status(503).json({errorText: "Sintra API returned error, retry."}); // Service unavailable
+            res.status(503).json({errorText: "Errore temporaneo, riprova"}); // Service unavailable
             return;
         }
         const jsonSlotData = await respPost.json();

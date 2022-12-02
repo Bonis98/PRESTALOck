@@ -112,7 +112,6 @@ router.get('/callback', async function (req, res) {
         return
     }
     try {
-        userInfo.dateOfBirth = moment(userInfo.dateOfBirth, 'YYYY-MM-DD').format('DD-MM-YYYY')
         let base64Data = Buffer.from(JSON.stringify({ userData: userInfo })).toString("base64")
         res.redirect('/afterOAuthLogin?data=' + base64Data)
     }

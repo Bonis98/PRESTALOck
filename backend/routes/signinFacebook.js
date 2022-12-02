@@ -47,7 +47,7 @@ router.get('/callback', async function (req, res) {
         userInfo['email'] = body.email
         userInfo['name'] = body.first_name
         userInfo['surname'] = body.last_name
-        userInfo['dateOfBirth'] = moment(body.birthday, 'MM/DD/YYYY').format('DD-MM-YYYY')
+        userInfo['dateOfBirth'] = moment(body.birthday, 'MM/DD/YYYY').format('YYYY-MM-DD')
         switch (body.gender) {
             case 'male':
                 userInfo['gender'] = 'M'
