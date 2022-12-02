@@ -2,8 +2,13 @@
   <div>
     <Loader v-show="loading" />
     <TopBar />
-    <div class="flex flex-wrap w-11/12 m-auto mb-6 justify-around gap-24 pt-12 pb-24">
-      <ProductCard v-for="product in products" :key="product.id" :passed-product="product" />
+    <div class="pt-12 pb-24">
+      <div v-if="!loading && products.length > 0" class="text-2xl mb-2 text-center">
+        Prodotti disponibili nella tua provincia:
+      </div>
+      <div class="flex flex-wrap w-11/12 m-auto mb-6 justify-around gap-24">
+        <ProductCard v-for="product in products" :key="product.id" :passed-product="product" />
+      </div>
       <div v-if="!loading && products.length == 0" class="text-2xl mt-2 text-center">
         Non sembrano esserci prodotti disponibili nella tua provincia 🙁
       </div>
