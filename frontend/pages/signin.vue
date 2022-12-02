@@ -22,10 +22,10 @@
           <Button text="Registrati" @click="signup()" />
         </div>
         <div class="mt-3">
-          <Button text="Accedi con Google" @click="google()" />
+          <Button text="Accedi con Google" hollow icon="google" @click="google()" />
         </div>
         <div class="mt-3">
-          <Button text="Accedi con Facebook" @click="facebook()" />
+          <Button text="Accedi con Facebook" hollow icon="facebook" @click="facebook()" />
         </div>
       </div>
     </div>

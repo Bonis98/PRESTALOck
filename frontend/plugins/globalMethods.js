@@ -1,5 +1,7 @@
 export default (context, inject) => {
   inject('callApi', async (url, method, body) => {
+    method = method || 'GET'
+
     try {
       const response = await fetch(url, {
         method,
