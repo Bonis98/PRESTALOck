@@ -1,6 +1,11 @@
 <template>
   <div class="h-10 w-screen items-center bg-blue-500 flex flex-row gap-3 fixed px-4 text-white">
-    <NuxtLink v-if="backRedirect" class="h-2/4 cursor-pointer" :to="{ path: backRedirect }">
+    <NuxtLink
+      v-if="backRedirect"
+      class="h-2/4 cursor-pointer"
+      :to="{ path: backRedirect, query: backRedirectQuery }"
+      :replace="backRedirectReplace"
+    >
       <img class="h-full" src="/icons/back.png">
     </NuxtLink>
     <div class="flex-grow" />
@@ -17,6 +22,14 @@ export default {
     backRedirect: {
       type: String,
       default: () => ''
+    },
+    backRedirectReplace: {
+      type: Boolean,
+      default: () => false
+    },
+    backRedirectQuery: {
+      type: Object,
+      default: () => {}
     }
   },
 

@@ -34,7 +34,8 @@ app.use(helmet());
 app.use(helmet.contentSecurityPolicy({
   useDefaults: true,
   directives: {
-    scriptSrc: ["'self'", "'unsafe-inline'"]
+    scriptSrc: ["'self'", "'unsafe-inline'"],
+    imgSrc: ["'self'", "data:", "blob:"]
   }
 }));
 app.use(bodyParser.json());

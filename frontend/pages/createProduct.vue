@@ -63,7 +63,7 @@ export default {
         maxLoanDays: parseInt(this.maxLoanDays)
       })
       if (result.data) {
-        this.$router.push({ path: '/uploadPhoto', query: { idProduct: result.data } })
+        this.$router.push({ path: '/uploadImage', query: { idProduct: result.data } })
       } else {
         this.loading = false
       }
