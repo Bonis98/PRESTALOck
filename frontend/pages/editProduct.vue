@@ -27,10 +27,10 @@
       <div class="mt-3">
         Rendi disponibile il prodotto
       </div>
-      <input id="available" v-model="availability" type="checkbox">
-      <label for="available">{{ availability ? "Disponibile" : "Non disponibile" }}</label>
+      <input id="available" v-model="product.availability" type="checkbox">
+      <label for="available">{{ product.availability ? "Disponibile" : "Non disponibile" }}</label>
       <div class="mt-12">
-        <Button text="Modifica" @click="modify()" />
+        <Button text="Modifica" @click="edit()" />
       </div>
     </div>
   </div>
@@ -41,10 +41,10 @@ export default {
   data () {
     return {
       loading: false,
-      product: '',
-      availability: false
+      product: ''
     }
   },
+
   watch: {
     maxLoanDays (newValue) {
       if (isNaN(newValue) && parseInt(newValue) <= 0) {
@@ -52,9 +52,11 @@ export default {
       }
     }
   },
+
   mounted () {
     this.getProduct()
   },
+
   methods: {
     // get the single of product from the backend API
     async getProduct () {
@@ -66,28 +68,23 @@ export default {
       }
       this.loading = false
     },
-    async modify () {
+
+    async edit () {
       this.loading = true
       if (JSON.stringify(this.product) === '{}') {
         alert('errore')
         return
       }
-      // make the request
+
       const idProduct = this.$route.query.idProduct
       const result = await this.$callApi('/api/product/' + idProduct, 'PUT', {
         title: this.product.title,
         description: this.product.description,
         maxLoanDays: this.product.maxLoanDays,
-        availability: this.availability
+        availability: this.product.availability
       })
       if (!result.error) {
-        console.log(result.data)
         this.$router.replace({ path: '/productDetails', query: { idProduct } })
-        // this.$router.push({ path: '/productDetails/', query: { idProduct: idProduct } })
-        this.loading = false
-      } else {
-        // optional: do something if there's an error
-        console.log(result.errorStatus)
       }
     }
   }

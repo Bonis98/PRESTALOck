@@ -26,16 +26,22 @@
         {{ product.description }}
       </div>
       <div class="flex flex-wrap items-center justify-end gap-4 mb-3">
-        <!-- Lockers list -->
-        <div v-if="product.availability">
-          <Select v-model="selectedLockerId" :options="formattedLockersList" />
+        <!-- Buttons -->
+        <div v-if="myProduct">
+          <Button text="Cambia immagine" hollow @click="goToUploadImage()" />
+          <Button text="Modifica" @click="goToEdit()" />
         </div>
-        <!-- Button -->
-        <div v-if="product.availability">
-          <Button text="Prenota" @click="book()" />
-        </div>
-        <div v-if="!product && !product.availability">
-          Non disponibile.
+        <div v-else>
+          <!-- Lockers list -->
+          <div v-if="product.availability">
+            <Select v-model="selectedLockerId" :options="formattedLockersList" />
+          </div>
+          <div v-if="product.availability">
+            <Button text="Prenota" @click="book()" />
+          </div>
+          <div v-if="!product && !product.availability">
+            Non disponibile.
+          </div>
         </div>
       </div>
     </div>
@@ -75,6 +81,10 @@ export default {
       }
 
       return result
+    },
+
+    myProduct () {
+      return localStorage.getItem('userId') == this.product.idOwner
     }
   },
 
@@ -111,6 +121,14 @@ export default {
         this.$router.go() // reloads the page
       }
       this.loading = false
+    },
+
+    goToUploadImage () {
+      this.$router.push({ path: '/uploadImage', query: { idProduct: this.product.id } })
+    },
+
+    goToEdit () {
+      this.$router.push({ path: '/editProduct', query: { idProduct: this.product.id } })
     }
   }
 }

@@ -27,8 +27,7 @@ export default {
       if (result.data) {
         console.log(result.data)
       } else {
-        // optional: do something if there's an error
-        console.log(result.errorStatus)
+        // optional: do something if there's an error (result.errorStatus)
       }
 
       this.loading = false
