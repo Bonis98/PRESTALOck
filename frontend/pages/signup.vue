@@ -97,6 +97,7 @@ export default {
   created () {
     localStorage.removeItem('token')
     localStorage.removeItem('name')
+    localStorage.removeItem('userId')
   },
 
   mounted () {
@@ -181,6 +182,7 @@ export default {
       if (result.data) {
         localStorage.setItem('token', result.data.token)
         localStorage.setItem('name', result.data.name + ' ' + result.data.surname)
+        localStorage.setItem('userId', result.data.userId)
         this.$router.push({ path: '/editLocker' })
       }
 

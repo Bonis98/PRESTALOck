@@ -11,6 +11,7 @@ export default {
       // User already registered
       localStorage.setItem('token', parsedData.token)
       localStorage.setItem('name', parsedData.name + ' ' + parsedData.surname)
+      localStorage.setItem('userId', parsedData.userId)
       this.$router.replace({ path: '/' })
     }
   }

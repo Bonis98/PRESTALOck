@@ -53,6 +53,7 @@ export default {
   created () {
     localStorage.removeItem('token')
     localStorage.removeItem('name')
+    localStorage.removeItem('userId')
   },
 
   methods: {
@@ -89,6 +90,7 @@ export default {
         const data = await response.json()
         localStorage.setItem('token', data.token)
         localStorage.setItem('name', data.name + ' ' + data.surname)
+        localStorage.setItem('userId', data.userId)
         this.$router.replace({ path: '/' })
       } catch (ex) {
         console.error(ex)
