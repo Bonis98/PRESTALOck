@@ -90,6 +90,7 @@
     - [ ] Creazione prodotto (In teoria finita, gestire però lo stato 403 quando non ha locker)
     - [ ] *Modifica prodotto (con flag `available`)*
     - [x] Upload foto di prodotto
+    - [ ] Pagina di info utente (se si visualizza l'utente loggato, tasto per logout, vista prodotti attivi e vista storico)
     - [ ] *Pagina di conferma prestito per confermare prodotto depositato nel locker*
     - [ ] Elenco di prestiti attivi (sia prodotti dati che ricevuti)
     - [ ] Elenco propri oggetti
