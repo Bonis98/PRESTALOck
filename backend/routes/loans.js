@@ -26,9 +26,15 @@ router.get('/', async function (req, res) {
             include: {
                 model: Product,
                 required: true,
+                attributes: ['id', 'title', 'maxLoanDays'],
+                include: {
+                    model: User,
+                    required: true,
+                    attributes: ['id', 'name', 'surname']
+                }
             },
             attributes: {
-                exclude: ['terminationDate', 'createdAt', 'updatedAt', 'id', 'idUser']
+                exclude: ['terminationDate', 'createdAt', 'updatedAt', 'id', 'idUser', 'returnLockerSlot', 'idProduct']
             }
         })
         //Add flags alreadyStarted and myProduct
@@ -44,7 +50,9 @@ router.get('/', async function (req, res) {
             }
             else
                 product.dataValues.alreadyStarted = false
-            delete product.dataValues.product
+            delete product.dataValues.product.dataValues.maxLoanDays
+            product.dataValues.owner = product.dataValues.product.dataValues.user
+            delete product.dataValues.product.dataValues.user
         })
         //Extract products lent by user
         const lentProducts = await UserBorrowProduct.findAll({
@@ -53,10 +61,16 @@ router.get('/', async function (req, res) {
                 required: true,
                 where: {
                     idOwner: idUser
-                }
+                },
+                attributes: ['id', 'title', 'maxLoanDays'],
+                include: {
+                    model: User,
+                    required: true,
+                    attributes: ['id', 'name', 'surname']
+                },
             },
             attributes: {
-                exclude: ['terminationDate', 'createdAt', 'updatedAt', 'id', 'idUser']
+                exclude: ['terminationDate', 'createdAt', 'updatedAt', 'id', 'idUser', 'returnLockerSlot', 'idProduct']
             }
         })
         lentProducts.forEach((product) => {
@@ -69,7 +83,9 @@ router.get('/', async function (req, res) {
             }
             else
                 product.dataValues.alreadyStarted = false
-            delete product.dataValues.product
+            delete product.dataValues.product.dataValues.maxLoanDays
+            product.dataValues.owner = product.dataValues.product.dataValues.user
+            delete product.dataValues.product.dataValues.user
         })
         let loans = lentProducts.concat(borrowedProducts)
         loans = {loans}
