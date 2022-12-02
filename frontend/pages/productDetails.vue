@@ -14,34 +14,36 @@
       <div class="text-left flex justify-between mb-3">
         <!-- Owner -->
         <div class="truncate whitespace-nowrap w-2/4">
-          {{ product.owner }}
+          {{ product.user.name }} {{ product.user.surname }}
         </div>
+
         <!-- Date -->
         <div class="text-right truncate whitespace-nowrap w-2/4">
           {{ formattedDate }}
         </div>
       </div>
+
       <!-- Description -->
-      <div class="mb-12">
+      <div class="mb-6">
         {{ product.description }}
       </div>
-      <div class="flex flex-wrap items-center justify-end gap-4 mb-3">
-        <!-- Buttons -->
-        <div v-if="myProduct">
-          <Button text="Cambia immagine" hollow @click="goToUploadImage()" />
-          <Button text="Modifica" @click="goToEdit()" />
+      <div class="mb-12">
+        <span class="font-light"> Durata max del prestito: <span class="font-bold">{{ formattedLoanDays }} </span></span>
+      </div>
+
+      <!-- Buttons -->
+      <div v-if="myProduct" class="flex flex-wrap items-center justify-end gap-4 mb-3">
+        <Button text="Cambia immagine" hollow @click="goToUploadImage()" />
+        <Button text="Modifica" @click="goToEdit()" />
+      </div>
+      <div v-else class="flex flex-wrap items-center justify-end gap-4 mb-3">
+        <!-- Lockers list -->
+        <div v-if="product.availability">
+          <Select v-model="selectedLockerId" :options="formattedLockersList" />
+          <Button text="Prenota" @click="book()" />
         </div>
-        <div v-else>
-          <!-- Lockers list -->
-          <div v-if="product.availability">
-            <Select v-model="selectedLockerId" :options="formattedLockersList" />
-          </div>
-          <div v-if="product.availability">
-            <Button text="Prenota" @click="book()" />
-          </div>
-          <div v-if="!product && !product.availability">
-            Non disponibile.
-          </div>
+        <div v-if="product && !product.availability">
+          Non disponibile.
         </div>
       </div>
     </div>
@@ -85,6 +87,14 @@ export default {
 
     myProduct () {
       return localStorage.getItem('userId') == this.product.idOwner
+    },
+
+    formattedLoanDays () {
+      if (!this.product) {
+        return ''
+      }
+
+      return this.product.maxLoanDays + (this.product.maxLoanDays > 1 ? ' giorni' : ' giorno')
     }
   },
 

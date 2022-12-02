@@ -78,7 +78,7 @@
 - **Priorità 1**:
     - [x] Login
     - [x] Registrazione
-    - [ ] Modifica di locker dell'utente
+    - [ ] Modifica dei locker dell'utente
     - [x] Login con OAuth Google
     - [x] Registrazione con OAuth Google
     - [x] Pagina `afterOAuthLogin` per Google
@@ -86,8 +86,8 @@
     - [x] Registrazione con OAuth Facebook
     - [x] Pagina `afterOAuthLogin` per Facebook
     - [x] Elenco tutti prodotti
-    - [ ] *Vista dettagli prodotto con tasto per richiesta prestito in locker specificato*
-    - [ ] Creazione prodotto (In teoria finita, gestire però lo stato 403 quando non ha locker)
+    - [x] Vista dettagli prodotto con tasto per richiesta prestito in locker specificato
+    - [x] Creazione prodotto
     - [x] Modifica prodotto (con flag `available`)
     - [x] Upload foto di prodotto
     - [ ] Pagina di info utente (se si visualizza l'utente loggato, tasto per logout, vista prodotti attivi e vista storico)
