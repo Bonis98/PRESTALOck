@@ -1,7 +1,7 @@
 <template>
   <div>
     <Loader v-show="loading" />
-    <TopBar back-redirect="/" />
+    <TopBar go-back />
     <div class="max-w-screen-md m-auto p-4 pt-12">
       <!-- Title -->
       <div class="text-center mb-3 text-2xl">
@@ -14,7 +14,7 @@
       <div class="text-left flex justify-between mb-3">
         <!-- Owner -->
         <div class="truncate whitespace-nowrap w-2/4">
-          {{ product.user.name }} {{ product.user.surname }}
+          {{ product.user?.name }} {{ product.user?.surname }}
         </div>
 
         <!-- Date -->
