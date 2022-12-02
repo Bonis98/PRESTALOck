@@ -26,9 +26,8 @@ router.get('/:email',async function (req, res){
                 where: {
                     email: req.params.email,
                 },
-            }, {
                 transaction: t
-            })
+            },)
             const mailObjReceiver = {
                 from: process.env.MAIL_USER,
                 to: req.params.email,

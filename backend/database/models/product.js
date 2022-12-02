@@ -42,7 +42,7 @@ Product.init({
     modelName: 'product',
 })
 
-//Associatons
+//Associations
 User.hasMany(Product, {
     foreignKey: {
         name: 'idOwner',

@@ -4,7 +4,7 @@ const fs = require("fs");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    var nowDate = new Date();
+    let nowDate = new Date();
     return queryInterface.bulkInsert('products', [{
       id: 1,
       title: "MacBook Pro M1",

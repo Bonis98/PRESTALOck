@@ -2,9 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {google} = require('googleapis');
 const {User} = require("../database/models/user");
-const moment = require("moment");
 const crypto = require('crypto');
-const {signedCookie} = require("cookie-parser");
 
 const oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
@@ -36,7 +34,7 @@ router.get('/callback', async function (req, res) {
         return
     }
     let userInfo = {}
-    //Get a token from authcode
+    //Get a token from auth code
     try {
         const {tokens} = await oauth2Client.getToken(req.query.code)
         oauth2Client.setCredentials(tokens);

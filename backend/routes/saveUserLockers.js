@@ -3,7 +3,7 @@ const {User} = require("../database/models/user");
 const router = express.Router();
 
 
-router.post('/', function (req, res, next){
+router.post('/', function (req, res){
     let lockerList = req.body.lockers;
 
     lockerList = lockerList.toString();

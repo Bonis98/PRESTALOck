@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    var nowDate = new Date();
+    let nowDate = new Date();
     return queryInterface.bulkInsert('userBorrowProducts', [{
       id: 1,
       requestDate: nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate(),

@@ -5,7 +5,7 @@ const signupUtils = require("../utils/signupUtils");
 const router = express.Router();
 
 
-router.post('/', function (req, res, next){
+router.post('/', function (req, res){
     User.findOne({
         where: {
             email: req.body.email

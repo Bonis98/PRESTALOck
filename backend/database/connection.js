@@ -1,5 +1,4 @@
 const { Sequelize} = require('sequelize');
-const e = require("express");
 const sequelize = new Sequelize({
     logging: false,
     dialect: 'sqlite',
