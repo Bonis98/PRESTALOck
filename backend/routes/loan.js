@@ -77,7 +77,7 @@ router.get('/start/:idProduct', async function (req, res) {
         //retrieve locker data -> send its name and address through email
         let locker;
         for (let i=0; i<lockerList.length; i++){
-            if (lockerList[i].id === lockerId){
+            if (lockerList[i].id == lockerId){
                 locker = lockerList[i]
                 break
             }

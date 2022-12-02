@@ -33,7 +33,7 @@ router.post('/', async function (req, res) {
     function searchSlot(json) {
         let slotData;
         for (let i = 0; i < json.length; i++) {
-            if (json[i].status.booked === false) {
+            if (json[i].status.booked == false) {
                 slotData = json[i];
                 return slotData;
             }
@@ -82,7 +82,7 @@ router.post('/', async function (req, res) {
         const userReceiver = await findCurrentUserInDB();
 
         //the receiver cannot be the owner of the requested product //hookable
-        if (userReceiver.id === product.idOwner){
+        if (userReceiver.id == product.idOwner){
             res.status(400).json({errorTex: "Errore: Il ricevente non corrispondere al proprietario " +
                     "del prodotto richiesto"}); // Client error
             return;
@@ -161,7 +161,7 @@ router.post('/', async function (req, res) {
         //retrieve locker data -> send its name and address through email
         let locker;
         for (let i=0; i<lockerList.length; i++){
-            if (lockerList[i].id === req.body.lockerId){
+            if (lockerList[i].id == req.body.lockerId){
                 locker = lockerList[i]
                 break
             }

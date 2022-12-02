@@ -71,7 +71,7 @@ export default {
 
     async edit () {
       this.loading = true
-      if (JSON.stringify(this.product) === '{}') {
+      if (JSON.stringify(this.product) == '{}') {
         alert('errore')
         return
       }

@@ -12,6 +12,6 @@ module.exports = {
         return Math.abs(age_dt.getUTCFullYear() - 1970);
     },
     genderControl: function (gender){
-    return gender === 'M' || gender === 'F' || gender === '*';
+    return gender == 'M' || gender == 'F' || gender == '*';
     }
 }

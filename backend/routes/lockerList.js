@@ -26,7 +26,7 @@ router.get('/', function (req, res){
     function filterJSON (json){
         findInDb().then(() => {
             for (let i = 0; i<json.length; i++){
-                if (currentUserProvince === json[i].provincia){
+                if (currentUserProvince == json[i].provincia){
                     json[i].name = json[i].nome;
                     json[i].province = json[i].provincia;
                     json[i].region = json[i].regione;
