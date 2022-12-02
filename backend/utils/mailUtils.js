@@ -14,7 +14,7 @@ const sendEmail = async (mailObj) => {
         // Create a transporter
         let transporter = nodemailer.createTransport({
             host: process.env.MAIL_HOST,
-            port: 465,
+            port: process.env.MAIL_PORT | 465,
             auth: {
                 user: process.env.MAIL_USER,
                 pass: process.env.MAIL_PASS,
