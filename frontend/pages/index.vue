@@ -2,12 +2,15 @@
   <div>
     <Loader v-show="loading" />
     <TopBar />
-    <div class="flex flex-wrap w-11/12 m-auto mb-6 justify-around gap-24 pt-12">
+    <div class="flex flex-wrap w-11/12 m-auto mb-6 justify-around gap-24 pt-12 pb-24">
       <ProductCard v-for="product in products" :key="product.id" :passed-product="product" />
       <div v-if="!loading && products.length == 0" class="text-2xl mt-2 text-center">
         Non sembrano esserci prodotti disponibili nella tua provincia 🙁
       </div>
     </div>
+
+    <!-- "Create new product" button -->
+    <Button class="fixed right-4 bottom-6" text="Crea inserzione" icon="plus" @click="goToCreateProduct()" />
   </div>
 </template>
 
@@ -33,6 +36,10 @@ export default {
       }
 
       this.loading = false
+    },
+
+    goToCreateProduct () {
+      this.$router.push({ path: '/createProduct' })
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <Loader v-show="loading" />
-    <TopBar />
+    <TopBar go-back />
     <div class="text-center w-11/12 m-auto mb-6 justify-around gap-24 pt-12">
       <div class="mb-3 text-2xl">
         Creazione Annuncio
@@ -35,7 +35,7 @@
 export default {
   data () {
     return {
-      loading: false,
+      loading: true,
       title: '',
       description: '',
       maxLoanDays: '1',
@@ -51,6 +51,17 @@ export default {
     }
   },
 
+  async mounted () {
+    // Check if the user has at least 1 locker selected in its province
+    const result = await this.$callApi('/api/user/' + localStorage.getItem('userId'), 'GET')
+    if (!result.data || result.data.user.lockerList.length == 0) {
+      alert('Non hai ancora selezionato i locker vicini a te. Per farlo, vai nel tuo profilo premendo l\'icona in alto a destra')
+      this.$router.replace('/')
+    }
+
+    this.loading = false
+  },
+
   methods: {
     async create () {
       if (this.loading) { return }
@@ -63,7 +74,7 @@ export default {
         maxLoanDays: parseInt(this.maxLoanDays)
       })
       if (result.data) {
-        this.$router.push({ path: '/uploadImage', query: { idProduct: result.data } })
+        this.$router.push({ path: '/uploadImage', query: { idProduct: result.data.id } })
       } else {
         this.loading = false
       }
