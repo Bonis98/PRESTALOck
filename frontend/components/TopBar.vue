@@ -8,11 +8,22 @@
     >
       <img class="h-full" src="/icons/back.png">
     </NuxtLink>
+    <div
+      v-if="!backRedirect && goBack"
+      class="h-2/4 cursor-pointer"
+      @click="$router.go(-1)"
+    >
+      <img class="h-full" src="/icons/back.png">
+    </div>
     <div class="flex-grow" />
     <div> {{ name }} </div>
-    <div v-if="name && name.length > 0" class="h-2/4 cursor-pointer">
-      <img class="h-full" src="/icons/logout.png" @click="logout()">
-    </div>
+    <NuxtLink
+      v-if="name && name.length > 0"
+      class="h-2/4 cursor-pointer"
+      :to="{ path: '/user', query: {userId } }"
+    >
+      <img class="h-full" src="/icons/user.png">
+    </NuxtLink>
   </div>
 </template>
 
@@ -22,6 +33,10 @@ export default {
     backRedirect: {
       type: String,
       default: () => ''
+    },
+    goBack: {
+      type: Boolean,
+      default: () => false
     },
     backRedirectReplace: {
       type: Boolean,
@@ -35,15 +50,8 @@ export default {
 
   data () {
     return {
-      name: localStorage.getItem('name')
-    }
-  },
-
-  methods: {
-    logout () {
-      if (confirm('Sei sicuro di voler uscire?')) {
-        this.$router.push({ path: '/signin' })
-      }
+      name: localStorage.getItem('name'),
+      userId: localStorage.getItem('userId')
     }
   }
 }
