@@ -1,7 +1,7 @@
 <template>
   <div>
     <Loader v-show="loading" />
-    <TopBar back-redirect="/productDetails" back-redirect-replace :back-redirect-query="{ productId: $route.query.productId }" />
+    <TopBar back-redirect="/productDetails" back-redirect-replace :back-redirect-query="{ idProduct: $route.query.idProduct }" />
     <div class="text-center w-11/12 m-auto mb-6 justify-around gap-24 pt-12">
       <div class="text-center mb-3 text-2xl">
         Upload la foto del prodotto: {{ product.title }}
@@ -48,8 +48,8 @@ export default {
 
   methods: {
     async getProduct () {
-      const productId = this.$route.query.productId
-      const result = await this.$callApi('/api/product/' + productId, 'GET')
+      const idProduct = this.$route.query.idProduct
+      const result = await this.$callApi('/api/product/' + idProduct, 'GET')
       if (result.data) {
         this.product = result.data.product
       }
@@ -69,10 +69,10 @@ export default {
       const formData = new FormData()
       formData.append('image', image)
 
-      const productId = this.$route.query.productId
-      const result = await this.$uploadFile('/api/product/' + productId + '/updateImage', formData)
+      const idProduct = this.$route.query.idProduct
+      const result = await this.$uploadFile('/api/product/' + idProduct + '/updateImage', formData)
       if (!result.error) {
-        this.$router.replace({ path: '/productDetails', query: { productId } })
+        this.$router.replace({ path: '/productDetails', query: { idProduct } })
       }
       this.loading = false
     }

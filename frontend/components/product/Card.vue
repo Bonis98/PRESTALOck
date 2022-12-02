@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    :to="{ path: '/productDetails', query: { productId: passedProduct.id } }"
+    :to="{ path: '/productDetails', query: { idProduct: passedProduct.id } }"
     class="w-96"
     style="max-width: 95vw;"
   >

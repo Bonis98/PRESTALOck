@@ -86,8 +86,8 @@ export default {
     // get the single of product from the backend API
     async getProduct () {
       this.loading = true
-      const productId = this.$route.query.productId
-      const result = await this.$callApi('/api/product/' + productId, 'GET')
+      const idProduct = this.$route.query.idProduct
+      const result = await this.$callApi('/api/product/' + idProduct, 'GET')
       if (result.data) {
         this.product = result.data.product
       }
@@ -104,7 +104,7 @@ export default {
       }
       this.loading = true
       const result = await this.$callApi('/api/book/', 'POST', {
-        productId: this.product.id,
+        idProduct: this.product.id,
         lockerId: this.selectedLockerId
       })
       if (!result.error) {

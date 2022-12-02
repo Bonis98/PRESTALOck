@@ -59,8 +59,8 @@ export default {
     // get the single of product from the backend API
     async getProduct () {
       this.loading = true
-      const productId = this.$route.query.productId
-      const result = await this.$callApi('/api/product/' + productId, 'GET')
+      const idProduct = this.$route.query.idProduct
+      const result = await this.$callApi('/api/product/' + idProduct, 'GET')
       if (result.data) {
         this.product = result.data.product
       }
@@ -73,8 +73,8 @@ export default {
         return
       }
       // make the request
-      const productId = this.$route.query.productId
-      const result = await this.$callApi('/api/product/' + productId, 'PUT', {
+      const idProduct = this.$route.query.idProduct
+      const result = await this.$callApi('/api/product/' + idProduct, 'PUT', {
         title: this.product.title,
         description: this.product.description,
         maxLoanDays: this.product.maxLoanDays,
@@ -82,8 +82,8 @@ export default {
       })
       if (!result.error) {
         console.log(result.data)
-        this.$router.replace({ path: '/productDetails', query: { productId } })
-        // this.$router.push({ path: '/productDetails/', query: { idProduct: productId } })
+        this.$router.replace({ path: '/productDetails', query: { idProduct } })
+        // this.$router.push({ path: '/productDetails/', query: { idProduct: idProduct } })
         this.loading = false
       } else {
         // optional: do something if there's an error
