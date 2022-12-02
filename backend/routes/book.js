@@ -60,7 +60,7 @@ router.post('/', async function (req, res) {
         //find the product requested for book
         const product = await Product.findOne({
             where: {
-                id: req.body.productId,
+                id: req.body.idProduct,
                 availability: true
             },
             attributes: ['id', 'idOwner', 'title'],

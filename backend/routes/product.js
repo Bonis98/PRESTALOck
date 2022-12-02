@@ -33,7 +33,7 @@ router.post('/', async function (req, res) {
             const product = await Product.create(productInfo)
             res.json({id: product.id});
         } else {
-            res.sendStatus(403);
+            res.sendStatus(403); // Forbidden
         }
 
     } catch (error) {
