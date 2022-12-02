@@ -19,12 +19,12 @@ router.get('/', function (req, res) {
                 }
             },
             attributes: {
-                exclude: ['picture', 'availability', 'createdAt', 'updatedAt']
+                exclude: ['idOwner', 'picture', 'availability', 'createdAt', 'updatedAt']
             },
             include: {
                 model: User,
                 as: 'user',
-                attributes: ['name', 'surname'],
+                attributes: ['id', 'name', 'surname'],
                 where: {
                     province: currentUser.province
                 }
