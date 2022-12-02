@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 module.exports = {
     getLockerList: function (list) {
         //Convert string of ids (1;2;) to int array
-        if (!list || !list.lenght) {
+        if (!list || !list.length) {
             return []
         }
         const lockerList = String(list).substring(0, list.length - 1).split(';').map(Number);
