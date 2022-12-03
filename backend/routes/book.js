@@ -33,19 +33,19 @@ function checkSlotAvailability(slot){
     }
 }
 
+//find current user in DB
+async function findCurrentUserInDB(req) {
+    return await User.findOne({
+        where: {
+            token: req.get('Auth-Token')
+        },
+        attributes: ['id', 'name', 'surname', 'email']
+    });
+}
+
 router.post('/', async function (req, res) {
     let UserBorrowProductData;
     let bodyPostBook;
-
-    //find current user in DB
-    async function findCurrentUserInDB() {
-        return await User.findOne({
-            where: {
-                token: req.get('Auth-Token')
-            },
-            attributes: ['id', 'name', 'surname', 'email']
-        });
-    }
 
     //check product has no other active book //hookable
     async function checkNoActiveBook(product) {
@@ -59,7 +59,6 @@ router.post('/', async function (req, res) {
             throw new Error("Found active book of the same product in UserBorrowProduct table");
         }
     }
-
 
     const t = await sequelize.transaction();
     try {
@@ -86,10 +85,10 @@ router.post('/', async function (req, res) {
 
         await checkNoActiveBook(product);
 
-        const userReceiver = await findCurrentUserInDB();
+        const userReceiver = await findCurrentUserInDB(req);
 
         //the receiver cannot be the owner of the requested product //hookable
-        if (userReceiver.id == product.idOwner){
+        if (userReceiver.id === product.idOwner){
             res.status(400).json({errorTex: "Errore: Il ricevente non corrispondere al proprietario " +
                     "del prodotto richiesto"}); // Client error
             return;
@@ -127,7 +126,7 @@ router.post('/', async function (req, res) {
             }
         });
 
-        if (respPost.status != 200) {
+        if (respPost.status !== 200) {
             res.status(503).json({errorText: "Errore temporaneo, riprova"}); // Service unavailable
             return;
         }
@@ -214,12 +213,9 @@ router.post('/', async function (req, res) {
 
 router.get('/return/:idProduct', async function(req, res){
 
+    const t = await sequelize.transaction();
     try {
-        const currentUser = await User.findOne({
-            where: {
-                token: req.get('Auth-Token')
-            }
-        });
+        const currentUser = await findCurrentUserInDB(req)
 
         const activeBook = await UserBorrowProduct.findOne({
             where: {
@@ -305,8 +301,8 @@ router.get('/return/:idProduct', async function(req, res){
         }
         const jsonSlotData = await respPost.json();
 
-        await activeBook.update({returnLockerSlot: slot.id});
-        await activeBook.save();
+        await activeBook.update({returnLockerSlot: slot.id}, {transaction: t});
+        await activeBook.save({transaction: t});
 
         lockerList = await lockerList.json();
         //retrieve locker data -> send its name and address through email
@@ -346,9 +342,11 @@ router.get('/return/:idProduct', async function(req, res){
         };
         await sendMail(mailObjOwner);
 
+        await t.commit();
         res.sendStatus(200);
 
     } catch (error) {
+        await t.rollback();
         if (error instanceof NoSlotError) {
             console.error(error.message);
             res.sendStatus(409); // Conflict
