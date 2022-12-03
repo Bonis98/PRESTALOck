@@ -54,10 +54,10 @@ router.post('/:id/updateImage', upload.single('image'), async function (req, res
                 id: req.params.id,
             }
         });
-        res.sendStatus(200)
+        res.sendStatus(200);
     } catch (error) {
         console.error(error);
-        res.sendStatus(500)
+        res.sendStatus(500);
     }
 });
 
@@ -135,6 +135,10 @@ router.get('/:id', async function (req, res) {
                 exclude: ['createdAt', 'updatedAt', 'picture'],
             }
         });
+        if (!product){
+            res.sendStatus(404);
+            return;
+        }
         product.dataValues['lockerList'] = await getLockerList(product.user.lockerList);
         delete product.user.dataValues.lockerList;
         const productObj = {product};

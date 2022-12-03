@@ -4,20 +4,25 @@ const {getLockerList} = require("../utils/SintraApiUtils");
 const {Product} = require("../database/models/product");
 const router = express.Router();
 
-router.get('/:id', function (req, res){
-    User.findOne({
-        where: {
-            id: req.params.id,
-        },
-        attributes: ['id', 'name', 'surname', 'province', 'lockerList']
-    }).then(async (user) => {
-        user.dataValues['lockerList'] = await getLockerList(user.lockerList);
-        let userInfo = {user};
-        res.json(userInfo)
-    }, (error) => {
+router.get('/:id', async function (req, res) {
+    try {
+        const user = await User.findOne({
+            where: {
+                id: req.params.id,
+            },
+            attributes: ['id', 'name', 'surname', 'province', 'lockerList']
+        })
+        if (user) {
+            user.dataValues['lockerList'] = await getLockerList(user.lockerList);
+            let userInfo = {user};
+            res.json(userInfo)
+        } else {
+            res.sendStatus(404)
+        }
+    } catch (error) {
         console.error(error);
         res.sendStatus(500);
-    })
+    }
 });
 
 router.get('/:id/products', async function(req, res){

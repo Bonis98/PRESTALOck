@@ -1,6 +1,7 @@
 const {DataTypes, Model} = require("sequelize");
 const {sequelize} = require("../connection");
 const bcrypt = require("bcrypt");
+const fs = require("fs");
 
 class User extends Model {}
 
@@ -50,6 +51,14 @@ User.init({
     province: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            exists(province) {
+                let provinces = fs.readFileSync('././provinces.txt', 'binary');
+                provinces = provinces.split(/\r?\n/);
+                if (!provinces.includes(province))
+                    throw new Error('Province filed is not valid')
+            }
+        }
     },
     //Login token
     token: {

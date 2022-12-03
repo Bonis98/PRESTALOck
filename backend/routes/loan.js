@@ -40,10 +40,16 @@ router.get('/start/:idProduct', async function (req, res) {
         const product = await Product.findOne({
             where: {
                 id: req.params.idProduct,
-                idOwner: currentUser.id
             },
             attributes: ['id', 'maxLoanDays', 'title']
         });
+        if (!product) {
+            res.sendStatus(404);
+            return
+        } else if (product.idOwner != currentUser.id){
+            res.status(403).json({errorText: 'Non sei il proprietario del prodotto'}); //Conflict
+            return;
+        }
         const borrower = await UserBorrowProduct.findOne({
             where: {
                 idProduct: product.id,
@@ -56,6 +62,10 @@ router.get('/start/:idProduct', async function (req, res) {
                 attributes: ['email']
             }]
         });
+        if (!borrower) {
+            res.status(409).json({errorText: 'Il prestito non è stato prenotato'}); //Conflict
+            return;
+        }
         await checkDuplicate(product);
         let url = 'http://hack-smartlocker.sintrasviluppo.it/api/slots/' + borrower.lockerSlot;
         const resp = await fetch(url, {

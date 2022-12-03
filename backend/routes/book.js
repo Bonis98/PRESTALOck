@@ -87,7 +87,7 @@ router.post('/', async function (req, res) {
 
         const userReceiver = await findCurrentUserInDB(req);
 
-        //the receiver cannot be the owner of the requested product //hookable
+        //the receiver cannot be the owner of the requested product
         if (userReceiver.id === product.idOwner){
             res.status(400).json({errorTex: "Errore: Il ricevente non corrispondere al proprietario " +
                     "del prodotto richiesto"}); // Client error
