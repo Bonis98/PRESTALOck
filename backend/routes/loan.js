@@ -41,11 +41,11 @@ router.get('/start/:idProduct', async function (req, res) {
             where: {
                 id: req.params.idProduct,
             },
-            attributes: ['id', 'maxLoanDays', 'title']
+            attributes: ['id', 'maxLoanDays', 'title', 'idOwner']
         });
         if (!product) {
             res.sendStatus(404);
-            return
+            return;
         } else if (product.idOwner != currentUser.id){
             res.status(403).json({errorText: 'Non sei il proprietario del prodotto'}); //Conflict
             return;
@@ -109,7 +109,7 @@ router.get('/start/:idProduct', async function (req, res) {
             transaction: t
         });
         let emailSubject = "L'oggetto prenotato è pronto per il ritiro";
-        let returningDate = moment().add(10, 'days').locale('it').calendar({
+        let returningDate = moment().add(product.maxLoanDays, 'days').locale('it').calendar({
             sameDay: '[Oggi]',
             nextDay: '[Domani]',
             nextWeek: 'dddd',
@@ -163,7 +163,6 @@ router.get('/start/:idProduct', async function (req, res) {
 
 router.get('/close/:idProduct', async function(req, res){
     const t = await sequelize.transaction();
-    //TODO: Use transactions
     try {
         const currentUser = await findCurrentUserInDB(req);
         const activeBook = await UserBorrowProduct.findOne({
@@ -194,13 +193,13 @@ router.get('/close/:idProduct', async function(req, res){
             return;
         }
         if(currentUser.id === activeBook.product.idOwner){
-            res.status(400).json({errorTex: "Errore: Il ricevente non corrispondere al proprietario " +
+            res.status(400).json({errorTex: "Errore: Il ricevente corrisponde al proprietario " +
                     "del prodotto richiesto"}); // Client error
             return;
         }
 
-        await activeBook.update({terminationDate: moment(new Date(), moment.ISO_8601)}, {transaction: t})
-        await activeBook.save({transaction: t})
+        await activeBook.update({terminationDate: moment(new Date(), moment.ISO_8601)}, {transaction: t});
+        await activeBook.save({transaction: t});
 
         const urlInfoSlot = `http://hack-smartlocker.sintrasviluppo.it/api/slots/${activeBook.returnLockerSlot}`;
         //retrieve slot info by its id
@@ -211,8 +210,8 @@ router.get('/close/:idProduct', async function(req, res){
                 "x-tenant": process.env.TENANT
             }
         });
-        const jsonInfoSlot = await infoSlot.json();
-        let ownerUnlockCode = jsonInfoSlot.status.unlockCodes[1];
+        infoSlot = await infoSlot.json();
+        let ownerUnlockCode = infoSlot.status.unlockCodes[1];
 
 
         //retrieving complete lockers list (only email purpose)
@@ -236,9 +235,9 @@ router.get('/close/:idProduct', async function(req, res){
 
         //setting email for borrower
         let emailSubject = "Termine prestito confermato";
-        let emailText = `Hai depositato con successo il prodotto ${activeBook.product.title} nello slot ${infoSlot.index} 
-        del locker ${locker.nome} sito in via ${locker.address}. Il proprietario del prodotto è stato notificato 
-        del termine del prestito conseguente all'avvenuto deposito.`;
+        let emailText = "Hai depositato con successo il prodotto " + activeBook.product.title + " nello slot " +
+            infoSlot.index + " del locker " + locker.nome + " sito in via " + locker.address + ". Il proprietario del" +
+            " prodotto è stato notificato del termine del prestito conseguente all'avvenuto deposito.";
         const mailObjBorrower = {
             from: process.env.MAIL_USER,
             to: currentUser.email,
@@ -249,9 +248,9 @@ router.get('/close/:idProduct', async function(req, res){
 
         //setting email for owner
         emailSubject = "Notifica termine prestito";
-        emailText = `L'oggetto ${activeBook.product.title} è stato depositato ed è pronto per il ritiro nello 
-        slot ${infoSlot.index} del locker ${locker.nome} sito in via ${locker.address}. 
-        Il codice per il ritiro è il seguente: ${ownerUnlockCode}`;
+        emailText = "L'oggetto " + activeBook.product.title + " è stato depositato ed è pronto per il ritiro nello " +
+        "slot " + infoSlot.index + " del locker " + locker.nome + " sito in via " + locker.address +". Il codice per il" +
+            " ritiro è il seguente: " + ownerUnlockCode + ".";
         const mailObjOwner = {
             from: process.env.MAIL_USER,
             to: activeBook.product.user.email,
@@ -277,7 +276,6 @@ router.get('/close/:idProduct', async function(req, res){
 
         await t.commit();
         res.sendStatus(200);
-    //TODO: finish route
     } catch (error) {
         await t.rollback();
         console.error(error);

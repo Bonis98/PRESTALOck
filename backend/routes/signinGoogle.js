@@ -93,7 +93,7 @@ router.get('/callback', async function (req, res) {
             DOB += info.data.birthdays[1].date.day.toString().padStart(2, '0');
             userInfo['dateOfBirth'] = DOB
         }
-        const gender = info.data.genders[0].formattedValue.substring(0,1);
+        const gender = info.data.genders[0].value;
         switch (gender) {
             case 'male':
                 userInfo['gender'] = 'M';

@@ -47,7 +47,7 @@ router.post('/', async function (req, res) {
     let UserBorrowProductData;
     let bodyPostBook;
 
-    //check product has no other active book //hookable
+    //check product has no other active book
     async function checkNoActiveBook(product) {
         const numberOfOccurrences = await UserBorrowProduct.count({
             where: {
@@ -61,6 +61,7 @@ router.post('/', async function (req, res) {
     }
 
     const t = await sequelize.transaction();
+    let bookedSlotId = 0;
     try {
 
         //find the product requested for book
@@ -126,6 +127,8 @@ router.post('/', async function (req, res) {
             }
         });
 
+        bookedSlotId = slot.id;
+
         if (respPost.status !== 200) {
             res.status(503).json({errorText: "Errore temporaneo, riprova"}); // Service unavailable
             return;
@@ -145,7 +148,7 @@ router.post('/', async function (req, res) {
         UserBorrowProductData = {
             idUser: userReceiver.id,
             idProduct: product.id,
-            lockerSlot: slot.id
+            lockerSlot: bookedSlotId
         };
 
         //creating new entry in UserBorrowProduct (new book)
@@ -201,6 +204,10 @@ router.post('/', async function (req, res) {
         res.sendStatus(200);
     } catch (e) {
         await t.rollback();
+        //If error, release booked slot
+        if (bookedSlotId){
+            release(bookedSlotId)
+        }
         if (e instanceof NoSlotError) {
             console.error(e.message);
             res.sendStatus(409); // Conflict
@@ -214,8 +221,9 @@ router.post('/', async function (req, res) {
 router.get('/return/:idProduct', async function(req, res){
 
     const t = await sequelize.transaction();
+    let bookedSlotId = 0;
     try {
-        const currentUser = await findCurrentUserInDB(req)
+        const currentUser = await findCurrentUserInDB(req);
 
         const activeBook = await UserBorrowProduct.findOne({
             where: {
@@ -262,6 +270,7 @@ router.get('/return/:idProduct', async function(req, res){
                 "x-tenant": process.env.TENANT
             }
         });
+        infoSlot = await infoSlot.json();
 
         const urlSlotsByLocker = 'http://hack-smartlocker.sintrasviluppo.it/api/slots?lockerId=' + infoSlot.lockerId;
         //retrieve all slots for locker already used
@@ -272,7 +281,7 @@ router.get('/return/:idProduct', async function(req, res){
                 "x-tenant": process.env.TENANT
             }
         });
-
+        slots = await slots.json();
 
         let slot = await searchSlot(slots);
         await checkSlotAvailability(slot);
@@ -299,9 +308,10 @@ router.get('/return/:idProduct', async function(req, res){
             res.status(503).json({errorText: "Errore temporaneo, riprova"}); // Service unavailable
             return;
         }
+        bookedSlotId = slot.id;
         const jsonSlotData = await respPost.json();
 
-        await activeBook.update({returnLockerSlot: slot.id}, {transaction: t});
+        await activeBook.update({returnLockerSlot: bookedSlotId}, {transaction: t});
         await activeBook.save({transaction: t});
 
         lockerList = await lockerList.json();
@@ -347,6 +357,11 @@ router.get('/return/:idProduct', async function(req, res){
 
     } catch (error) {
         await t.rollback();
+        //If error, release booked slot
+        if (bookedSlotId){
+            release(bookedSlotId)
+        }
+        // release
         if (error instanceof NoSlotError) {
             console.error(error.message);
             res.sendStatus(409); // Conflict
@@ -357,5 +372,18 @@ router.get('/return/:idProduct', async function(req, res){
     }
 
 });
+
+function release (slotID) {
+    //Release the slot on Sintra API
+    fetch('http://hack-smartlocker.sintrasviluppo.it/api/release?slotId=' + slotID, {
+        method: 'post',
+        headers: {
+            "x-apikey": process.env.API_KEY_LOCKERS,
+            "x-tenant": process.env.TENANT,
+        }
+    }).catch((error) => {
+        console.error(error)
+    });
+}
 
 module.exports = router;
