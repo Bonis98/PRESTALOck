@@ -34,6 +34,17 @@ module.exports = {
       updatedAt: new Date(),
       idUser: 4,
       idProduct: 5,
+    }, {
+      id: 4,
+      requestDate: nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate(),
+      loanStartDate: nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate(),
+      lockerSlot: 41,
+      returnLockerSlot: 42,
+      terminationDate: nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      idUser: 2,
+      idProduct: 2,
     }
     ])
   },
