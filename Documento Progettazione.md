@@ -78,7 +78,7 @@
 - **Priorità 1**:
     - [x] Login
     - [x] Registrazione
-    - [ ] Modifica dei locker dell'utente
+    - [x] Modifica dei locker dell'utente
     - [x] Login con OAuth Google
     - [x] Registrazione con OAuth Google
     - [x] Pagina `afterOAuthLogin` per Google
@@ -90,9 +90,8 @@
     - [x] Creazione prodotto
     - [x] Modifica prodotto (con flag `available`)
     - [x] Upload foto di prodotto
-    - [ ] Pagina di info utente con la lista dei prodotti disponibili (Se è profilo dell'utente loggato: ~~tasto per logout~~, tasto per vedere prodotti attivi e tasto per vedere storici)
-    - [ ] *Pagina di conferma prestito per confermare prodotto depositato nel locker*
-    - [ ] Elenco di prestiti attivi (sia prodotti dati che ricevuti)
+    - [x] Pagina di info utente
+    - [ ] Elenco di prestiti attivi (sia prodotti dati che ricevuti) con i vari tasti per confermare deposito e per prenotare locker di restituzione
     - [ ] Elenco propri prodotti
 - **Priorità 2**:
     - [ ] Vista di storico prodotti inseriti
