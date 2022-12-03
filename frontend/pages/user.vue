@@ -65,7 +65,9 @@ export default {
     },
 
     goToEditLockers () {
-      this.$router.push({ path: '/editLocker' })
+      this.$router.push({ path: '/editLockers' })
+    },
+
     goToActiveLoans () {
       this.$router.push({ path: '/activeLoans' })
     }

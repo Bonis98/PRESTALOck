@@ -11,7 +11,7 @@ router.post('/', function (req, res){
     } else {
         lockerList = req.body.lockers;
         if (!lockerList.length) {
-            res.sendStatus(400); // Client Error
+            res.sendStatus(400); // Bad Request
         } else {
             lockerList = lockerList.toString();
             //Locker list is stored as a semicolon separated integers

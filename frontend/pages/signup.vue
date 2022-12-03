@@ -177,7 +177,7 @@ export default {
         localStorage.setItem('token', result.data.token)
         localStorage.setItem('name', result.data.name + ' ' + result.data.surname)
         localStorage.setItem('userId', result.data.userId)
-        this.$router.push({ path: '/editLocker' })
+        this.$router.push({ path: '/editLockers' })
       }
 
       this.loading = false
