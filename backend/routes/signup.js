@@ -44,7 +44,7 @@ router.post('/', function (req, res){
                     surname: userData.surname
                 });
             },(error) => {
-                console.error(error)
+                console.error(error);
                 res.sendStatus(500);
             });
         }

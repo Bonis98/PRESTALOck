@@ -19,7 +19,7 @@ router.post('/', async function (req, res) {
                 }
             });
             if (user) {
-                const result = await bcrypt.compare(password, user.password)
+                const result = await bcrypt.compare(password, user.password);
                 if (result) {
                     //Send back token header for authentication
                     res.status(200).json({

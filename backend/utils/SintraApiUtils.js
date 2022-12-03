@@ -8,7 +8,7 @@ module.exports = {
             return []
         }
         const lockerList = String(list).substring(0, list.length - 1).split(';').map(Number);
-        let UserLockersList = []
+        let UserLockersList = [];
         return new Promise((resolve, reject) => {
             //retrieving complete lockers list, parsing it and sending it for filtering
             fetch('http://hack-smartlocker.sintrasviluppo.it/api/lockers', {
@@ -23,16 +23,16 @@ module.exports = {
                         //Copy only user's lockers
                         if (lockerList.includes(locker.id)) {
                             //Rename fields in English
-                            locker.name = locker.nome
-                            locker.region = locker.regione
-                            locker.province = locker.provincia
-                            delete locker.nome
-                            delete locker.regione
-                            delete locker.provincia
+                            locker.name = locker.nome;
+                            locker.region = locker.regione;
+                            locker.province = locker.provincia;
+                            delete locker.nome;
+                            delete locker.regione;
+                            delete locker.provincia;
                             //Add element to final array
                             UserLockersList.push(locker)
                         }
-                    })
+                    });
                     resolve(UserLockersList);
                 }, (error) => {
                     reject(error);
@@ -42,4 +42,4 @@ module.exports = {
             });
         });
     }
-}
+};

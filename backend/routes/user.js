@@ -12,13 +12,13 @@ router.get('/:id', function (req, res){
         attributes: ['id', 'name', 'surname', 'province', 'lockerList']
     }).then(async (user) => {
         user.dataValues['lockerList'] = await getLockerList(user.lockerList);
-        let userInfo = {user}
+        let userInfo = {user};
         res.json(userInfo)
     }, (error) => {
         console.error(error);
         res.sendStatus(500);
     })
-})
+});
 
 router.get('/:id/products', async function(req, res){
     try {
@@ -40,12 +40,12 @@ router.get('/:id/products', async function(req, res){
             product.dataValues['lockerList'] = await getLockerList(product.user.lockerList);
             delete product.user.dataValues.lockerList;
         }
-        const productsByOwner = {products}
+        const productsByOwner = {products};
         res.json(productsByOwner);
 
     } catch (error) {
         console.error(error);
         res.sendStatus(500);
     }
-})
+});
 module.exports = router; //eof

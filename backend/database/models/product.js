@@ -40,7 +40,7 @@ Product.init({
 }, {
     sequelize,
     modelName: 'product',
-})
+});
 
 //Associations
 User.hasMany(Product, {

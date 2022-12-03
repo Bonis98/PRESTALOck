@@ -31,7 +31,7 @@ router.get('/', function (req, res) {
                 }
             }
         }).then(function (products) {
-            const productsList = {products}
+            const productsList = {products};
             res.status(200).json(productsList);
         })
     }).catch(error =>{

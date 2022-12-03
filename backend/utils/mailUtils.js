@@ -18,7 +18,7 @@ const sendEmail = async (mailObj) => {
         });
 
         // verify connection configuration
-        transporter.verify(function (error, success) {
+        transporter.verify(function (error) {
             if (error) {
                 console.error(error);
             } else {

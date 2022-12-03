@@ -38,7 +38,7 @@ UserBorrowProduct.init({
 }, {
     sequelize,
     modelName: 'userBorrowProduct',
-})
+});
 
 //Associations
 User.hasMany(UserBorrowProduct, {
@@ -48,7 +48,7 @@ User.hasMany(UserBorrowProduct, {
     },
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT'
-})
+});
 UserBorrowProduct.belongsTo(User, {
     foreignKey: {
         name: 'idUser',
@@ -56,7 +56,7 @@ UserBorrowProduct.belongsTo(User, {
     },
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT'
-})
+});
 
 Product.hasMany(UserBorrowProduct, {
     foreignKey: {
@@ -65,7 +65,7 @@ Product.hasMany(UserBorrowProduct, {
     },
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT'
-})
+});
 UserBorrowProduct.belongsTo(Product, {
     foreignKey: {
         name: 'idProduct',
@@ -73,6 +73,6 @@ UserBorrowProduct.belongsTo(Product, {
     },
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT'
-})
+});
 
 module.exports.UserBorrowProduct = UserBorrowProduct;

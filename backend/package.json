@@ -20,6 +20,7 @@
     "multer": "^1.4.5-lts.1",
     "node-fetch": "^2.6.7",
     "nodemailer": "^6.8.0",
+    "process": "^0.11.10",
     "sequelize": "^6.25.5",
     "sequelize-cli": "^6.5.2",
     "sqlite3": "^5.1.2"

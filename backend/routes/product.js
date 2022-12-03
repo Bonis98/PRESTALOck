@@ -1,7 +1,7 @@
 const express = require('express');
 const {User} = require("../database/models/user");
 const {Product} = require("../database/models/product");
-const multer  = require('multer')
+const multer  = require('multer');
 const {getLockerList} = require("../utils/SintraApiUtils");
 const {UserBorrowProduct} = require("../database/models/userBorrowProduct");
 const {Op} = require("sequelize");
@@ -29,8 +29,8 @@ router.post('/', async function (req, res) {
                 title: req.body.title,
                 description: req.body.description,
                 maxLoanDays: req.body.maxLoanDays,
-            }
-            const product = await Product.create(productInfo)
+            };
+            const product = await Product.create(productInfo);
             res.json({id: product.id});
         } else {
             res.sendStatus(403); // Forbidden
@@ -45,7 +45,7 @@ router.post('/:id/updateImage', upload.single('image'), async function (req, res
     try {
         //If user doesn't own the product return unauthorized
         if (!(await checkOwner(req.get('Auth-Token'), req.params.id))) {
-            res.sendStatus(403) // Forbidden
+            res.sendStatus(403); // Forbidden
             return;
         }
         //Insert image in DB
@@ -53,13 +53,13 @@ router.post('/:id/updateImage', upload.single('image'), async function (req, res
             where: {
                 id: req.params.id,
             }
-        })
+        });
         res.sendStatus(200)
     } catch (error) {
-        console.error(error)
+        console.error(error);
         res.sendStatus(500)
     }
-})
+});
 
 router.get('/:id/image', async function (req, res) {
     try {
@@ -70,16 +70,16 @@ router.get('/:id/image', async function (req, res) {
             attributes: ['picture']
         });
         if (image && image.picture) {
-            res.write(image.picture)
+            res.write(image.picture);
             res.end()
         } else {
           res.redirect('/empty.jpg')
         }
     } catch (error) {
-        console.error(error)
+        console.error(error);
         res.sendStatus(500)
     }
-})
+});
 
 router.put('/:id', async function (req, res) {
     if (!(checkParams(req) && req.body.hasOwnProperty('availability'))) {
@@ -88,7 +88,7 @@ router.put('/:id', async function (req, res) {
     }
     //If user doesn't own the product return unauthorized
     if (!(await checkOwner(req.get('Auth-Token'), req.params.id))) {
-        res.sendStatus(403)
+        res.sendStatus(403);
         return;
     }
     //Check that product is not lent (terminationDate date is null)
@@ -99,10 +99,10 @@ router.put('/:id', async function (req, res) {
                 [Op.is]: null,
             }
         }
-    })
+    });
     //If exists a loan with terminationDate null, return forbidden
     if (loan){
-        res.sendStatus(403)
+        res.sendStatus(403);
         return
     }
     Product.update({
@@ -137,10 +137,10 @@ router.get('/:id', async function (req, res) {
         });
         product.dataValues['lockerList'] = await getLockerList(product.user.lockerList);
         delete product.user.dataValues.lockerList;
-        const productObj = {product}
+        const productObj = {product};
         res.json(productObj);
     } catch (error) {
-        console.error(error)
+        console.error(error);
         res.sendStatus(500);
     }
 });
@@ -150,13 +150,13 @@ function checkParams(req){
     const body = req.body;
     if (!(body.hasOwnProperty('title') && body.hasOwnProperty('description')
         && body.hasOwnProperty('maxLoanDays')))
-        return false
+        return false;
     if (body.title.length == 0)
-        return false
+        return false;
     if (body.description.length == 0)
-        return false
+        return false;
     if (body.maxLoanDays <= 0)
-        return false
+        return false;
     return true
 }
 
@@ -174,11 +174,11 @@ async function checkOwner(token, idProduct) {
             }],
         });
         //Check that user is updating a product that she owns
-        let exists = 0
+        let exists = 0;
         if (products) {
             for (let i = 0; i < products.products.length; i++) {
                 if (products.products[i].id == idProduct) {
-                  exists = !exists
+                  exists = !exists;
                   break
                 }
             }

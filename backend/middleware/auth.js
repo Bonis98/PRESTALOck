@@ -36,4 +36,4 @@ module.exports = {
             res.sendStatus(401);
         }
     }
-}
+};

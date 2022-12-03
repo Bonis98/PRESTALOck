@@ -12,8 +12,8 @@ router.get('/', async function (req, res) {
             where: {
                 token: req.get('Auth-Token')
             }
-        })
-        const idUser = user.id
+        });
+        const idUser = user.id;
         //Extract products borrowed by user
         const borrowedProducts = await UserBorrowProduct.findAll({
             where: {

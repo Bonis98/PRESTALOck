@@ -61,7 +61,7 @@ router.post('/', async function (req, res) {
     }
 
 
-    const t = await sequelize.transaction()
+    const t = await sequelize.transaction();
     try {
 
         //find the product requested for book
@@ -168,12 +168,12 @@ router.post('/', async function (req, res) {
         let locker;
         for (let i=0; i<lockerList.length; i++){
             if (lockerList[i].id == req.body.lockerId){
-                locker = lockerList[i]
+                locker = lockerList[i];
                 break
             }
         }
 
-        //setting email for reciever
+        //setting email for receiver
         let emailSubject = "Prenotazione confermata";
         let emailText = `Il proprietario dell'oggetto è stato notificato della richiesta di prestito. 
         Ti verrà inviata una seconda mail quando l'oggetto sarà pronto per il ritiro.`;
@@ -198,10 +198,10 @@ router.post('/', async function (req, res) {
         };
         await sendMail(mailObjOwner);
 
-        await t.commit()
+        await t.commit();
         res.sendStatus(200);
     } catch (e) {
-        await t.rollback()
+        await t.rollback();
         if (e instanceof NoSlotError) {
             console.error(e.message);
             res.sendStatus(409); // Conflict
@@ -265,7 +265,7 @@ router.get('/return/:idProduct', async function(req, res){
                 "x-apikey": process.env.API_KEY_LOCKERS,
                 "x-tenant": process.env.TENANT
             }
-        })
+        });
 
         const urlSlotsByLocker = 'http://hack-smartlocker.sintrasviluppo.it/api/slots?lockerId=' + infoSlot.lockerId;
         //retrieve all slots for locker already used
@@ -275,7 +275,7 @@ router.get('/return/:idProduct', async function(req, res){
                 "x-apikey": process.env.API_KEY_LOCKERS,
                 "x-tenant": process.env.TENANT
             }
-        })
+        });
 
 
         let slot = await searchSlot(slots);
@@ -313,7 +313,7 @@ router.get('/return/:idProduct', async function(req, res){
         let locker;
         for (let i=0; i<lockerList.length; i++){
             if (lockerList[i].id === infoSlot.lockerId){
-                locker = lockerList[i]
+                locker = lockerList[i];
                 break
             }
         }

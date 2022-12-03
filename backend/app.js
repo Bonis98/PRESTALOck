@@ -17,7 +17,7 @@ const signinFacebook = require('./routes/signinFacebook');
 const lockerList = require('./routes/lockerList');
 const saveUserLockers = require("./routes/saveUserLockers");
 const user = require('./routes/user');
-const book = require('./routes/book')
+const book = require('./routes/book');
 const product = require('./routes/product');
 const products = require ('./routes/products');
 const loans = require ('./routes/loans');
@@ -48,17 +48,17 @@ User.sync().then(() => {
     console.log('User table created successfully!');
 }).catch((error) => {
     console.error('Unable to create User table: ', error)
-})
+});
 Product.sync().then(() => {
     console.log('Product table created successfully!');
 }).catch((error) => {
     console.error('Unable to create Product table: ', error)
-})
+});
 UserBorrowProduct.sync().then(() => {
     console.log('UserBorrowProduct table created successfully!');
 }).catch((error) => {
     console.error('Unable to create UserBorrowProduct table: ', error)
-})
+});
 
 //routes
 //Authentication middleware
@@ -71,7 +71,7 @@ app.use('/api/signinFacebook', signinFacebook);
 app.use('/api/lockerList', lockerList);
 app.use('/api/saveUserLockers', saveUserLockers);
 app.use('/api/user', user);
-app.use('/api/product', product)
+app.use('/api/product', product);
 app.use('/api/products', products);
 app.use('/api/loans', loans);
 app.use('/api/book', book);
@@ -85,7 +85,7 @@ app.use('/', express.static('public'));
 const httpsOptions = {
     key: fs.readFileSync('./certificates/server.key'),
     cert: fs.readFileSync('./certificates/server.cert')
-}
+};
 
 if (Process.env.SERVE_HTTP && Process.env.SERVE_HTTP == "true") {
       http.createServer(app).listen(80, () => {
@@ -95,7 +95,7 @@ if (Process.env.SERVE_HTTP && Process.env.SERVE_HTTP == "true") {
     https.createServer(httpsOptions, app)
         .listen(port, () => {
             console.log('Server running. Listening on port ' + port)
-        })
+        });
 
     http.createServer(function (req, res) {
         res.writeHead(307, { "Location": "https://" + req.headers['host'] + req.url });

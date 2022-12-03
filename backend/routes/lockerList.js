@@ -36,7 +36,7 @@ router.get('/', function (req, res){
                     lockerList.push(json[i]);
                 }
             }
-            const lockerProvinceList = {lockerList}
+            const lockerProvinceList = {lockerList};
             res.json(lockerProvinceList);
         }, (error) => {
             console.error(error);
@@ -59,7 +59,7 @@ router.get('/', function (req, res){
         console.error(error);
         res.sendStatus(500);
     })
-})
+});
 
 
 module.exports = router;

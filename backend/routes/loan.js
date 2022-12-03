@@ -16,7 +16,7 @@ async function checkDuplicate(product){
             loanStartDate: null,
             terminationDate: null
         }
-    })
+    });
     if (numberOfOccurrences != 1){
         throw new Error("Found wrong number of occurrences in UserBorrowProduct table")
     }
@@ -25,21 +25,21 @@ async function checkDuplicate(product){
 router.get('/start/:idProduct', async function (req, res) {
     let receiverUnlockCode;
     let slotIndex;
-    const t = await sequelize.transaction()
+    const t = await sequelize.transaction();
     try {
         const currentUser = await User.findOne({
             where: {
                 token: req.get('Auth-Token')
             },
             attributes: ['id', 'email', 'name', 'surname']
-        })
+        });
         const product = await Product.findOne({
             where: {
                 id: req.params.idProduct,
                 idOwner: currentUser.id
             },
             attributes: ['id', 'maxLoanDays', 'title']
-        })
+        });
         const borrower = await UserBorrowProduct.findOne({
             where: {
                 idProduct: product.id,
@@ -51,8 +51,8 @@ router.get('/start/:idProduct', async function (req, res) {
                 required: true,
                 attributes: ['email']
             }]
-        })
-        await checkDuplicate(product)
+        });
+        await checkDuplicate(product);
         let url = 'http://hack-smartlocker.sintrasviluppo.it/api/slots/' + borrower.lockerSlot;
         const resp = await fetch(url, {
             method: 'get',
@@ -60,11 +60,11 @@ router.get('/start/:idProduct', async function (req, res) {
                 "x-apikey": process.env.API_KEY_LOCKERS,
                 "x-tenant": process.env.TENANT
             }
-        })
-        const jsonData = await resp.json()
-        receiverUnlockCode = jsonData.status.unlockCodes[1]
-        let lockerId = jsonData.lockerId
-        slotIndex = jsonData.index
+        });
+        const jsonData = await resp.json();
+        receiverUnlockCode = jsonData.status.unlockCodes[1];
+        let lockerId = jsonData.lockerId;
+        slotIndex = jsonData.index;
 
         //retrieving complete lockers list
         let lockerList = await fetch('http://hack-smartlocker.sintrasviluppo.it/api/lockers', {
@@ -80,7 +80,7 @@ router.get('/start/:idProduct', async function (req, res) {
         let locker;
         for (let i=0; i<lockerList.length; i++){
             if (lockerList[i].id == lockerId){
-                locker = lockerList[i]
+                locker = lockerList[i];
                 break
             }
         }
@@ -93,43 +93,43 @@ router.get('/start/:idProduct', async function (req, res) {
                 terminationDate: null
             },
             transaction: t
-        })
-        let emailSubject = "L'oggetto prenotato è pronto per il ritiro"
+        });
+        let emailSubject = "L'oggetto prenotato è pronto per il ritiro";
         let returningDate = moment().add(10, 'days').locale('it').calendar({
             sameDay: '[Oggi]',
             nextDay: '[Domani]',
             nextWeek: 'dddd',
-        })
+        });
         let emailText = currentUser.name + " " + currentUser.surname + " ha depositato l'oggetto " +
             product.title + " nello slot " + slotIndex + " del locker " + locker.nome + " in " + locker.address +
             ". Il codice per aprire lo sportello e accedere al ritiro è il seguente: " +
             receiverUnlockCode + ". Ti ricordiamo che il prodotto dovrà essere restituito entro " +
-            returningDate + "."
+            returningDate + ".";
         let mailObjReceiver = {
             from: process.env.MAIL_USER,
             to: borrower.user.email,
             subject: emailSubject,
             text: emailText
-        }
-        await sendMail(mailObjReceiver)
-        emailSubject = "Conferma inizio prestito"
+        };
+        await sendMail(mailObjReceiver);
+        emailSubject = "Conferma inizio prestito";
         emailText = "Hai depositato il tuo oggetto con successo. " +
-            "Da oggi inizia ufficialmente il periodo di prestito."
+            "Da oggi inizia ufficialmente il periodo di prestito.";
         let mailObjOwner = {
             from: process.env.MAIL_USER,
             to: currentUser.email,
             subject: emailSubject,
             text: emailText
-        }
-        await sendMail(mailObjOwner)
-        await t.commit()
+        };
+        await sendMail(mailObjOwner);
+        await t.commit();
         res.sendStatus(200)
     } catch (error) {
-        console.error(error)
-        await t.rollback()
+        console.error(error);
+        await t.rollback();
         res.sendStatus(500)
     }
-})
+});
 
 router.get('/close/:idProduct', async function(req, res){
     const t = await sequelize.transaction();
@@ -146,9 +146,9 @@ router.get('/close/:idProduct', async function(req, res){
         })
     //TODO: finish route
     } catch (error) {
-        console.error(error)
+        console.error(error);
         res.sendStatus(500)
     }
-})
+});
 
 module.exports = router;
