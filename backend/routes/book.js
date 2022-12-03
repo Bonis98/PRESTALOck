@@ -349,7 +349,13 @@ router.get('/return/:idProduct', async function(req, res){
         res.sendStatus(200);
 
     } catch (error) {
-
+        if (error instanceof NoSlotError) {
+            console.error(error.message);
+            res.sendStatus(409); // Conflict
+        } else {
+            console.log(error);
+            res.sendStatus(500);
+        }
     }
 
 });
