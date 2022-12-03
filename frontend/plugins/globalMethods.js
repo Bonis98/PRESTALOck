@@ -13,7 +13,6 @@ export default (context, inject) => {
       })
       if (!response.ok) {
         console.error(response)
-        const contentType = response.headers.get('content-type')
         if (response.status == 401) {
           location.assign('/signin')
           return
@@ -23,6 +22,7 @@ export default (context, inject) => {
             status: response.status
           }
         }
+        const contentType = response.headers.get('content-type')
         if (contentType && contentType.includes('application/json')) {
           throw {
             message: (await response.json()).errorText,
@@ -48,7 +48,7 @@ export default (context, inject) => {
     } catch (ex) {
       console.error(ex)
       alert(ex.message)
-      return { errorCode: ex.status }
+      return { error: true, errorCode: ex.status }
     }
   })
 
@@ -63,7 +63,6 @@ export default (context, inject) => {
       })
       if (!response.ok) {
         console.error(response)
-        const contentType = response.headers.get('content-type')
         if (response.status == 401) {
           location.assign('/signin')
           return
@@ -73,6 +72,7 @@ export default (context, inject) => {
             status: response.status
           }
         }
+        const contentType = response.headers.get('content-type')
         if (contentType && contentType.includes('application/json')) {
           throw {
             message: (await response.json()).errorText,
@@ -98,7 +98,7 @@ export default (context, inject) => {
     } catch (ex) {
       console.error(ex)
       alert(ex.message)
-      return { errorCode: ex.status }
+      return { error: true, errorCode: ex.status }
     }
   })
 

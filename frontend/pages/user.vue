@@ -20,6 +20,9 @@
           <Button text="Modifica lista locker" @click="goToEditLockers()" />
         </div>
         <div class="mt-1">
+          <Button text="Mostra prestiti attivi" @click="goToActiveLoans()" />
+        </div>
+        <div class="mt-1">
           <Button text="Logout" hollow icon="logout" @click="logout()" />
         </div>
       </div>
@@ -63,6 +66,8 @@ export default {
 
     goToEditLockers () {
       this.$router.push({ path: '/editLocker' })
+    goToActiveLoans () {
+      this.$router.push({ path: '/activeLoans' })
     }
   }
 }

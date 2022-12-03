@@ -56,7 +56,7 @@ export default {
     const result = await this.$callApi('/api/user/' + localStorage.getItem('userId'), 'GET')
     if (!result.data || result.data.user.lockerList.length == 0) {
       alert('Non hai ancora selezionato i locker vicini a te. Per farlo, vai nel tuo profilo premendo l\'icona in alto a destra')
-      this.$router.replace('/')
+      this.$router.go(-1)
     }
 
     this.loading = false

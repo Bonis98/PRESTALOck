@@ -1,7 +1,7 @@
 <template>
   <button
     :class="hollow ? hollowClasses : fullClasses"
-    @click="$emit('click')"
+    @click.stop="$emit('click')"
   >
     <div class="flex justify-between items-center h-full gap-2">
       <img v-if="icon" class="h-full" :src="`/icons/${icon}.png`">

@@ -128,6 +128,7 @@ export default {
         lockerId: this.selectedLockerId
       })
       if (!result.error) {
+        alert('Prenotazione effettuata. Controlla la tua casella di posta elettronica per ulteriori informazioni')
         this.$router.go() // reloads the page
       }
       this.loading = false
