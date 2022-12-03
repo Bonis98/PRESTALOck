@@ -12,7 +12,6 @@ export default (context, inject) => {
         body: JSON.stringify(body)
       })
       if (!response.ok) {
-        console.error(response)
         if (response.status == 401) {
           location.assign('/signin')
           return
@@ -48,7 +47,7 @@ export default (context, inject) => {
     } catch (ex) {
       console.error(ex)
       alert(ex.message)
-      return { error: true, errorCode: ex.status }
+      return { error: true, errorStatus: ex.status }
     }
   })
 
@@ -62,7 +61,6 @@ export default (context, inject) => {
         body
       })
       if (!response.ok) {
-        console.error(response)
         if (response.status == 401) {
           location.assign('/signin')
           return
@@ -98,7 +96,7 @@ export default (context, inject) => {
     } catch (ex) {
       console.error(ex)
       alert(ex.message)
-      return { error: true, errorCode: ex.status }
+      return { error: true, errorStatus: ex.status }
     }
   })
 

@@ -89,7 +89,7 @@ export default {
       const result = await this.$callApi(url, 'GET')
       if (!result.error) {
         this.$router.go(0)
-      } else if (result.errorCode == 409) {
+      } else if (result.errorStatus == 409) {
         alert('Impossibile prenotare uno slot per la restituzione del prodotto. Riprovare')
       }
       this.$emit('endLoading')

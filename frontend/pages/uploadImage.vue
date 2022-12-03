@@ -22,6 +22,7 @@
           <img v-show="image" class="max-w-full m-auto" :src="imagePath">
         </div>
         <Button v-show="image" text="Salva" @click="upload()" />
+        <Button text="Annulla" @click="$router.go(-1)" />
       </div>
     </div>
   </div>

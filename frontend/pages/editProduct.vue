@@ -1,7 +1,7 @@
 <template>
   <div>
     <Loader v-show="loading" />
-    <TopBar />
+    <TopBar go-back />
     <div class="text-center w-11/12 m-auto mb-6 justify-around gap-24 pt-12">
       <div class="mb-3 text-2xl">
         Modifica Annuncio
@@ -73,6 +73,7 @@ export default {
       this.loading = true
       if (JSON.stringify(this.product) == '{}') {
         alert('errore')
+        this.loading = false
         return
       }
 
@@ -86,6 +87,7 @@ export default {
       if (!result.error) {
         this.$router.replace({ path: '/productDetails', query: { idProduct } })
       }
+      this.loading = false
     }
   }
 }
