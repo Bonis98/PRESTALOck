@@ -17,14 +17,14 @@
                 v-for="loan in myProductsWaitingLoans"
                 :key="loan.id"
                 :passed-loan="loan"
-                :button="startLoan"
+                button="startLoan"
                 @startLoading="loading = true"
                 @endLoading="loading = false"
               />
             </div>
           </div>
           <div v-if="(myProductsActiveLoans.length > 0)">
-            <span class="text-xl mt-4 mb-4"> Prestiti che devono essere restituiti: </span>
+            <span class="text-xl mt-4 mb-4"> Prodotti che devono essere restituiti: </span>
             <div class="flex flex-wrap w-11/12 m-auto mb-6 justify-around gap-24">
               <LoanCard
                 v-for="loan in myProductsActiveLoans"
@@ -40,7 +40,7 @@
         <div v-if="othersProductsLoans.length > 0">
           <span class="text-3xl"> Prestiti richiesti </span>
           <div v-if="(othersProductsWaitingLoans.length > 0)">
-            <span class="text-xl mt-4 mb-4"> Prestiti non ancora depositati: </span>
+            <span class="text-xl mt-4 mb-4"> Prodotti non ancora depositati: </span>
             <div class="flex flex-wrap w-11/12 m-auto mb-6 justify-around gap-24">
               <LoanCard
                 v-for="loan in othersProductsWaitingLoans"
@@ -52,7 +52,7 @@
             </div>
           </div>
           <div v-if="(othersProductsActiveLoans.length > 0)">
-            <span class="text-xl mt-4 mb-4"> Prestiti che devono essere restituiti: </span>
+            <span class="text-xl mt-4 mb-4"> Prodotti che devono essere restituiti: </span>
             <div class="flex flex-wrap w-11/12 m-auto mb-6 justify-around gap-24">
               <LoanCard
                 v-for="loan in othersProductsActiveLoans"

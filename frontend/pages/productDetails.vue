@@ -130,6 +130,8 @@ export default {
       if (!result.error) {
         alert('Prenotazione effettuata. Controlla la tua casella di posta elettronica per ulteriori informazioni')
         this.$router.go() // reloads the page
+      } else if (result.errorStatus == 409) {
+        alert('Non è disponibile nessuno slot libero per il locker selezionato. Riprovare selezionando un altro locker')
       }
       this.loading = false
     },

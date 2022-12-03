@@ -6,8 +6,8 @@
     </div>
 
     <!-- Info -->
-    <div v-if="passedLoan.alreadyStarted" class="text-left w-11/12 flex-grow break-words">
-      Prodotto in prestito dal {{ $formatDate(passedLoan.loanStartDate) }} (tempo rimanente: {{ passedLoan.remainingDays }} giorni
+    <div v-if="passedLoan.alreadyStarted" class="text-left w-11/12 flex-grow break-words font-light text-sm">
+      Prodotto in prestito dal {{ $formatDate(passedLoan.loanStartDate) }} (tempo rimanente: {{ passedLoan.remainingDays }} giorni)
     </div>
 
     <!-- Title and owner name -->
@@ -88,6 +88,7 @@ export default {
       this.$emit('startLoading')
       const result = await this.$callApi(url, 'GET')
       if (!result.error) {
+        alert('Operazione effettuata correttamente. Controlla la tua casella di posta elettronica per ulteriori informazioni')
         this.$router.go(0)
       } else if (result.errorStatus == 409) {
         alert('Impossibile prenotare uno slot per la restituzione del prodotto. Riprovare')
