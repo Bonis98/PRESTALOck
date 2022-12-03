@@ -11,7 +11,7 @@ router.post('/', function (req, res){
     } else {
         lockerList = req.body.lockers;
         if (!lockerList.length) {
-            res.sendStatus(422); // Unprocessable Entity
+            res.sendStatus(400); // Client Error
         } else {
             lockerList = lockerList.toString();
             //Locker list is stored as a semicolon separated integers
