@@ -55,6 +55,11 @@ router.get('/', async function (req, res) {
         })
         //Extract products lent by user
         const lentProducts = await UserBorrowProduct.findAll({
+              where: {
+                terminationDate:{
+                    [Op.is]: null,
+                }
+            },
             include: {
                 model: Product,
                 required: true,
