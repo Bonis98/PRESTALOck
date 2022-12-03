@@ -53,6 +53,10 @@ export default {
   build: {
   },
 
+  generate: {
+    dir: '../backend/public'
+  },
+
   vue: {
     config: {
       devtools: true

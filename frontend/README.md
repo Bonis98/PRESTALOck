@@ -3,6 +3,8 @@
 ## Build Setup
 
 ```bash
+# On Linux: if you encounter errors about the SSL version when executing these commands, execute `export NODE_OPTIONS=--openssl-legacy-provider` first
+
 # install dependencies
 $ npm install
 
@@ -15,9 +17,6 @@ $ npm run start
 
 # generate static project
 $ npm run generate
-
-# generate static project and save it in the backend public folder
-$ npm run generateForBackend
 ```
 
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
