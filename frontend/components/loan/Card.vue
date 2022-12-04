@@ -18,8 +18,10 @@
         </div>
       </div>
       <div class="text-left w-11/12 flex justify-between">
-        <div class="flex-grow text-right truncate whitespace-nowrap w-2/4">
-          {{ passedLoan.owner.name }} {{ passedLoan.owner.surname }}
+        <div class="flex-grow text-right truncate whitespace-nowrap w-2/4 underline text-blue-500">
+          <NuxtLink :to="{ path: '/user', query: { userId: passedLoan.owner.id }}">
+            {{ passedLoan.owner.name }} {{ passedLoan.owner.surname }}
+          </NuxtLink>
         </div>
       </div>
 

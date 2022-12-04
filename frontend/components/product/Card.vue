@@ -11,8 +11,10 @@
         <div class="font-bold flex-grow truncate whitespace-nowrap w-2/4">
           {{ passedProduct.title }}
         </div>
-        <div class="flex-grow text-right truncate whitespace-nowrap w-2/4">
-          {{ passedProduct.user.name }} {{ passedProduct.user.surname }}
+        <div class="flex-grow text-right truncate whitespace-nowrap w-2/4 underline text-blue-500">
+          <NuxtLink :to="{ path: '/user', query: { userId: passedProduct.user.id }}">
+            {{ passedProduct.user.name }} {{ passedProduct.user.surname }}
+          </NuxtLink>
         </div>
       </div>
       <!-- description -->
