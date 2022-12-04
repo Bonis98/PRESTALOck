@@ -21,6 +21,11 @@
         <div class="mt-3">
           <Button text="Login" @click="signin()" />
         </div>
+        <div class="mt-3">
+          <NuxtLink :to="{ path: '/forgotPassword' }">
+            <Button text="Password dimenticata" hollow />
+          </NuxtLink>
+        </div>
         <div class="mt-12">
           <Button text="Registrati" @click="signup()" />
         </div>

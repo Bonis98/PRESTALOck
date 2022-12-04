@@ -16,7 +16,7 @@ router.get('/:email',async function (req, res){
             }
         });
         if (!user){
-            res.sendStatus(401);
+            res.sendStatus(404);
         }
         else {
             await User.update({
@@ -54,11 +54,11 @@ router.post('/', async function (req, res){
             attributes: [['id', 'userId'], 'name', 'surname', 'password']
         });
         if (!user){
-            res.sendStatus(401);
+            res.sendStatus(403);
         } else {
             const result = await bcrypt.compare(req.body.tempCode, user.password);;
             if (!result){
-                res.sendStatus(401);
+                res.sendStatus(403);
             } else {
                 const token = crypto.randomBytes(20).toString('hex');
                 await User.update({

@@ -99,7 +99,7 @@
 - **Priorità 3**:
     - [x] Pagina di termine prestito con conferma prodotto depositato
 - **Priorità 4**:
-    - [ ] Pagina di modifica/recupero password
+    - [x] Pagina di modifica/recupero password
 
 
 *Esempio pagina dettagli prodotto*
