@@ -19,7 +19,7 @@
         <TextArea v-model="product.description" />
       </div>
       <div class="mt-3">
-        Numero dei giorni massimo di prestito (in giorni)
+        Numero dei giorni massimo di prestito
       </div>
       <div>
         <Input v-model="product.maxLoanDays" type="number" :placeholder="[[ product.maxLoanDays ]]" min="1" />
@@ -30,7 +30,7 @@
       <input id="available" v-model="product.availability" type="checkbox">
       <label for="available">{{ product.availability ? "Disponibile" : "Non disponibile" }}</label>
       <div class="mt-12">
-        <Button text="Modifica" @click="edit()" />
+        <Button text="Salva modifiche" @click="edit()" />
       </div>
     </div>
   </div>

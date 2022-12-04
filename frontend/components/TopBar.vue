@@ -1,5 +1,5 @@
 <template>
-  <div class="h-10 w-screen items-center bg-blue-500 flex flex-row gap-3 fixed px-4 text-white">
+  <div class="h-10 w-screen items-center bg-blue-500 flex flex-row gap-3 fixed px-4 text-white z-40">
     <NuxtLink
       v-if="backRedirect"
       class="h-2/4 cursor-pointer"
@@ -8,6 +8,7 @@
     >
       <img class="h-full" src="/icons/back.png">
     </NuxtLink>
+
     <div
       v-if="!backRedirect && goBack"
       class="h-2/4 cursor-pointer"
@@ -15,8 +16,17 @@
     >
       <img class="h-full" src="/icons/back.png">
     </div>
+
     <div class="flex-grow" />
-    <div> {{ name }} </div>
+
+    <NuxtLink
+      v-if="name && name.length > 0"
+      class="h-2/4 cursor-pointer"
+      :to="{ path: '/user', query: {userId } }"
+    >
+      <div> {{ name }} </div>
+    </NuxtLink>
+
     <NuxtLink
       v-if="name && name.length > 0"
       class="h-2/4 cursor-pointer"

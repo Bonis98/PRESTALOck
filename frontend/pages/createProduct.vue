@@ -19,7 +19,7 @@
         <TextArea v-model="description" />
       </div>
       <div class="mt-3">
-        Numero dei giorni massimo di prestito (in giorni)
+        Numero dei giorni massimo di prestito
       </div>
       <div>
         <Input v-model="maxLoanDays" type="number" min="1" />

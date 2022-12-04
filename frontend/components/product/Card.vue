@@ -1,10 +1,7 @@
 <template>
-  <NuxtLink
-    :to="{ path: '/productDetails', query: { idProduct: passedProduct.id } }"
-    class="w-96"
-    style="max-width: 95vw;"
-  >
-    <div class="border border-solid border-gray-200 rounded-md shadow flex-shrink-0 flex flex-col items-center cursor-pointer" style="height: 32rem;">
+  <NuxtLink :to="{ path: '/productDetails', query: { idProduct: passedProduct.id } }">
+    <div class="w-96 border border-solid border-gray-200 rounded-md shadow flex-shrink-0 flex flex-col items-center cursor-pointer relative" style="height: 32rem; max-width: 95vw;">
+      <div v-if="disabled" class="absolute inset-0 bg-black opacity-20" />
       <!-- image div -->
       <div class="h-3/4 overflow-hidden">
         <img class="w-full" :src="imageUrl">
@@ -46,6 +43,13 @@ export default {
 
     formattedDate () {
       return this.passedProduct ? this.$formatDate(this.passedProduct.insertionDate) : ''
+    },
+
+    disabled () {
+      if ('availability' in this.passedProduct) {
+        return !this.passedProduct.availability
+      }
+      return false
     }
   }
 }
