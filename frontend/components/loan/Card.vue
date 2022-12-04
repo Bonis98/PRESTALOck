@@ -1,5 +1,5 @@
 <template>
-  <div class="w-96 border border-solid border-gray-200 rounded-md shadow flex-shrink-0 flex flex-col items-center" style="height: 20rem; max-width: 95vw;">
+  <div class="w-96 border border-solid border-gray-200 rounded-md shadow flex-shrink-0 flex flex-col items-center" style="height: 32rem; max-width: 95vw;">
     <!-- image div -->
     <div class="h-3/4 overflow-hidden flex items-center">
       <img class="w-full" :src="imageUrl">

@@ -3,7 +3,7 @@
     <Loader v-show="loading" />
     <TopBar go-back />
     <div class="text-center w-11/12 m-auto mb-6 justify-around gap-24 pt-12 pb-24">
-      <div v-if="!loading && myLoans.length == 0 && othersLoans.length" class="text-2xl mt-2 text-center">
+      <div v-if="!loading && myLoans.length == 0 && othersLoans.length == 0" class="text-2xl mt-2 text-center">
         Non hai prestiti nello storico 👀️
       </div>
 
