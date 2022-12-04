@@ -91,13 +91,13 @@
     - [x] Modifica prodotto (con flag `available`)
     - [x] Upload foto di prodotto
     - [x] Pagina di info utente
-    - [ ] Elenco di prestiti attivi (sia prodotti dati che ricevuti) con i vari tasti per confermare deposito e per prenotare locker di restituzione (*terminato: manca solamente che il backend implementi il flag returnSlotBooked*)
-    - [ ] Elenco propri prodotti
+    - [x] Elenco di prestiti attivi (sia prodotti dati che ricevuti) con i vari tasti per confermare deposito e per prenotare locker di restituzione
+    - [x] Elenco propri prodotti
 - **Priorità 2**:
     - [ ] Vista di storico prodotti inseriti
     - [ ] Vista di storico prestiti richiesti
 - **Priorità 3**:
-    - [ ] Pagina di termine prestito con conferma prodotto depositato
+    - [x] Pagina di termine prestito con conferma prodotto depositato
 - **Priorità 4**:
     - [ ] Pagina di modifica/recupero password
 
