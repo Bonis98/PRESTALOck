@@ -50,7 +50,7 @@ router.post('/', function (req, res){
                         vocal = "*";
                 }
                 const emailSubject = "Registrazione avvenuta con successo!"
-                const emailText = `Benvenut${vocal} ${userData.name} ${userData.username}! La ringraziamo per essersi `+
+                const emailText = `Benvenut${vocal} ${userData.name} ${userData.surname}! La ringraziamo per essersi `+
                     `registrat${vocal} sulla nostra piattaforma. Speriamo che il contenuto e le funzionalità `+
                     `possano essere di suo gradimento. In caso contrario non esiti a contattarci.
                     Buona permanenza! `+

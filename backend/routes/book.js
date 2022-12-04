@@ -333,7 +333,7 @@ router.get('/return/:idProduct', async function(req, res){
         //setting email for owner
         emailSubject = "Notifica avvio restituzione";
         emailText = `L'oggetto ${activeBook.product.title} ha iniziato l'iter di restituzione. Ti manderemo un'email` +
-        `quando sarà stato depositato.`;
+        ` quando sarà stato depositato.`;
         const mailObjOwner = {
             from: process.env.MAIL_USER,
             to: activeBook.product.user.email,
