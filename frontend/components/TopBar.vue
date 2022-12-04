@@ -1,7 +1,7 @@
 <template>
   <div class="h-10 w-screen items-center bg-blue-500 flex flex-row gap-3 fixed px-4 text-white z-40">
     <NuxtLink
-      v-if="backRedirect"
+      v-show="backRedirect"
       class="h-2/4 cursor-pointer"
       :to="{ path: backRedirect, query: backRedirectQuery }"
       :replace="backRedirectReplace"
@@ -10,16 +10,24 @@
     </NuxtLink>
 
     <div
-      v-if="!backRedirect && goBack"
+      v-show="!backRedirect && goBack"
       class="h-2/4 cursor-pointer"
       @click="$router.go(-1)"
     >
       <img class="h-full" src="/icons/back.png">
     </div>
 
-    <div class="flex-grow" />
+    <div class="h-full flex-grow" />
 
-    <div> {{ name }} </div>
+    <div class="h-full absolute left-8">
+      <NuxtLink to="/">
+        <img class="h-full" src="/title.png">
+      </NuxtLink>
+    </div>
+
+    <div class="text-sm">
+      {{ name }}
+    </div>
 
     <NuxtLink
       v-if="name && name.length > 0"

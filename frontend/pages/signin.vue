@@ -3,6 +3,9 @@
     <Loader v-show="loading" />
     <TopBar />
     <div class="text-center w-11/12 m-auto mb-6 justify-around gap-24 pt-12">
+      <div class="h-16 flex justify-center">
+        <img class="h-full" src="/title.png">
+      </div>
       <div class="text-center mb-3 text-2xl">
         Login
       </div>
