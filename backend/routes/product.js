@@ -129,10 +129,10 @@ router.get('/:id', async function (req, res) {
             include: [{
                 model: User,
                 required: true,
-                attributes: ['name', 'surname', 'province', 'lockerList']
+                attributes: ['id', 'name', 'surname', 'province', 'lockerList']
             }],
             attributes: {
-                exclude: ['createdAt', 'updatedAt', 'picture'],
+                exclude: ['idOwner', 'createdAt', 'updatedAt', 'picture'],
             }
         });
         if (!product){
