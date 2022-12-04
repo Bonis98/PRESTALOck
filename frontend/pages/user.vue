@@ -20,10 +20,19 @@
 
       <div v-if="userId == myUserId" class="text-center mt-4">
         <div class="mt-1">
-          <Button text="Modifica lista locker" @click="goToEditLockers()" />
+          <NuxtLink :to="{ path: '/editLockers' }">
+            <Button text="Modifica lista locker" />
+          </NuxtLink>
         </div>
         <div class="mt-1">
-          <Button text="Mostra prestiti attivi" @click="goToActiveLoans()" />
+          <NuxtLink :to="{ path: '/activeLoans' }">
+            <Button text="Mostra prestiti attivi" />
+          </NuxtLink>
+        </div>
+        <div class="mt-1">
+          <NuxtLink :to="{ path: '/history' }">
+            <Button text="Mostra storico prestiti" hollow />
+          </NuxtLink>
         </div>
         <div class="mt-1">
           <Button text="Logout" hollow icon="logout" @click="logout()" />
@@ -76,14 +85,6 @@ export default {
       if (confirm('Sei sicuro di voler uscire?')) {
         this.$router.push({ path: '/signin' })
       }
-    },
-
-    goToEditLockers () {
-      this.$router.push({ path: '/editLockers' })
-    },
-
-    goToActiveLoans () {
-      this.$router.push({ path: '/activeLoans' })
     }
   }
 }

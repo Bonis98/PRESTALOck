@@ -3,6 +3,7 @@ const router = express.Router();
 const {User} = require("../database/models/user");
 const moment = require("moment");
 const crypto = require("crypto");
+const fetch = require("node-fetch");
 
 router.get('/', function (req, res){
     const state = crypto.randomBytes(30).toString('hex');

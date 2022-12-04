@@ -19,7 +19,7 @@
 
     <div class="h-full flex-grow" />
 
-    <div class="h-full absolute left-8">
+    <div class="h-full absolute left-10">
       <NuxtLink to="/">
         <img class="h-full" src="/title.png">
       </NuxtLink>

@@ -17,17 +17,26 @@
       </div>
     </div>
     <div class="text-left w-11/12 flex justify-between">
-      <div class="flex-grow text-right truncate whitespace-nowrap w-2/4 underline text-blue-500">
-        <NuxtLink :to="{ path: '/user', query: { userId: passedLoan.owner.id }}">
-          {{ passedLoan.owner.name }} {{ passedLoan.owner.surname }}
-        </NuxtLink>
+      <div class="flex-grow text-right truncate whitespace-nowrap w-2/4">
+        <span v-if="myUserId != passedLoan.owner.id">
+          Di
+          <NuxtLink :to="{ path: '/user', query: { userId: passedLoan.owner.id }}" class="underline text-blue-500">
+            {{ passedLoan.owner.name }} {{ passedLoan.owner.surname }}
+          </NuxtLink>
+        </span>
+        <span v-if="myUserId != passedLoan.borrower.id">
+          Prestato a
+          <NuxtLink :to="{ path: '/user', query: { userId: passedLoan.borrower.id }}" class="underline text-blue-500">
+            {{ passedLoan.borrower.name }} {{ passedLoan.borrower.surname }}
+          </NuxtLink>
+        </span>
       </div>
     </div>
 
     <!-- Locker -->
-    <div class="text-left w-11/12 flex-grow break-words">
+    <div v-if="passedLoan.locker" class="text-left w-11/12 flex-grow break-words">
       <div>
-        Locker {{ passedLoan.locker.name }} ({{ passedLoan.locker.address }}, {{ passedLoan.locker.province }})
+        Locker {{ passedLoan.locker?.name }} ({{ passedLoan.locker?.address }}, {{ passedLoan.locker?.province }})
       </div>
       <div>
         Slot del locker: {{ passedLoan.lockerSlot }}
@@ -37,7 +46,7 @@
       </div>
     </div>
 
-    <div v-if="button != ''" class="text-right w-11/12 mt-2 mb-2">
+    <div v-if="!passedLoan.terminationDate && button != ''" class="text-right w-11/12 mt-2 mb-2">
       <Button
         :text="button == 'requestReturnLocker' ? 'Prenota locker' : 'Conferma deposito'"
         @click="markDeposit()"
@@ -46,6 +55,12 @@
 
     <div class="text-right w-11/12 font-light text-sm">
       Richiesta di prestito effettuata il {{ formattedDate }}
+    </div>
+    <div v-if="passedLoan.loanStartDate" class="text-right w-11/12 font-light text-sm">
+      Prestito avviato il {{ $formatDate(passedLoan.loanStartDate) }}
+    </div>
+    <div v-if="passedLoan.terminationDate" class="text-right w-11/12 font-light text-sm">
+      Prestito terminato il {{ $formatDate(passedLoan.requestDate) }}
     </div>
   </div>
 </template>
@@ -61,6 +76,12 @@ export default {
     button: {
       type: String,
       default: () => ''
+    }
+  },
+
+  data () {
+    return {
+      myUserId: localStorage.getItem('userId')
     }
   },
 
