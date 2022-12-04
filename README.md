@@ -17,16 +17,18 @@ Gli utenti devono risiedere nella stessa provincia per potersi scambiare oggetti
 
 # Come testare il prototipo
 - Abbiamo reso disponibile una versione live [qua](http://prestalock.emagon.xyz)
-- `cd` nella cartella del progetto
+- `cd` nella cartella del backend
 - Eseguire `npm install` per installare le dipendenze
 - Generare i certificati SSL
   - `cd` in `certificates`
   - Eseguire `openssl req -nodes -new -x509 -keyout server.key -out server.cert`
-- Creare file .env (istruzioni in [.env.example](backend/.env.example))
+- Creare file .env (istruzioni in [.env.example](backend/.env.example)) nella cartella del backend
 - Eseguire il server con `npm start`
-- **Facoltativo:** popolare il DB con dati demo: 
+- **Facoltativo:** popolare il DB con dati demo:
+    - Eseguire il server per creare il database sqlite
     - Per ricevere le email di test cambiare gli indirizzi nel file [demoUsers](backend/database/seeders/20221118100203-demoUsers.js):
       - In alternativa usare [mailtrap](https://mailtrap.io) senza cambiare indirizzi.
+    - `cd database/`
     - Eseguire il comando `npx sequelize-cli db:seed:all` per popolarlo.
     - Eseguire il comando `npx sequelize-cli db:seed:undo:all` per rimuovere i dati demo.
 - Il server risponde a [localhost](https://localhost/).
