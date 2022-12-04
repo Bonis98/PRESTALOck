@@ -21,8 +21,10 @@
         <div class="mt-3 mb-3">
           <img v-show="image" class="max-w-full m-auto" :src="imagePath">
         </div>
+        <NuxtLink :to="{ path: '/productDetails', query: {idProduct: $route.query.idProduct }}" replace>
+          <Button text="Annulla" />
+        </NuxtLink>
         <Button v-show="image" text="Salva" @click="upload()" />
-        <Button text="Annulla" @click="$router.go(-1)" />
       </div>
     </div>
   </div>
@@ -33,7 +35,7 @@ export default {
     return {
       loading: true,
       image: null,
-      product: ''
+      product: {}
     }
   },
 

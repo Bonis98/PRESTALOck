@@ -164,9 +164,3 @@ export default {
   }
 }
 </script>
-
-<style>
-img {
-    aspect-ratio: 1;
-}
-</style>

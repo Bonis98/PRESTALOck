@@ -14,7 +14,7 @@
       <div class="text-left flex justify-between mb-3">
         <!-- Owner -->
         <div class="truncate whitespace-nowrap w-2/4 underline text-blue-500">
-          <NuxtLink :to="{ path: '/user', query: { userId: product.user?.id }}">
+          <NuxtLink :to="{ path: '/user', query: { userId: product?.user?.id }}">
             {{ product.user?.name }} {{ product.user?.surname }}
           </NuxtLink>
         </div>
@@ -88,7 +88,7 @@ export default {
     },
 
     myProduct () {
-      return localStorage.getItem('userId') == this.product.idOwner
+      return localStorage.getItem('userId') == this.product?.user?.id
     },
 
     formattedLoanDays () {
