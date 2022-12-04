@@ -80,6 +80,33 @@ router.get('/', async function (req, res) {
             product.dataValues.myProduct = true;
         });
         let loans = lentProducts.concat(borrowedProducts);
+        let locker = [];
+        for (const loan of loans) {
+            let slots;
+            if (!locker[loan.dataValues.locker.id]) {
+                const urlSlotsByLocker = 'http://hack-smartlocker.sintrasviluppo.it/api/slots?lockerId=' + loan.dataValues.locker.id;
+                //retrieve all slots for locker already used
+                slots = await fetch(urlSlotsByLocker, {
+                    method: 'get',
+                    headers: {
+                        "x-apikey": process.env.API_KEY_LOCKERS,
+                        "x-tenant": process.env.TENANT
+                    }
+                });
+                slots = await slots.json();
+                locker[loan.dataValues.locker.id] = slots
+            } else {
+                slots = locker[loan.dataValues.locker.id]
+            }
+            slots.forEach(slot => {
+                if (slot.id === loan.dataValues.lockerSlot){
+                    loan.dataValues.lockerSlot = slot.index;
+                }
+                if (slot.id === loan.dataValues.returnLockerSlot){
+                    loan.dataValues.returnLockerSlot = slot.index;
+                }
+            })
+        }
         loans = {loans};
         res.json(loans)
     }
