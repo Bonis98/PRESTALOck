@@ -15,8 +15,8 @@
       </div>
 
       <div class="mt-4">
-        <Button v-show="selectedLockers.length > 0" text="Salva" @click="save()" />
         <Button text="Annulla" hollow @click="cancel()" />
+        <Button v-show="selectedLockers.length > 0" text="Salva" @click="save()" />
       </div>
     </div>
   </div>
