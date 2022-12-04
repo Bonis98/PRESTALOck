@@ -9,7 +9,7 @@ router.get('/', function (req, res){
     res.cookie('state', state, {signed: true});
     res.redirect('https://www.facebook.com/v15.0/dialog/oauth?' + new URLSearchParams({
         client_id: process.env.FACEBOOK_CLIENT_ID,
-        redirect_uri: 'https://localhost/api/signinFacebook/callback',
+        redirect_uri: process.env.FACEBOOK_REDIRECT_URI,
         state: state,
         scope: 'email,user_birthday,user_gender'
     }))
