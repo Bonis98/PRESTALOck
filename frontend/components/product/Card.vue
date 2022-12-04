@@ -3,7 +3,7 @@
     <div class="w-96 border border-solid border-gray-200 rounded-md shadow flex-shrink-0 flex flex-col items-center cursor-pointer relative" style="height: 32rem; max-width: 95vw;">
       <div v-if="disabled" class="absolute inset-0 bg-black opacity-20" />
       <!-- image div -->
-      <div class="h-3/4 overflow-hidden">
+      <div class="h-3/4 overflow-hidden flex items-center">
         <img class="w-full" :src="imageUrl">
       </div>
       <!-- first row -->
