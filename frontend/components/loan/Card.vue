@@ -1,47 +1,53 @@
 <template>
-  <NuxtLink :to="{ path: '/productDetails', query: { idProduct: passedLoan.product.id } }">
-    <div class="w-96 border border-solid border-gray-200 rounded-md shadow flex-shrink-0 flex flex-col items-center cursor-pointer" style="height: 20rem; max-width: 95vw;">
-      <!-- image div -->
-      <div class="h-3/4 overflow-hidden flex items-center">
-        <img class="w-full" :src="imageUrl">
-      </div>
+  <div class="w-96 border border-solid border-gray-200 rounded-md shadow flex-shrink-0 flex flex-col items-center" style="height: 20rem; max-width: 95vw;">
+    <!-- image div -->
+    <div class="h-3/4 overflow-hidden flex items-center">
+      <img class="w-full" :src="imageUrl">
+    </div>
 
-      <!-- Info -->
-      <div v-if="passedLoan.alreadyStarted" class="text-left w-11/12 flex-grow break-words font-light text-sm">
-        Prodotto in prestito dal {{ $formatDate(passedLoan.loanStartDate) }} (tempo rimanente: {{ formattedLoanDays }})
-      </div>
+    <!-- Info -->
+    <div v-if="passedLoan.alreadyStarted" class="text-left w-11/12 flex-grow break-words font-light text-sm">
+      Prodotto in prestito dal {{ $formatDate(passedLoan.loanStartDate) }} (tempo rimanente: {{ formattedLoanDays }})
+    </div>
 
-      <!-- Title and owner name -->
-      <div class="text-left w-11/12 flex justify-between">
-        <div class="font-bold flex-grow truncate whitespace-nowrap w-2/4">
-          {{ passedLoan.product.title }}
-        </div>
-      </div>
-      <div class="text-left w-11/12 flex justify-between">
-        <div class="flex-grow text-right truncate whitespace-nowrap w-2/4 underline text-blue-500">
-          <NuxtLink :to="{ path: '/user', query: { userId: passedLoan.owner.id }}">
-            {{ passedLoan.owner.name }} {{ passedLoan.owner.surname }}
-          </NuxtLink>
-        </div>
-      </div>
-
-      <!-- Locker -->
-      <div class="text-left w-11/12 flex-grow break-words">
-        Slot del locker: {{ passedLoan.lockerSlot }}
-      </div>
-
-      <div v-if="button != ''" class="text-right w-11/12 mt-2 mb-2">
-        <Button
-          :text="button == 'requestReturnLocker' ? 'Prenota locker' : 'Conferma deposito'"
-          @click="markDeposit()"
-        />
-      </div>
-
-      <div class="text-right w-11/12 font-light text-sm">
-        Richiesta di prestito effettuata il {{ formattedDate }}
+    <!-- Title and owner name -->
+    <div class="text-left w-11/12 flex justify-between">
+      <div class="font-bold flex-grow truncate whitespace-nowrap w-2/4">
+        {{ passedLoan.product.title }}
       </div>
     </div>
-  </NuxtLink>
+    <div class="text-left w-11/12 flex justify-between">
+      <div class="flex-grow text-right truncate whitespace-nowrap w-2/4 underline text-blue-500">
+        <NuxtLink :to="{ path: '/user', query: { userId: passedLoan.owner.id }}">
+          {{ passedLoan.owner.name }} {{ passedLoan.owner.surname }}
+        </NuxtLink>
+      </div>
+    </div>
+
+    <!-- Locker -->
+    <div class="text-left w-11/12 flex-grow break-words">
+      <div>
+        Locker {{ passedLoan.locker.name }} ({{ passedLoan.locker.address }}, {{ passedLoan.locker.province }})
+      </div>
+      <div>
+        Slot del locker: {{ passedLoan.lockerSlot }}
+      </div>
+      <div v-if="passedLoan.returnSlotBooked">
+        Slot del locker di restituzione: {{ passedLoan.returnLockerSlot }}
+      </div>
+    </div>
+
+    <div v-if="button != ''" class="text-right w-11/12 mt-2 mb-2">
+      <Button
+        :text="button == 'requestReturnLocker' ? 'Prenota locker' : 'Conferma deposito'"
+        @click="markDeposit()"
+      />
+    </div>
+
+    <div class="text-right w-11/12 font-light text-sm">
+      Richiesta di prestito effettuata il {{ formattedDate }}
+    </div>
+  </div>
 </template>
 
 <script>
