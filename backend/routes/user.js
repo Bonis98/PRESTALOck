@@ -32,12 +32,12 @@ router.get('/:id/products', async function(req, res){
                 idOwner: req.params.id
             },
             attributes: {
-                exclude: ['picture', 'createdAt', 'updatedAt']
+                exclude: ['idOwner', 'picture', 'createdAt', 'updatedAt']
             },
             include: {
                 model: User,
                 required: true,
-                attributes: ['name', 'surname', 'province', 'lockerList']
+                attributes: ['id', 'name', 'surname', 'province', 'lockerList']
             }
         });
         let product;
