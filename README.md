@@ -1,11 +1,11 @@
 # PRESTALOck
 
 Progetto del hackathon 2022 di [Sintra](https://www.sintra.eu).
-Una versione live è visualizzabile a questo [indirizzo](http://prestalock.emagon.xyz)
+Una versione live è visualizzabile a su [https://prestalock.emagon.xyz](https://prestalock.emagon.xyz)
 
 # Idea
 L'idea del progetto è basata sul concetto di **economia circolare**, ovvero un modello di produzione e consumo che implica: condivisione, prestito, riutilizzo, riparazione, ricondizionamento e riciclo dei materiali e prodotti esistenti il più a lungo possibile.
-Per questo motivo nasce PRESTALOck, un progetto che attraverso l'utilizzo di smart locker mira ad aiutare utenti che vorrebbero condividere oggetti di uso comune. L'idea è semplice: un utente disposto a prestare un oggetto pubblica sul portale un'inserzione contenete una foto e la descrizione di tale oggetto; un utente che ha necessità di prendere in prestito tale oggetto lo prenota attraverso il portale. I due utenti si scambiano il prodotto depositandolo in uno smartlocker accordato.
+Per questo motivo nasce *PRESTALOck*, un progetto che attraverso l'utilizzo di smart locker mira ad aiutare utenti che vorrebbero condividere oggetti di uso comune. L'idea è semplice: un utente disposto a prestare un oggetto pubblica sul portale un'inserzione contenete una foto e la descrizione di tale oggetto; un utente che ha necessità di prendere in prestito tale oggetto lo prenota attraverso il portale. I due utenti si scambiano il prodotto depositandolo in uno smartlocker accordato.
 Gli utenti devono risiedere nella stessa provincia per potersi scambiare oggetti.
 
 # Autori:
