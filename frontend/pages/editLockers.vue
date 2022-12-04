@@ -4,7 +4,7 @@
     <TopBar :go-back="$nuxt.context.from?.name != 'signup'" />
     <div class="text-center w-11/12 m-auto mb-6 justify-around gap-24 pt-12">
       <div class="text-center mb-3 text-2xl">
-        Seleziona i locker della tua provincia:
+        Seleziona i locker vicini a te (nella tua provincia):
       </div>
 
       <div>

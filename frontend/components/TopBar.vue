@@ -19,13 +19,7 @@
 
     <div class="flex-grow" />
 
-    <NuxtLink
-      v-if="name && name.length > 0"
-      class="h-2/4 cursor-pointer"
-      :to="{ path: '/user', query: {userId } }"
-    >
-      <div> {{ name }} </div>
-    </NuxtLink>
+    <div> {{ name }} </div>
 
     <NuxtLink
       v-if="name && name.length > 0"
