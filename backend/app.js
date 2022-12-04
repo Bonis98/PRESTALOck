@@ -31,14 +31,16 @@ const Process = require("process");
 const app = express();
 const port = 443;
 
-app.use(helmet());
-app.use(helmet.contentSecurityPolicy({
-  useDefaults: true,
-  directives: {
-    scriptSrc: ["'self'", "'unsafe-inline'"],
-    imgSrc: ["'self'", "data:", "blob:"]
-  }
-}));
+if (!Process.env.SERVE_HTTP || Process.env.SERVE_HTTP != "true") {
+    app.use(helmet());
+    app.use(helmet.contentSecurityPolicy({
+        useDefaults: true,
+        directives: {
+          scriptSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: ["'self'", "data:", "blob:"]
+        }
+    }));
+}
 app.use(bodyParser.json());
 //Cookie_sign should be a strong crypto random generated string
 app.use(cookieParser(Process.env.COOKIE_SIGN));
