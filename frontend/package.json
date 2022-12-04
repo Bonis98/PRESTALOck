@@ -6,8 +6,7 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate",
-    "generateForBackend": "nuxt generate && rm -r -f ../backend/public/* && cp -f -r dist/* ../backend/public/"
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "@nuxtjs/pwa": "^3.3.5",
