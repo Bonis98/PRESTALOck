@@ -113,7 +113,7 @@
 
 ## Visualizzazione dei propri prodotti nella pagina principale
 - In questo prototipo dell'applicazione viene assunto che nella pagina principale l'utente possa vedere anche i propri prodotti inseriti
-- Tali prodotti non possono essere prenotati dall'utente stesso (per ovvi motivi)
+- Tali prodotti non possono essere prenotati dall'utente stesso
 - In un contesto reale non andrebbero mostrati nella pagina principale ma solo nella pagina apposita ("I miei prodotti")
 - La decisione è stata presa per dimostrare il funzionamento dell'app in maniera più intuitiva e permettere di visualizzare i prodotti appena inseriti senza dover utilizzare un altro account
 - Nel codice abbiamo lasciato, commentato, il codice necessario a implementare questo filtro
