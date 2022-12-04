@@ -178,8 +178,8 @@ router.post('/', async function (req, res) {
 
         //setting email for receiver
         let emailSubject = "Prenotazione confermata";
-        let emailText = `Il proprietario dell'oggetto è stato notificato della richiesta di prestito. 
-        Ti verrà inviata una seconda mail quando l'oggetto sarà pronto per il ritiro.`;
+        let emailText = `Il proprietario dell'oggetto è stato notificato della richiesta di prestito. ` +
+        `Ti verrà inviata una seconda mail quando l'oggetto sarà pronto per il ritiro.`;
         const mailObjReceiver = {
             from: process.env.MAIL_USER,
             to: userReceiver.email,
@@ -318,10 +318,10 @@ router.get('/return/:idProduct', async function(req, res){
 
         //setting email for borrower
         let emailSubject = "Prenotazione slot locker confermata";
-        let emailText = `Hai prenotato con successo lo slot ${slot.index} del locker ${locker.nome} sito in via
-         ${locker.address}. Il proprietario di ${activeBook.product.title} è stato notificato 
-         dell'avvio della procedura di restituzione. 
-         Il codice di sblocco che dovrai usare è il seguente: ${receiverUnlockCode}`;
+        let emailText = `Hai prenotato con successo lo slot ${slot.index} del locker ${locker.nome} sito in via ` +
+         `${locker.address}. Il proprietario di ${activeBook.product.title} è stato notificato ` +
+         `dell'avvio della procedura di restituzione. ` +
+         `Il codice di sblocco che dovrai usare è il seguente: ${receiverUnlockCode}`;
         const mailObjBorrower = {
             from: process.env.MAIL_USER,
             to: currentUser.email,
@@ -332,8 +332,8 @@ router.get('/return/:idProduct', async function(req, res){
 
         //setting email for owner
         emailSubject = "Notifica avvio restituzione";
-        emailText = `L'oggetto ${activeBook.product.title} ha iniziato l'iter di restituzione. Ti manderemo un'email 
-        quando sarà stato depositato.`;
+        emailText = `L'oggetto ${activeBook.product.title} ha iniziato l'iter di restituzione. Ti manderemo un'email` +
+        `quando sarà stato depositato.`;
         const mailObjOwner = {
             from: process.env.MAIL_USER,
             to: activeBook.product.user.email,
