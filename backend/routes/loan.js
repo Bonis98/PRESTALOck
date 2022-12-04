@@ -55,7 +55,7 @@ router.get('/start/:idProduct', async function (req, res) {
                 idProduct: product.id,
                 terminationDate: null
             },
-            attributes: ['lockerSlot'],
+            attributes: ['lockerId', 'lockerSlot'],
             include: [{
                 model: User,
                 required: true,
@@ -77,7 +77,7 @@ router.get('/start/:idProduct', async function (req, res) {
         });
         const jsonData = await resp.json();
         receiverUnlockCode = jsonData.status.unlockCodes[1];
-        let lockerId = jsonData.lockerId;
+        let lockerId = borrower.lockerId;
         slotIndex = jsonData.index;
 
         //retrieving complete lockers list

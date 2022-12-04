@@ -17,11 +17,20 @@ UserBorrowProduct.init({
         type: DataTypes.DATEONLY,
         allowNull: true,
     },
+    lockerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            isInt: true,
+            min: 1
+        }
+    },
     lockerSlot: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             isInt: true,
+            min: 1
         }
     },
     returnLockerSlot: {
@@ -29,6 +38,7 @@ UserBorrowProduct.init({
         allowNull: true,
         validate: {
             isInt: true,
+            min: 1
         }
     },
     terminationDate: {

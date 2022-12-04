@@ -148,6 +148,7 @@ router.post('/', async function (req, res) {
         UserBorrowProductData = {
             idUser: userReceiver.id,
             idProduct: product.id,
+            lockerId: req.body.lockerId,
             lockerSlot: bookedSlotId
         };
 
@@ -261,18 +262,7 @@ router.get('/return/:idProduct', async function(req, res){
             }
         });
 
-        const urlInfoSlot = 'http://hack-smartlocker.sintrasviluppo.it/api/slots/' + activeBook.lockerSlot;
-        //retrieve slot info by its id
-        let infoSlot = await fetch(urlInfoSlot, {
-            method: 'get',
-            headers: {
-                "x-apikey": process.env.API_KEY_LOCKERS,
-                "x-tenant": process.env.TENANT
-            }
-        });
-        infoSlot = await infoSlot.json();
-
-        const urlSlotsByLocker = 'http://hack-smartlocker.sintrasviluppo.it/api/slots?lockerId=' + infoSlot.lockerId;
+        const urlSlotsByLocker = 'http://hack-smartlocker.sintrasviluppo.it/api/slots?lockerId=' + activeBook.lockerId;
         //retrieve all slots for locker already used
         let slots = await fetch(urlSlotsByLocker, {
             method: 'get',
@@ -318,7 +308,7 @@ router.get('/return/:idProduct', async function(req, res){
         //retrieve locker data -> send its name and address through email
         let locker;
         for (let i=0; i<lockerList.length; i++){
-            if (lockerList[i].id === infoSlot.lockerId){
+            if (lockerList[i].id === activeBook.lockerId){
                 locker = lockerList[i];
                 break
             }
@@ -342,7 +332,7 @@ router.get('/return/:idProduct', async function(req, res){
 
         //setting email for owner
         emailSubject = "Notifica avvio restituzione";
-        emailText = `L'oggetto ${activeBook.product.title} ha iniziato l'iter di restituzione. Ti manderemo una email 
+        emailText = `L'oggetto ${activeBook.product.title} ha iniziato l'iter di restituzione. Ti manderemo un'email 
         quando sarà stato depositato.`;
         const mailObjOwner = {
             from: process.env.MAIL_USER,
