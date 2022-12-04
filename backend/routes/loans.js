@@ -32,7 +32,7 @@ router.get('/', async function (req, res) {
                     [Op.is]: null,
                 }
             },
-            include: {
+            include: [{
                 model: Product,
                 required: true,
                 attributes: ['id', 'title', 'maxLoanDays'],
@@ -41,14 +41,18 @@ router.get('/', async function (req, res) {
                     required: true,
                     attributes: ['id', 'name', 'surname']
                 }
-            },
+            }, {
+                model: User,
+                required: true,
+                attributes: ['id', 'name', 'surname']
+            }],
             attributes: {
                 exclude: ['terminationDate', 'createdAt', 'updatedAt', 'id', 'idUser', 'idProduct']
             }
         });
         //Add flags alreadyStarted and myProduct
         borrowedProducts.forEach((product) => {
-            loanInfo(lockerList, product)
+            loanInfo(lockerList, product);
             product.dataValues.myProduct = false;
         });
         //Extract products lent by user
@@ -58,7 +62,7 @@ router.get('/', async function (req, res) {
                     [Op.is]: null,
                 }
             },
-            include: {
+            include: [{
                 model: Product,
                 required: true,
                 where: {
@@ -70,13 +74,17 @@ router.get('/', async function (req, res) {
                     required: true,
                     attributes: ['id', 'name', 'surname']
                 },
-            },
+            }, {
+                model: User,
+                required: true,
+                attributes: ['id', 'name', 'surname']
+            }],
             attributes: {
                 exclude: ['terminationDate', 'createdAt', 'updatedAt', 'id', 'idUser', 'idProduct']
             }
         });
         lentProducts.forEach((product) => {
-            loanInfo(lockerList, product)
+            loanInfo(lockerList, product);
             product.dataValues.myProduct = true;
         });
         let loans = lentProducts.concat(borrowedProducts);
@@ -84,7 +92,8 @@ router.get('/', async function (req, res) {
         for (const loan of loans) {
             let slots;
             if (!locker[loan.dataValues.locker.id]) {
-                const urlSlotsByLocker = 'http://hack-smartlocker.sintrasviluppo.it/api/slots?lockerId=' + loan.dataValues.locker.id;
+                const urlSlotsByLocker = 'http://hack-smartlocker.sintrasviluppo.it' +
+                    '/api/slots?lockerId=' + loan.dataValues.locker.id;
                 //retrieve all slots for locker already used
                 slots = await fetch(urlSlotsByLocker, {
                     method: 'get',
@@ -123,7 +132,7 @@ router.get('/ended', async function(req, res){
             where: {
                 token: req.get('Auth-Token')
             },
-            attributes: ['id']
+            attributes: ['id', 'name', 'surname']
         });
 
         const loans = await UserBorrowProduct.findAll({
@@ -153,6 +162,7 @@ router.get('/ended', async function(req, res){
         for (loan of loans){
             loan.dataValues['borrower'] = loan.user.dataValues;
             delete loan.user.dataValues;
+            loan.dataValues.owner = currentUser.dataValues
         }
         const allLoansSucceeded = {loans};
         res.json(allLoansSucceeded);
@@ -171,7 +181,7 @@ router.get('/requested', async function(req, res){
             where: {
                 token: req.get('Auth-Token')
             },
-            attributes: ['id']
+            attributes: ['id', 'name', 'surname']
         });
         const loans = await UserBorrowProduct.findAll({
             where: {
@@ -197,6 +207,7 @@ router.get('/requested', async function(req, res){
         for (loan of loans){
             loan.dataValues['owner'] = loan.product.user.dataValues;
             delete loan.product.user.dataValues;
+            loan.dataValues.borrower = currentUser.dataValues;
         }
 
         const  allRequestedProducts = {loans};
@@ -246,7 +257,9 @@ function loanInfo(lockerList, product) {
         product.dataValues.alreadyStarted = false;
     delete product.dataValues.product.dataValues.maxLoanDays;
     product.dataValues.owner = product.dataValues.product.dataValues.user;
-    delete product.dataValues.product.dataValues.user
+    delete product.dataValues.product.dataValues.user;
+    product.dataValues.borrower = product.dataValues.user;
+    delete product.dataValues.user;
 }
 
 //Add days to a date
