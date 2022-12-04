@@ -116,7 +116,8 @@ export default {
     },
 
     facebook () {
-      location.assign('/api/signinFacebook')
+      alert('Il login con Facebook non è abilitato: essendo un\'app in fase di test, solo gli account degli sviluppatori sono autorizzati')
+      // location.assign('/api/signinFacebook')
     }
   }
 }
