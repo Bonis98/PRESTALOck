@@ -20,7 +20,6 @@ router.get('/:email',async function (req, res){
         }
         else {
             await User.update({
-                token: 'PASSWORD_RESET',
                 password: randomCode
             }, {
                 where: {
