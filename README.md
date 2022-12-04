@@ -1,7 +1,7 @@
 # PRESTALOck
 
 Progetto del hackathon 2022 di [Sintra](https://www.sintra.eu).
-Una versione live è visualizzabile su [https://prestalock.emagon.xyz](https://prestalock.emagon.xyz)
+Una versione live è visualizzabile al sito [http://prestalock.emagon.xyz](http://prestalock.emagon.xyz)
 
 # Idea
 L'idea del progetto è basata sul concetto di **economia circolare**, ovvero un modello di produzione e consumo che implica: condivisione, prestito, riutilizzo, riparazione, ricondizionamento e riciclo dei materiali e prodotti esistenti il più a lungo possibile.
@@ -47,11 +47,12 @@ Gli utenti devono risiedere nella stessa provincia per potersi scambiare oggetti
 
 # Funzionalità implementate
 - Responsiveness per utilizzo da dispositivi mobili.
+- Il sistema è una PWA: Progressive Web App, per questo motivo da smartphone è possibile aggiungerla alla schermata home e visualizzarla come un'app installata.
 - Andrebbe detto che "si installa come un'app" (non so la terminologia corretta).
 - Registrazione e Login utente:
   - Credenziali classiche.
   - OAuth Google.
-  - Oauth Facebook (solo utenti di test, non è pubblicata).
+  - OAuth Facebook (Accetta solo account developer abilitati, la logica di funzionamento è visibile in [signinFacebook](backend/routes/signinFacebook.js)).
 - Logout.
 - Notifiche via email.
   - Conferma registrazione utente.
