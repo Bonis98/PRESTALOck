@@ -91,7 +91,7 @@
     - [x] Modifica prodotto (con flag `available`)
     - [x] Upload foto di prodotto
     - [x] Pagina di info utente
-    - [ ] Elenco di prestiti attivi (sia prodotti dati che ricevuti) con i vari tasti per confermare deposito e per prenotare locker di restituzione
+    - [ ] Elenco di prestiti attivi (sia prodotti dati che ricevuti) con i vari tasti per confermare deposito e per prenotare locker di restituzione (*terminato: manca solamente che il backend implementi il flag returnSlotBooked*)
     - [ ] Elenco propri prodotti
 - **Priorità 2**:
     - [ ] Vista di storico prodotti inseriti
@@ -256,11 +256,11 @@ GET `/api/signinFacebook/callback`
 | 2   |        | <-        |                            | `loans` (array di oggetti con `id`, `requestDate`, `loanStartDate`, `terminationDate`, `product` (oggetto con: `id`, `title`), `owner` (oggetto con `id`, `name`, `surname`)) |
 
 ## Lista prodotti per proprietario
-| Num | Client                   | Direzione | Server                                                           | Struttura dati                                                                                                                                                                                                                                                    |
-| --- | ------------------------ | --------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   |                          | ->        | GET `/api/user/{id}/products`                                    |                                                                                                                                                                                                                                                                   |
-| 2   |                          | <-        | Legge utente dal db e ritorna tutti gli oggetti da lui posseduti | `products` (array di oggetti con `id`, `idOwner`, `user` (oggetto con `name`, `surname` e `province`), `title`, `description`, `maxLoanDays`, `insertionDate`, `availability`, `lockerList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`)) |
-| 3   | Mostra i dati all'utente |           |                                                                  |                                                                                                                                                                                                                                                                   |
+| Num | Client                   | Direzione | Server                                                           | Struttura dati                                                                                                                                                                                                                                                               |
+| --- | ------------------------ | --------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   |                          | ->        | GET `/api/user/{id}/products`                                    |                                                                                                                                                                                                                                                                              |
+| 2   |                          | <-        | Legge utente dal db e ritorna tutti gli oggetti da lui posseduti | `products` (array di oggetti con `id`, `user` (oggetto con `id`, `name`, `surname` e `province`), `title`, `description`, `maxLoanDays`, `insertionDate`, `availability`, `lockerList` (array di locker di oggetti json con: `id`, `name`, `province`, `region`, `address`)) | 
+| 3   | Mostra i dati all'utente |           |                                                                  |                                                                                                                                                                                                                                                                              |
 
 ## Modifica/recupero password
 | Num | Client                                                      | Direzione | Server                                                                                                                                                                                                                            | Struttura dati                     |
