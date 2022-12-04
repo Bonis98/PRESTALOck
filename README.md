@@ -26,7 +26,7 @@ Gli utenti devono risiedere nella stessa provincia per potersi scambiare oggetti
 - Eseguire il server con `npm start`
 - **Facoltativo:** popolare il DB con dati demo: 
     - Per ricevere le email di test cambiare gli indirizzi nel file [demoUsers](backend/database/seeders/20221118100203-demoUsers.js):
-      - In alternativa usare [mailtrap] (https://mailtrap.io) senza cambiare indirizzi.
+      - In alternativa usare [mailtrap](https://mailtrap.io) senza cambiare indirizzi.
     - Eseguire il comando `npx sequelize-cli db:seed:all` per popolarlo.
     - Eseguire il comando `npx sequelize-cli db:seed:undo:all` per rimuovere i dati demo.
 - Il server risponde a [localhost](https://localhost/).
