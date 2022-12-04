@@ -1,7 +1,7 @@
 # PRESTALOck
 
 Progetto del hackathon 2022 di [Sintra](https://www.sintra.eu).
-Una versione live è visualizzabile a su [https://prestalock.emagon.xyz](https://prestalock.emagon.xyz)
+Una versione live è visualizzabile su [https://prestalock.emagon.xyz](https://prestalock.emagon.xyz)
 
 # Idea
 L'idea del progetto è basata sul concetto di **economia circolare**, ovvero un modello di produzione e consumo che implica: condivisione, prestito, riutilizzo, riparazione, ricondizionamento e riciclo dei materiali e prodotti esistenti il più a lungo possibile.
