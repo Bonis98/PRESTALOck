@@ -1,4 +1,5 @@
 # PRESTALOck
+![NodeJs 18.12.1](https://img.shields.io/badge/node-18.12.1-green)
 
 Progetto del hackathon 2022 di [Sintra](https://www.sintra.eu).
 Una versione live è visualizzabile al sito [http://prestalock.emagon.xyz](http://prestalock.emagon.xyz) (consigliamo di usare Milano come provincia, ci sono già dei prodotti)
